@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import "./styles/Highlight.css";
 
 function Highlight() {
-  const [image, setImage] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [descr, setDescr] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [date, setDate] = useState(null);
+  const [highlightedEvent, setHighlightedEvent] = useState(null);
+  const getRandomId = Math.floor(Math.random() * 10) + 1;
 
   useEffect(() => {
-    // todo api
-    fetch("/api/random-image")
-      .then((response) => response.json())
-      .then((data) => {
-        setImage(data.image_url);
-        setTitle(data.title);
-        setDescr(data.descr);
-        setCategory(data.category);
-        setDate(data.date);
+    axios
+      .get(`http://localhost:5000/events/${getRandomId}`)
+      .then(({ data }) => {
+        setHighlightedEvent(data);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }, []);
 
+  if (!highlightedEvent) {
+    return <p>Chargement en cours...</p>;
+  }
+
+  const { titre, image, categorie, description, date } = highlightedEvent;
+
   return (
-    <div>
-      {image && (
-        <div className="highlight--global">
-          <h2>{title}</h2>
-          <img src={image} alt="Random Highlight Event Medieval" />
-          <p>{descr}</p>
-          <p>{category}</p>
-          <p>{date}</p>
-        </div>
-      )}
+    <div className="highlight--global">
+      <h2>{titre}</h2>
+      <Link to={`/events/${highlightedEvent.id}`}>
+        <img src={image} alt={titre} />
+      </Link>
+      <p>{description}</p>
+      <p>{categorie}</p>
+      <p>{date}</p>
     </div>
   );
 }

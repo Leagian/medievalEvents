@@ -1,21 +1,21 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { DataContext } from "./DataEventsProvider";
+import React, { useContext } from "react";
+import { DataContext } from "../context/EventContext";
+import AllEventsCards from "./AllEventsCards";
 
 function AllEvents() {
-  const data = useContext(DataContext);
+  const { dataEvents } = useContext(DataContext);
 
   return (
     <div className="AllEvents--global">
-      {data.map((event) => (
-        <div key={event.id}>
-          <Link to={`/events/${event.id}`}>
-            <img src={event.image} alt={event.title} />
-          </Link>
-          <h1>{event.title}</h1>
-          <h2>{event.category}</h2>
-          <p>{event.text}</p>
-        </div>
+      {dataEvents.map((elem) => (
+        <AllEventsCards
+          key={elem.id}
+          image={elem.image}
+          titre={elem.titre}
+          categorie={elem.categorie}
+          description={elem.description}
+          date={elem.date}
+        />
       ))}
     </div>
   );

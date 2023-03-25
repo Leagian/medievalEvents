@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
+import React, { useState, useEffect, useRef } from "react";
 
 function AddEvent() {
+  const inputRef = useRef();
   const [formData, setFormData] = useState({
     titre: "",
     image: "",
@@ -13,18 +13,13 @@ function AddEvent() {
     categorie_id: "",
   });
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [categorie, setCategorie] = useState("");
-  const [site, setSite] = useState("");
-  const [address, setAddress] = useState("");
+  const [categorieList, setCategorieList] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:5000/categorie");
-        setCategorie(response.data);
+        const response = await axios.get("http://localhost:5000/categories");
+        setCategorieList(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des données:", error);
       }
@@ -32,9 +27,13 @@ function AddEvent() {
     fetchData();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Do something with the form data, like send it to a server
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/events", formData);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données:", error);
+    }
   };
 
   const handleChange = (e) => {
@@ -42,65 +41,88 @@ function AddEvent() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  //  UPLOAD FICHIER
+  function hSubmit(e) {
+    e.preventDefault();
+
+    const formDataPhoto = new FormData();
+    formData.append("image", inputRef.current.files[0]);
+    // Todo changer api
+    axios.post("http://localhost:5000/events", formDataPhoto);
+  }
+
   return (
     <>
-      <Header />
       <form onSubmit={handleSubmit}>
-        <label>
-          Title:
+        <label htmlFor="titre">
+          Titre:
           <input
             type="text"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
+            id="titre"
+            value={formData.titre}
+            onChange={handleChange}
           />
         </label>
-        <label>
+        <label htmlFor="description">
           Description:
           <textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            id="description"
+            value={formData.description}
+            onChange={handleChange}
           />
         </label>
-        <label>
+        <label htmlFor="date">
           Date:
           <input
             type="date"
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
+            id="date"
+            value={formData.date}
+            onChange={handleChange}
           />
         </label>
-        {/* <label htmlFor="addEventCat">
+        <label htmlFor="categorie">
           <select
-            name="addEventCat"
-            value={formData.addEventCat}
+            name="categorie"
+            value={formData.categorie}
             onChange={handleChange}
-            required
           >
             <option value="">--Sélectionnez la catégorie--</option>
-
-            {categorie.map((item) => (
-              <option value={item.id}>{item.ville}</option>
+            {categorieList.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.categories}
+              </option>
             ))}
           </select>
-        </label> */}
-        <label>
+        </label>
+
+        <label htmlFor="site">
           Site:
           <input
             type="text"
-            value={site}
-            onChange={(event) => setSite(event.target.value)}
+            name="site"
+            value={formData.site}
+            onChange={handleChange}
           />
         </label>
-        <label>
-          Address:
+        <label htmlFor="adresse">
+          Adresse:
           <input
             type="text"
-            value={address}
-            onChange={(event) => setAddress(event.target.value)}
+            name="adresse"
+            value={formData.Adresse}
+            onChange={handleChange}
           />
         </label>
-        <button type="submit">Submit</button>
       </form>
+      <form encType="multipart/form-data" onSubmit={hSubmit}>
+        <label htmlFor="banner">
+          Image:
+          <input className="banner" type="file" name="banner" ref={inputRef} />
+        </label>
+      </form>
+      <button type="submit" onClick={handleSubmit}>
+        Submit
+      </button>
     </>
   );
 }
