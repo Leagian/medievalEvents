@@ -1,13 +1,12 @@
-import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-
-import { DataContext } from "../context/EventContext";
+import { useDataContext } from "../contexts/DataContext";
 
 function SearchEvents() {
-  const { dataEvents } = useContext(DataContext);
+  const [searchText, setSearchText] = useState("");
 
-  const [searchText, setSearchText] = useState([]);
+  const { dataEvents } = useDataContext();
 
   const handleSearch = ({ target }) => {
     setSearchText(target.value);
@@ -19,7 +18,7 @@ function SearchEvents() {
         <input
           id="searchBar"
           name="searchBar"
-          type="text"
+          type="search"
           placeholder="Recherche..."
           value={searchText}
           onChange={handleSearch}
@@ -29,7 +28,9 @@ function SearchEvents() {
         </div>
         <div className="SearchEvents--datas">
           {dataEvents
-            .filter((val) => val.titre.toLowerCase().includes(searchText))
+            .filter((val) =>
+              val.titre.toLowerCase().includes(searchText.toLowerCase())
+            )
             .map((val) => (
               <div className="SearchEvents--general" key={val.id}>
                 <Link to={`/events/${val.id}`}>

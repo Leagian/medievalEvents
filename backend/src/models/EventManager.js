@@ -30,7 +30,7 @@ class EventManager extends AbstractManager {
 
   findOneEvent(id) {
     return this.connection.query(
-      `SELECT titre, image, adresse, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id from  ${this.table} WHERE id = ?`,
+      `SELECT id, titre, image, adresse, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id from  ${this.table} WHERE id = ?`,
       [id]
     );
   }

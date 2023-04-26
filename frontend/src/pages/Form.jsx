@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 
-function AddEvent() {
+function Form() {
   const inputRef = useRef();
   const [formData, setFormData] = useState({
     titre: "",
@@ -127,4 +127,4 @@ function AddEvent() {
   );
 }
 
-export default AddEvent;
+export default Form;

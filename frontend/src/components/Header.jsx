@@ -1,25 +1,23 @@
 import { Link } from "react-router-dom";
 
-import "./styles/Header.css";
-
 function Header() {
   return (
     <header className="header">
       <nav className="header--nav">
         <ul>
           <li>
-            <Link className="header--link" to="/carte">
+            <Link className="header--link" to="/map">
               CARTE
             </Link>
           </li>
           <li>
-            <Link className="header--link" to="/formulaire">
+            <Link className="header--link" to="/form">
               AJOUTER UN EVENEMENT
             </Link>
           </li>
           <li>
             <Link className="header--link" to="/">
-              ESCALE MEDIEVALE
+              <span>ESCALE MEDIEVALE</span>
             </Link>
           </li>
           <li>
@@ -29,6 +27,10 @@ function Header() {
           </li>
         </ul>
       </nav>
+      <div>
+        <h5>Connexion</h5>
+        <h5>Inscription</h5>
+      </div>
     </header>
   );
 }

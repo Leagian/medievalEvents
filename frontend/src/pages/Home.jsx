@@ -1,13 +1,13 @@
 import Discover from "../components/Discover";
 import Highlight from "../components/Highlight";
-import AllEvents from "../components/AllEvents";
+import EventList from "../components/EventList";
 
 function Home() {
   return (
     <div className="Home--global">
       <Discover />
       <Highlight />
-      <AllEvents />
+      <EventList />
     </div>
   );
 }

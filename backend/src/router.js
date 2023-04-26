@@ -32,10 +32,13 @@ router.post("/events/image", upload.single("image"), (req, res) => {
 const eventControllers = require("./controllers/EventControllers");
 const categorieControllers = require("./controllers/CategorieControllers");
 
+// GET
 router.get("/events", eventControllers.browse);
 router.get("/categories", categorieControllers.browse);
 router.get("/events/:id", eventControllers.read);
 router.get("/categories/:id", categorieControllers.read);
+
+// POST
 router.post("/events", eventControllers.add);
 
 module.exports = router;

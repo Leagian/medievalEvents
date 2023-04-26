@@ -1,13 +1,19 @@
-import "./styles/Discover.css";
+import { Typography } from "@mui/material";
+
+import { Link } from "react-router-dom";
 
 function Discover() {
   return (
     <div>
-      <h1 className="discover--titre">
+      <Typography variant="h5">
         DECOUVREZ TOUS LES EVENEMENTS MEDIEVAUX A VENIR
-      </h1>
+      </Typography>
       <h4 className="discover--cat">
-        CONCERTS FESTIVALS MARCHÉS SPECTACLES EXPOSITIONS
+        <Link to="/concerts">CONCERTS</Link>
+        <Link to="/festivals">FESTIVALS</Link>
+        <Link to="/marches">MARCHÉS</Link>
+        <Link to="/spectacles">SPECTACLES</Link>
+        <Link to="/expositions">EXPOSITIONS</Link>
       </h4>
     </div>
   );

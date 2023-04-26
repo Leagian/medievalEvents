@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function AllEventsCards({ id, image, titre, categorie, description, date }) {
+function EventCard({ id, image, titre, categorie, description, date }) {
   return (
     <div className="allEventsCards--global">
       <Link to={`/events/${id}`}>
@@ -15,7 +15,7 @@ function AllEventsCards({ id, image, titre, categorie, description, date }) {
   );
 }
 
-AllEventsCards.propTypes = {
+EventCard.propTypes = {
   id: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   titre: PropTypes.string.isRequired,
@@ -24,4 +24,4 @@ AllEventsCards.propTypes = {
   date: PropTypes.string.isRequired,
 };
 
-export default AllEventsCards;
+export default EventCard;

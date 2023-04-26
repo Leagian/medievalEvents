@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import "./styles/Highlight.css";
 
 function Highlight() {
   const [highlightedEvent, setHighlightedEvent] = useState(null);
@@ -9,9 +8,9 @@ function Highlight() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/events/${getRandomId}`)
-      .then(({ data }) => {
-        setHighlightedEvent(data);
+      .get(`${import.meta.env.VITE_BACKEND_URL}/events/${getRandomId}`)
+      .then((res) => {
+        setHighlightedEvent(res.data);
       })
       .catch((error) => {
         console.error(error);
@@ -19,15 +18,15 @@ function Highlight() {
   }, []);
 
   if (!highlightedEvent) {
-    return <p>Chargement en cours...</p>;
+    return <div>Loading...</div>;
   }
 
-  const { titre, image, categorie, description, date } = highlightedEvent;
+  const { id, titre, image, categorie, description, date } = highlightedEvent;
 
   return (
     <div className="highlight--global">
       <h2>{titre}</h2>
-      <Link to={`/events/${highlightedEvent.id}`}>
+      <Link to={`/events/${id}`}>
         <img src={image} alt={titre} />
       </Link>
       <p>{description}</p>
