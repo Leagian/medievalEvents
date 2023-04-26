@@ -59,7 +59,7 @@ function Form() {
           <input
             type="text"
             id="titre"
-            value={formData.titre}
+            value={formData.titre.toUpperCase()}
             onChange={handleChange}
           />
         </label>
@@ -76,7 +76,7 @@ function Form() {
           <input
             type="date"
             id="date"
-            value={formData.date}
+            // value={formData.date}
             onChange={handleChange}
           />
         </label>
@@ -89,7 +89,7 @@ function Form() {
             <option value="">--Sélectionnez la catégorie--</option>
             {categorieList.map((cat) => (
               <option key={cat.id} value={cat.id}>
-                {cat.categories}
+                {cat.nom}
               </option>
             ))}
           </select>
@@ -100,6 +100,7 @@ function Form() {
           <input
             type="text"
             name="site"
+            placeholder="www.medieval.com"
             value={formData.site}
             onChange={handleChange}
           />
