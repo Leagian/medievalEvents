@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 import { useDataContext } from "../contexts/DataContext";
 import SearchFilters from "../components/SearchFilters";
 import SearchResults from "../components/SearchResults";
 
 function SearchEvents() {
-  const [searchText, setSearchText] = useState("");
-  const [searchCat, setSearchCat] = useState([]);
-  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
+  const [searchCat, setSearchCat] = useState([]); // Stocke les catégories
+  const [selectedCategories, setSelectedCategories] = useState([]); // Stocke les catégories sélectionnées
 
+  // Récupère les événements et les catégories du contexte
   const { dataEvents } = useDataContext();
 
+  // Récupère les catégories depuis le serveur
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/categories`)
@@ -27,45 +28,41 @@ function SearchEvents() {
       });
   }, []);
 
-  const filterEvents = (event) => {
-    if (checkedCategories.length === 0) {
-      return true;
+  // Gère les changements de filtre en mettant à jour les catégories sélectionnées
+  const handleFilterChange = (categoryId, isChecked) => {
+    if (isChecked) {
+      setSelectedCategories([...selectedCategories, categoryId]);
+    } else {
+      setSelectedCategories(
+        selectedCategories.filter((id) => id !== categoryId)
+      );
     }
-
-    return checkedCategories.includes(event.categorie_id);
   };
+
+  // Filtrer les événements en fonction des catégories sélectionnées et du texte de recherche
+  const filteredEvents = dataEvents.filter((event) => {
+    if (selectedCategories.length > 0) {
+      return (
+        selectedCategories.includes(event.categorie_id) &&
+        event.titre.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+    return event.titre.toLowerCase().includes(searchText.toLowerCase());
+  });
 
   return (
     <div className="SearchEvents--global">
       <div className="SearchEvents--container">
         <SearchFilters
           searchCat={searchCat}
-          onSearch={(text) => setSearchText(text)}
-          onFilter={(newCheckedCategories) =>
-            setCheckedCategories(newCheckedCategories)
-          }
+          onSearch={(text) => setSearchText(text)} // Met à jour le texte de recherche
+          onFilter={handleFilterChange} // Gère les changements de filtre
         />
-        <SearchResults
-          events={dataEvents
-            .filter((event) => filterEvents(event))
-            .filter((event) =>
-              event.titre.toLowerCase().includes(searchText.toLowerCase())
-            )}
-        />
+        {/* Affiche les événements filtrés */}
+        <SearchResults events={filteredEvents} />
       </div>
     </div>
   );
 }
-
-SearchFilters.propTypes = {
-  searchCat: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      nom: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onSearch: PropTypes.func.isRequired,
-  onFilter: PropTypes.func.isRequired,
-};
 
 export default SearchEvents;

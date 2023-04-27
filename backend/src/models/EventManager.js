@@ -50,6 +50,18 @@ class EventManager extends AbstractManager {
       ]
     );
   }
+
+  findByCategory(categoryId) {
+    return this.connection.query(
+      `
+    SELECT events.id, titre, image, adresse, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id
+    FROM ${this.table} AS events
+    INNER JOIN categorie AS cat ON cat.id=events.categorie_id
+    WHERE events.categorie_id = ?
+  `,
+      [categoryId]
+    );
+  }
 }
 
 module.exports = EventManager;

@@ -37,6 +37,7 @@ router.get("/events", eventControllers.browse);
 router.get("/categories", categorieControllers.browse);
 router.get("/events/:id", eventControllers.read);
 router.get("/categories/:id", categorieControllers.read);
+router.get("/events/filter", eventControllers.browseByCategory);
 
 // POST
 router.post("/events", eventControllers.add);

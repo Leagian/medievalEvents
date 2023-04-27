@@ -1,27 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 function SearchFilters({ onSearch, searchCat, onFilter }) {
-  const [searchText, setSearchText] = useState("");
-  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
 
+  // Gère les changements de texte de recherche
   const handleSearch = ({ target }) => {
     setSearchText(target.value);
     onSearch(target.value);
   };
 
+  // Gère les changements d'état des cases à cocher
   const handleCheckboxChange = (categoryId, isChecked) => {
-    setCheckedCategories((prev) => {
-      if (isChecked) {
-        return [...prev, categoryId];
-      }
-      return prev.filter((id) => id !== categoryId);
-    });
+    onFilter(categoryId, isChecked);
   };
-
-  useEffect(() => {
-    onFilter(checkedCategories);
-  }, [checkedCategories, onFilter]);
 
   return (
     <div className="SearchFilters">
@@ -47,14 +39,13 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
 }
 
 SearchFilters.propTypes = {
-  onSearch: PropTypes.func.isRequired,
   searchCat: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       nom: PropTypes.string.isRequired,
-      filterKey: PropTypes.string.isRequired,
     })
   ).isRequired,
+  onSearch: PropTypes.func.isRequired,
   onFilter: PropTypes.func.isRequired,
 };
 
