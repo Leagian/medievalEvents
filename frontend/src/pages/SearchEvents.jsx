@@ -19,7 +19,7 @@ function SearchEvents() {
       .then((response) => {
         const categoriesWithFilterKeys = response.data.map((cat) => ({
           ...cat,
-          filterKey: cat.nom,
+          filterKey: cat.cat_name,
         }));
         setSearchCat(categoriesWithFilterKeys);
       })
@@ -44,10 +44,10 @@ function SearchEvents() {
     if (selectedCategories.length > 0) {
       return (
         selectedCategories.includes(event.categorie_id) &&
-        event.titre.toLowerCase().includes(searchText.toLowerCase())
+        event.title.toLowerCase().includes(searchText.toLowerCase())
       );
     }
-    return event.titre.toLowerCase().includes(searchText.toLowerCase());
+    return event.title.toLowerCase().includes(searchText.toLowerCase());
   });
 
   return (

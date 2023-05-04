@@ -1,11 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
 
 const DataContext = createContext();
 
 export const useDataContext = () => useContext(DataContext);
 
-// eslint-disable-next-line react/prop-types
 export function DataContextProvider({ children }) {
   const [dataEvents, setDataEvents] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -32,10 +32,14 @@ export function DataContextProvider({ children }) {
       });
   }, []);
 
-  return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <DataContext.Provider value={{ dataEvents, categories }}>
-      {children}
-    </DataContext.Provider>
+  const value = useMemo(
+    () => ({ dataEvents, categories }),
+    [dataEvents, categories]
   );
+
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
+
+DataContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

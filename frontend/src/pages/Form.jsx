@@ -18,7 +18,9 @@ function Form() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:5000/categories");
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/categories`
+        );
         setCategorieList(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des données:", error);
@@ -30,7 +32,7 @@ function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/events", formData);
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/events`, formData);
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
     }
@@ -48,7 +50,7 @@ function Form() {
     const formDataPhoto = new FormData();
     formData.append("image", inputRef.current.files[0]);
     // Todo changer api
-    axios.post("http://localhost:5000/events", formDataPhoto);
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/events`, formDataPhoto);
   }
 
   return (
@@ -89,7 +91,7 @@ function Form() {
             <option value="">--Sélectionnez la catégorie--</option>
             {categorieList.map((cat) => (
               <option key={cat.id} value={cat.id}>
-                {cat.nom}
+                {cat.cat_name}
               </option>
             ))}
           </select>

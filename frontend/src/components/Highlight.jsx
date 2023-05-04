@@ -21,13 +21,13 @@ function Highlight() {
     return <div>Loading...</div>;
   }
 
-  const { id, titre, image, categorie, description, date } = highlightedEvent;
+  const { id, title, image, categorie, description, date } = highlightedEvent;
 
   return (
     <div className="highlight--global">
-      <h2>{titre}</h2>
+      <h2>{title}</h2>
       <Link to={`/events/${id}`}>
-        <img src={image} alt={titre} />
+        <img src={image} alt={title} />
       </Link>
       <p>{description}</p>
       <p>{categorie}</p>

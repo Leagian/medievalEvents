@@ -6,6 +6,7 @@ import Form from "../pages/Form";
 import EventDetail from "../pages/EventDetail";
 import SearchEvents from "../pages/SearchEvents";
 import Contact from "../pages/Contact";
+import Profile from "../pages/Profile";
 
 // import Map from "../pages/Map";
 
@@ -18,6 +19,7 @@ function Main() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/events" element={<SearchEvents />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/profile/:userId" component={Profile} />
         {/* <Route path="/map" element={<Map />} /> */}
       </Routes>
     </div>

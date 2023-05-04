@@ -20,8 +20,8 @@ function EventDetail() {
   return (
     <div className="detailsEvent--global">
       <div key={eventId.id}>
-        <img src={eventId.image} alt={eventId.titre} />
-        <h1>{eventId.titre}</h1>
+        <img src={eventId.image} alt={eventId.title} />
+        <h1>{eventId.title}</h1>
         <h2>{eventId.categorie}</h2>
         <p>{eventId.description}</p>
         <p>{eventId.date}</p>

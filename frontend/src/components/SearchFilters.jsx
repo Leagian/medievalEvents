@@ -31,7 +31,7 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
             id={`categorie-${cat.id}`}
             onChange={(e) => handleCheckboxChange(cat.id, e.target.checked)}
           />
-          {cat.nom}
+          {cat.cat_name}
         </label>
       ))}
     </div>
@@ -42,7 +42,7 @@ SearchFilters.propTypes = {
   searchCat: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      nom: PropTypes.string.isRequired,
+      cat_name: PropTypes.string.isRequired,
     })
   ).isRequired,
   onSearch: PropTypes.func.isRequired,

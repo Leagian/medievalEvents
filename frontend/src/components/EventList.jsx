@@ -12,7 +12,7 @@ function EventList() {
             key={event.id}
             id={event.id}
             image={event.image}
-            titre={event.titre}
+            title={event.title}
             categorie={event.categorie}
             description={event.description}
             date={event.date}

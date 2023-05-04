@@ -7,9 +7,9 @@ function SearchResults({ events }) {
       {events.map((event) => (
         <div className="SearchResults--item" key={event.id}>
           <Link to={`/events/${event.id}`}>
-            <img src={event.image} alt={event.titre} />
+            <img src={event.image} alt={event.title} />
           </Link>
-          <h1>{event.titre}</h1>
+          <h1>{event.title}</h1>
         </div>
       ))}
     </div>
@@ -21,7 +21,7 @@ SearchResults.propTypes = {
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       image: PropTypes.string,
-      titre: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
     })
   ).isRequired,
 };
