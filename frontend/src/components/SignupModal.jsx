@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 import Modal from "react-modal";
 import SignupForm from "./SignupForm";
 
-function SignupModal({ isOpen, closeModal }) {
+function SignupModal({ isOpen, closeModal, toggleLoginModal }) {
   const handleSuccess = (token) => {
     localStorage.setItem("token", token);
     closeModal();
+    toggleLoginModal();
   };
 
   return (
@@ -20,7 +21,7 @@ function SignupModal({ isOpen, closeModal }) {
         >
           X
         </button>
-        <SignupForm onSuccess={handleSuccess} />
+        <SignupForm onSignUpSuccess={handleSuccess} />
       </div>
     </Modal>
   );
@@ -29,6 +30,7 @@ function SignupModal({ isOpen, closeModal }) {
 SignupModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  toggleLoginModal: PropTypes.func.isRequired,
 };
 
 export default SignupModal;

@@ -12,7 +12,7 @@ export function DataContextProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/events`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events`)
       .then((response) => {
         setDataEvents(response.data);
       })
@@ -23,7 +23,7 @@ export function DataContextProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/categories`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
       .then((response) => {
         setCategories(response.data);
       })

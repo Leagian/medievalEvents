@@ -15,7 +15,7 @@ function SearchEvents() {
   // Récupère les catégories depuis le serveur
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/categories`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
       .then((response) => {
         const categoriesWithFilterKeys = response.data.map((cat) => ({
           ...cat,

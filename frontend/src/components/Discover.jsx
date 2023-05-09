@@ -8,6 +8,7 @@ function Discover() {
       <Typography variant="h5">
         DECOUVREZ TOUS LES EVENEMENTS MEDIEVAUX A VENIR
       </Typography>
+      <h4>Connectez-vous pour pouvoir ajouter vos évènements !</h4>
       <div className="discover--cat">
         <Link to="/concerts">CONCERTS</Link>
         <Link to="/festivals">FESTIVALS</Link>

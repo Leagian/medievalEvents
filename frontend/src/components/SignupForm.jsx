@@ -1,45 +1,74 @@
-// SignupForm.js
-import React, { useCallback, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import profileAPI from "../services/profileAPI";
 
-function SignupForm({ onSuccess }) {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+function SignupForm({ onSignUpSuccess }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = useCallback((event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  }, []);
+  const handleForm = (event) => {
+    event.preventDefault();
 
-  const handleSignup = async () => {
-    const { email, password } = formData;
-
-    try {
-      const response = await axios.post("/api/auth/signup", {
-        email,
-        password,
-      });
-
-      onSuccess(response.data.token);
-    } catch (erreur) {
-      setError("Une erreur s'est produite lors de l'inscription.");
+    if (email && password && name) {
+      profileAPI
+        .post(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
+          email,
+          password,
+          name,
+        })
+        .then(() => {
+          onSignUpSuccess();
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setErrorMessage("You must provide a name, an email, and a password");
     }
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
     <>
       <h2>Inscription</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form>
+      <h4>Inscrivez-vous pour pouvoir ajouter votre évènement</h4>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <form onSubmit={handleForm}>
+        <div>
+          <label>
+            Nom :
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={handleNameChange}
+            />
+          </label>
+        </div>
         <div>
           <label>
             Email :
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={handleEmailChange}
             />
           </label>
         </div>
@@ -47,23 +76,28 @@ function SignupForm({ onSuccess }) {
           <label>
             Mot de passe :
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={handlePasswordChange}
             />
+            <button
+              type="button"
+              onClick={toggleShowPassword}
+              style={{ marginLeft: "0.5rem" }}
+            >
+              {showPassword ? "Cacher" : "Afficher"}
+            </button>
           </label>
         </div>
-        <button type="button" onClick={handleSignup}>
-          Valider
-        </button>
+        <button type="submit">Valider</button>
       </form>
     </>
   );
 }
 
 SignupForm.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
+  onSignUpSuccess: PropTypes.func.isRequired,
 };
 
 export default SignupForm;

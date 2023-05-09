@@ -8,7 +8,7 @@ function Highlight() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/events/${getRandomId}`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/${getRandomId}`)
       .then((res) => {
         setHighlightedEvent(res.data);
       })

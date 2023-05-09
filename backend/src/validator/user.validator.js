@@ -6,7 +6,7 @@ const validateUser = (user, createMod) => {
   const result = Joi.object({
     name: Joi.string().min(3).max(100).presence(mode),
     email: Joi.string().email().presence(mode),
-    password: Joi.string().min(8).max(30).presence(mode),
+    password: Joi.string().min(4).max(30).presence(mode),
   })
     .required()
     .min(1)

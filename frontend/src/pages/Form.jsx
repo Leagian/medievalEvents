@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
+import { Outlet } from "react-router-dom";
 
 function Form() {
   const inputRef = useRef();
@@ -19,7 +20,7 @@ function Form() {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/categories`
+          `${import.meta.env.VITE_BACKEND_URL}/api/categories`
         );
         setCategorieList(response.data);
       } catch (error) {
@@ -32,7 +33,10 @@ function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/events`, formData);
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/events`,
+        formData
+      );
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
     }
@@ -48,9 +52,9 @@ function Form() {
     e.preventDefault();
 
     const formDataPhoto = new FormData();
-    formData.append("image", inputRef.current.files[0]);
+    formDataPhoto.append("image", inputRef.current.files[0]);
     // Todo changer api
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/events`, formDataPhoto);
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/events`, formDataPhoto);
   }
 
   return (
@@ -126,6 +130,7 @@ function Form() {
       <button type="submit" onClick={handleSubmit}>
         Submit
       </button>
+      <Outlet />
     </>
   );
 }

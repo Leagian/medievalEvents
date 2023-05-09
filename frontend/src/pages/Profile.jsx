@@ -1,39 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { Link, Outlet, useParams } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+
+import profileAPI from "../services/profileAPI";
 
 function Profile() {
-  const { userId } = useParams(); // Obtenez l'identifiant de l'utilisateur à partir de l'URL
   const [userEvents, setUserEvents] = useState([]);
+
+  const { id } = useParams();
+  const { user } = useAuthContext();
 
   useEffect(() => {
     // Faites une requête à votre backend pour obtenir tous les événements de l'utilisateur
-    axios
-      .get(`/users/${userId}/events`)
+    profileAPI
+      .get(`/api/users/${id}/favorites`)
       .then((response) => setUserEvents(response.data))
       .catch((error) => console.error(error));
-  }, [userId]);
+  }, [user]);
 
-  const handleEditEvent = (eventId) => {
-    // Redirigez l'utilisateur vers la page de modification de l'événement
-    // En utilisant l'identifiant de l'utilisateur et l'identifiant de l'événement
-    // (vous devez mettre en place cette page dans votre application)
-    window.location.href = `/users/${userId}/events/${eventId}/edit`;
+  const handleRemoveFromFavorites = (eventToRemove) => {
+    profileAPI
+      .delete(`/api/users/${eventToRemove.id}/favorites`)
+      .then(() => {
+        // Mettez à jour la liste des événements de l'utilisateur en enlevant l'événement supprimé
+        setUserEvents((prevEvents) =>
+          prevEvents.filter((event) => event.id !== eventToRemove.id)
+        );
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la suppression de l'événement des favoris :",
+          error
+        );
+      });
   };
 
   return (
     <div>
-      <h1>Profil de l'utilisateur {userId}</h1>
+      <h1>
+        Hello, {user.username} {user.id}
+      </h1>
       <h2>Evénements ajoutés par l'utilisateur :</h2>
-      {userEvents.map((event) => (
-        <div key={event.id}>
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
-          <button type="button" onClick={() => handleEditEvent(event.id)}>
-            Modifier
-          </button>
-        </div>
-      ))}
+      {userEvents.map((event) => {
+        if (event.id) {
+          return (
+            <div key={event.id}>
+              <Link to={`/events/${event.id}`}>
+                <img src={event.image} alt={event.title} />
+              </Link>
+              <h3>{event.title}</h3>
+              <p>{event.description}</p>
+              <button
+                type="submit"
+                onClick={() => handleRemoveFromFavorites(event)}
+              >
+                Retirer des favoris
+              </button>
+            </div>
+          );
+        }
+        return null; // Ignorer les objets sans clé
+      })}
+      <Outlet />
     </div>
   );
 }

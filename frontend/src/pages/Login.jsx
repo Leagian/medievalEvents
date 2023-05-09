@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Modal from "react-modal";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+import profileAPI from "../services/profileAPI";
+
+import { useAuthContext } from "../contexts/AuthContext";
 
 function Login({ isOpen, closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUser } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -18,35 +23,31 @@ function Login({ isOpen, closeModal }) {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Vérifier que les champs sont remplis
-    if (!email || !password) {
-      setErrorMessage("Veuillez remplir tous les champs.");
-      return;
-    }
-
-    try {
-      // Envoyer une requête de connexion au serveur
-      const response = await axios.post("/api/auth/login", {
-        email,
-        password,
-      });
-
-      // Stocker le token JWT et l'ID de l'utilisateur dans le localStorage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userId", response.data.user.id);
-
-      // Réinitialiser le message d'erreur et fermer la modale
-      setErrorMessage("");
-      closeModal();
-
-      // Rediriger l'utilisateur vers la page de profil
-      navigate(`/users/${response.data.user.id}/profile`);
-    } catch (error) {
-      setErrorMessage("Email ou mot de passe incorrect.");
+    if (email && password) {
+      profileAPI
+        .post(`/api/login`, {
+          email,
+          password,
+        })
+        .then((res) => {
+          setUser(res.data);
+          localStorage.setItem("user", JSON.stringify(res.data));
+          if (res.data.role === "admin") {
+            navigate("/admin"); // Rediriger vers la page d'administration pour les utilisateurs avec le rôle "admin"
+          } else {
+            navigate(`/profile/${res.data.id}`); // Utiliser l'ID de la réponse pour la redirection
+          }
+          closeModal();
+        })
+        .catch((err) => {
+          console.error(err);
+          setErrorMessage("Invalid email or password"); // pour gérer les erreurs de connexion
+        });
+    } else {
+      setErrorMessage("Please enter email and password");
     }
   };
 
@@ -60,7 +61,6 @@ function Login({ isOpen, closeModal }) {
         X
       </button>
       <h2>Connexion</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Email :
@@ -74,7 +74,8 @@ function Login({ isOpen, closeModal }) {
             onChange={handlePasswordChange}
           />
         </label>
-        <button type="submit">Se connecter</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <button type="submit">Connexion</button>
       </form>
     </Modal>
   );

@@ -66,4 +66,20 @@ const addOneEvent = async (events, connection, table) => {
   }
 };
 
-module.exports = { findAllEvents, findOneEvent, findByCategory, addOneEvent };
+const deleteOneEvent = async (id) => {
+  try {
+    const result = await db.query("DELETE FROM events WHERE id = ?", [id]);
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+module.exports = {
+  findAllEvents,
+  findOneEvent,
+  findByCategory,
+  addOneEvent,
+  deleteOneEvent,
+};
