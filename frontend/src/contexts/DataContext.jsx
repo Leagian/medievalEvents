@@ -8,7 +8,7 @@ export const useDataContext = () => useContext(DataContext);
 
 export function DataContextProvider({ children }) {
   const [dataEvents, setDataEvents] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     axios
@@ -21,21 +21,18 @@ export function DataContextProvider({ children }) {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des catégories :", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
+  //     .then((response) => {
+  //       setCategories(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erreur lors de la récupération des catégories :", error);
+  //     });
+  // }, []);
 
-  const value = useMemo(
-    () => ({ dataEvents, categories }),
-    [dataEvents, categories]
-  );
+  const value = useMemo(() => ({ dataEvents }), [dataEvents]);
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

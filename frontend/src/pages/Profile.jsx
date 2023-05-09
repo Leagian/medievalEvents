@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet, useParams } from "react-router-dom";
-import { useAuthContext } from "../contexts/AuthContext";
 
+// MATERIAL
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+
+// SERVICE
 import profileAPI from "../services/profileAPI";
+
+// CONTEXT
+import { useAuthContext } from "../contexts/AuthContext";
 
 function Profile() {
   const [userEvents, setUserEvents] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [eventToRemove, setEventToRemove] = useState(null);
 
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -18,7 +31,10 @@ function Profile() {
       .catch((error) => console.error(error));
   }, [user]);
 
-  const handleRemoveFromFavorites = (eventToRemove) => {
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleRemoveFromFavorites = () => {
     profileAPI
       .delete(`/api/users/${eventToRemove.id}/favorites`)
       .then(() => {
@@ -26,6 +42,7 @@ function Profile() {
         setUserEvents((prevEvents) =>
           prevEvents.filter((event) => event.id !== eventToRemove.id)
         );
+        handleClose();
       })
       .catch((error) => {
         console.error(
@@ -33,6 +50,11 @@ function Profile() {
           error
         );
       });
+  };
+
+  const handleOpenDialog = (event) => {
+    setEventToRemove(event);
+    setOpen(true);
   };
 
   return (
@@ -48,12 +70,11 @@ function Profile() {
               <Link to={`/events/${event.id}`}>
                 <img src={event.image} alt={event.title} />
               </Link>
+              <h5>{event.category}</h5>
               <h3>{event.title}</h3>
               <p>{event.description}</p>
-              <button
-                type="submit"
-                onClick={() => handleRemoveFromFavorites(event)}
-              >
+              <p>{event.address}</p>
+              <button type="submit" onClick={() => handleOpenDialog(event)}>
                 Retirer des favoris
               </button>
             </div>
@@ -62,6 +83,20 @@ function Profile() {
         return null; // Ignorer les objets sans clé
       })}
       <Outlet />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Supprimer l'événement</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Êtes-vous sûr de vouloir supprimer cet événement ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Annuler</Button>
+          <Button onClick={() => handleRemoveFromFavorites(eventToRemove)}>
+            Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

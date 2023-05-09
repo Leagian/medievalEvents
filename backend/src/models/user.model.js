@@ -45,9 +45,10 @@ const addOneUser = async (user) => {
 const findUserFavorites = async (userId) => {
   try {
     const [result] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.cat_name as category
        FROM user_favorites
        INNER JOIN events ON user_favorites.event_id = events.id
+       INNER JOIN categorie as cat ON cat.id = events.categorie_id
        WHERE user_favorites.user_id = ?`,
       [userId]
     );

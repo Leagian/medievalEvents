@@ -99,8 +99,9 @@ function EventDetail() {
         ) : (
           <BookmarkBorderIcon onClick={handleBookmarkToggle} />
         )}
-        <h2>{eventId.categorie}</h2>
+        <h2>{eventId.category}</h2>
         <p>{eventId.description}</p>
+        <p>{eventId.address}</p>
         <p>{eventId.date}</p>
       </div>
       <Dialog

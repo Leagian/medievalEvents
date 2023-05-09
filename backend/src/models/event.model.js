@@ -3,7 +3,7 @@ const db = require("./db");
 const findAllEvents = async () => {
   try {
     const [events] =
-      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id
+      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.cat_name as category
     FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id`);
 
@@ -17,7 +17,10 @@ const findAllEvents = async () => {
 const findOneEvent = async (id) => {
   try {
     const [event] = await db.query(
-      `SELECT id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id from events WHERE id = ?`,
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id, cat.cat_name as category
+      FROM events
+      INNER JOIN categorie AS cat ON cat.id=events.categorie_id
+      WHERE events.id = ?`,
       [id]
     );
 
@@ -31,8 +34,7 @@ const findOneEvent = async (id) => {
 const findByCategory = async (categoryId) => {
   try {
     const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, categorie_id
- FROM events AS events
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.cat_name as category FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id
      WHERE events.categorie_id = ?`,
       [categoryId]

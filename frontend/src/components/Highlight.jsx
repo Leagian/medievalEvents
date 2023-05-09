@@ -21,7 +21,8 @@ function Highlight() {
     return <div>Loading...</div>;
   }
 
-  const { id, title, image, categorie, description, date } = highlightedEvent;
+  const { id, title, image, category, description, date, address } =
+    highlightedEvent;
 
   return (
     <div className="highlight--global">
@@ -30,7 +31,8 @@ function Highlight() {
         <img src={image} alt={title} />
       </Link>
       <p>{description}</p>
-      <p>{categorie}</p>
+      <p>{category}</p>
+      <p>{address}</p>
       <p>{date}</p>
     </div>
   );
