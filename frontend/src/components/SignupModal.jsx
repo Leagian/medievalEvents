@@ -1,7 +1,7 @@
-// SignupModal.js
 import React from "react";
 import PropTypes from "prop-types";
-import Modal from "react-modal";
+import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import SignupForm from "./SignupForm";
 
 function SignupModal({ isOpen, closeModal, toggleLoginModal }) {
@@ -12,18 +12,20 @@ function SignupModal({ isOpen, closeModal, toggleLoginModal }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={closeModal}>
-      <div>
-        <button
-          type="button"
-          onClick={closeModal}
+    <Dialog open={isOpen} onClose={closeModal}>
+      <DialogTitle>
+        Inscription
+        <IconButton
           style={{ position: "absolute", top: "1rem", right: "1rem" }}
+          onClick={closeModal}
         >
-          X
-        </button>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
         <SignupForm onSignUpSuccess={handleSuccess} />
-      </div>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 

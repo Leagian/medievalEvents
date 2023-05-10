@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 // MATERIAL
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -99,7 +99,9 @@ function EventDetail() {
         ) : (
           <BookmarkBorderIcon onClick={handleBookmarkToggle} />
         )}
-        <h2>{eventId.category}</h2>
+        <Link to={`/categories/${eventId.category}`}>
+          <h5>{eventId.category}</h5>
+        </Link>
         <p>{eventId.description}</p>
         <p>{eventId.address}</p>
         <p>{eventId.date}</p>

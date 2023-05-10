@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// PAGES
 import Home from "./pages/Home";
 import Form from "./pages/Form";
 import EventDetail from "./pages/EventDetail";
@@ -12,9 +13,11 @@ import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import Map from "./pages/Map";
 import Admin from "./pages/Admin";
+import CategoryEvents from "./pages/CategoryEvents";
 
 import "./App.css";
 
+// CONTEXT
 import { useAuthContext } from "./contexts/AuthContext";
 
 function App() {
@@ -25,6 +28,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/categories/:id" element={<CategoryEvents />} />
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/events" element={<SearchEvents />} />
         <Route path="/contact" element={<Contact />} />

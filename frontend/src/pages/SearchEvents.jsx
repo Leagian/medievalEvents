@@ -5,49 +5,41 @@ import SearchFilters from "../components/SearchFilters";
 import SearchResults from "../components/SearchResults";
 
 function SearchEvents() {
-  const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
-  const [searchCat, setSearchCat] = useState([]); // Stocke les catégories
-  const [selectedCategories, setSelectedCategories] = useState([]); // Stocke les catégories sélectionnées
-
-  // Récupère les événements et les catégories du contexte
   const { dataEvents } = useDataContext();
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [searchCat, setSearchCat] = useState([]);
 
-  // Récupère les catégories depuis le serveur
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
       .then((response) => {
-        const categoriesWithFilterKeys = response.data.map((cat) => ({
+        const categoriesFilterKey = response.data.map((cat) => ({
           ...cat,
           filterKey: cat.cat_name,
         }));
-        setSearchCat(categoriesWithFilterKeys);
+        setSearchCat(categoriesFilterKey);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
       });
   }, []);
 
-  // Gère les changements de filtre en mettant à jour les catégories sélectionnées
-  const handleFilterChange = (categoryId, isChecked) => {
-    if (isChecked) {
-      setSelectedCategories([...selectedCategories, categoryId]);
-    } else {
-      setSelectedCategories(
-        selectedCategories.filter((id) => id !== categoryId)
-      );
-    }
+  const handleFilterChange = (newSelectedCategories) => {
+    setSelectedCategories(newSelectedCategories);
   };
 
-  // Filtrer les événements en fonction des catégories sélectionnées et du texte de recherche
   const filteredEvents = dataEvents.filter((event) => {
-    if (selectedCategories.length > 0) {
-      return (
-        selectedCategories.includes(event.categorie_id) &&
-        event.title.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
-    return event.title.toLowerCase().includes(searchText.toLowerCase());
+    const isInSelectedCategories =
+      selectedCategories.length > 0
+        ? selectedCategories.includes(event.category_id)
+        : true;
+
+    const isInSearchText = searchText
+      ? event.title.toLowerCase().includes(searchText.toLowerCase())
+      : true;
+
+    return isInSelectedCategories && isInSearchText;
   });
 
   return (
@@ -55,10 +47,10 @@ function SearchEvents() {
       <div className="SearchEvents--container">
         <SearchFilters
           searchCat={searchCat}
-          onSearch={(text) => setSearchText(text)} // Met à jour le texte de recherche
-          onFilter={handleFilterChange} // Gère les changements de filtre
+          onSearch={setSearchText}
+          onFilter={handleFilterChange}
+          selectedCategories={selectedCategories} // Passer selectedCategories en tant que props
         />
-        {/* Affiche les événements filtrés */}
         <SearchResults events={filteredEvents} />
       </div>
     </div>

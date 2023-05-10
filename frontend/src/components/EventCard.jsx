@@ -8,7 +8,9 @@ function EventCard({ id, image, title, category, description, date, address }) {
         <img src={image} alt={title} />
       </Link>
       <h1>{title}</h1>
-      <h2>{category}</h2>
+      <Link to={`/categories/${category}`}>
+        <h2>{category}</h2>
+      </Link>
       <p>{description}</p>
       <p>{address}</p>
       <p>{date}</p>

@@ -94,10 +94,10 @@ function Header() {
           </div>
         ) : (
           <>
-            <button type="button" onClick={openLoginModal}>
+            <button type="submit" onClick={openLoginModal}>
               Connexion
             </button>
-            <button type="button" onClick={openSignupModal}>
+            <button type="submit" onClick={openSignupModal}>
               Inscription
             </button>
           </>

@@ -31,7 +31,9 @@ function Highlight() {
         <img src={image} alt={title} />
       </Link>
       <p>{description}</p>
-      <p>{category}</p>
+      <Link to={`/categories/${category}`}>
+        <p>{category}</p>
+      </Link>
       <p>{address}</p>
       <p>{date}</p>
     </div>

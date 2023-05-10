@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet, useParams } from "react-router-dom";
-
 // MATERIAL
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -18,7 +17,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 function Profile() {
   const [userEvents, setUserEvents] = useState([]);
   const [open, setOpen] = useState(false);
-  const [eventToRemove, setEventToRemove] = useState(null);
+  const [eventDelete, setEventDelete] = useState(null);
 
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -36,11 +35,11 @@ function Profile() {
   };
   const handleRemoveFromFavorites = () => {
     profileAPI
-      .delete(`/api/users/${eventToRemove.id}/favorites`)
+      .delete(`/api/users/${eventDelete.id}/favorites`)
       .then(() => {
         // Mettez à jour la liste des événements de l'utilisateur en enlevant l'événement supprimé
         setUserEvents((prevEvents) =>
-          prevEvents.filter((event) => event.id !== eventToRemove.id)
+          prevEvents.filter((event) => event.id !== eventDelete.id)
         );
         handleClose();
       })
@@ -53,7 +52,7 @@ function Profile() {
   };
 
   const handleOpenDialog = (event) => {
-    setEventToRemove(event);
+    setEventDelete(event);
     setOpen(true);
   };
 
@@ -70,7 +69,9 @@ function Profile() {
               <Link to={`/events/${event.id}`}>
                 <img src={event.image} alt={event.title} />
               </Link>
-              <h5>{event.category}</h5>
+              <Link to={`/categories/${event.category}`}>
+                <h5>{event.category}</h5>
+              </Link>
               <h3>{event.title}</h3>
               <p>{event.description}</p>
               <p>{event.address}</p>
@@ -92,7 +93,7 @@ function Profile() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Annuler</Button>
-          <Button onClick={() => handleRemoveFromFavorites(eventToRemove)}>
+          <Button onClick={() => handleRemoveFromFavorites(eventDelete)}>
             Supprimer
           </Button>
         </DialogActions>

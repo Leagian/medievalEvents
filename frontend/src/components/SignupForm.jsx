@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  IconButton,
+  Input,
+  InputAdornment,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import profileAPI from "../services/profileAPI";
 
 function SignupForm({ onSignUpSuccess }) {
@@ -28,69 +39,55 @@ function SignupForm({ onSignUpSuccess }) {
     }
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   return (
     <>
-      <h2>Inscription</h2>
-      <h4>Inscrivez-vous pour pouvoir ajouter votre évènement</h4>
+      <h5>Inscrivez-vous pour pouvoir ajouter votre évènement</h5>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleForm}>
-        <div>
-          <label>
-            Nom :
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleNameChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Email :
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleEmailChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Mot de passe :
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <button
-              type="button"
-              onClick={toggleShowPassword}
-              style={{ marginLeft: "0.5rem" }}
-            >
-              {showPassword ? "Cacher" : "Afficher"}
-            </button>
-          </label>
-        </div>
-        <button type="submit">Valider</button>
+        <TextField
+          label="Nom"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          margin="normal"
+          fullWidth
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Mot de passe</InputLabel>
+          <Input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "1rem" }}
+        >
+          Valider
+        </Button>
       </form>
     </>
   );

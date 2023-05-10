@@ -20,6 +20,9 @@ router.get("/filter", getByCategory); // filter page
 // POST
 router.post("/form", authorization, createOneEvent); // ajout d'un event
 
+// UPDATE
+// router.update("/:id", admin, editEvent);
+
 // DELETE
 router.delete("/:id", admin, deleteEvent); // delete d'event par l'admin
 

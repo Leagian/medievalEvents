@@ -51,10 +51,10 @@ function Form() {
   function hSubmit(e) {
     e.preventDefault();
 
-    const formDataPhoto = new FormData();
-    formDataPhoto.append("image", inputRef.current.files[0]);
-    // Todo changer api
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/events`, formDataPhoto);
+    const formDataImage = new FormData();
+    formDataImage.append("image", inputRef.current.files[0]);
+
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/events`, formDataImage);
   }
 
   return (
@@ -116,6 +116,7 @@ function Form() {
           <input
             type="text"
             name="adresse"
+            placeholder="Ville, Département"
             value={formData.Adresse}
             onChange={handleChange}
           />

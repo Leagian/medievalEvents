@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 
 // MATERIAL
 import Dialog from "@mui/material/Dialog";
@@ -15,6 +16,8 @@ import eventAPI from "../services/eventAPI";
 function Admin() {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const { id } = useParams;
 
   useEffect(() => {
     axios
@@ -47,11 +50,14 @@ function Admin() {
       <h2>Liste des événements</h2>
       {events.map((event) => (
         <div key={event.id}>
-          <h3>{event.title}</h3>
+          <Link to={`/events/${event.id}`}>
+            <h3>{event.title}</h3>
+          </Link>
           <p>{event.description}</p>
           <button type="submit" onClick={handleClickOpen}>
             Supprimer
           </button>
+          <button type="submit">Modifier</button>
         </div>
       ))}
       <Dialog open={open} onClose={handleClose}>

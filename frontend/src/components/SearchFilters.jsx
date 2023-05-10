@@ -11,10 +11,17 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
   };
 
   // Gère les changements d'état des cases à cocher
-  const handleCheckboxChange = (categoryId, isChecked) => {
-    onFilter(categoryId, isChecked);
+  const handleCheckboxChange = (categoryId) => {
+    onFilter((prevSelectedCategories) => {
+      const newSelectedCategories = prevSelectedCategories.includes(categoryId)
+        ? prevSelectedCategories.filter((id) => id !== categoryId)
+        : [...prevSelectedCategories, categoryId];
+
+      return newSelectedCategories;
+    });
   };
 
+  console.log("searchCat:", searchCat);
   return (
     <div className="SearchFilters">
       <input
@@ -29,7 +36,7 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
             type="checkbox"
             value={cat.id}
             id={`categorie-${cat.id}`}
-            onChange={(e) => handleCheckboxChange(cat.id, e.target.checked)}
+            onChange={() => handleCheckboxChange(cat.id)}
           />
           {cat.cat_name}
         </label>
