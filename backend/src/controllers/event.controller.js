@@ -4,6 +4,7 @@ const {
   findByCategory,
   addOneEvent,
   deleteOneEvent,
+  editOneEvent,
 } = require("../models/event.model");
 
 const getAllEvent = async (req, res) => {
@@ -71,10 +72,28 @@ const deleteEvent = async (req, res) => {
   return null;
 };
 
+const editEvent = async (req, res) => {
+  try {
+    const eventId = parseInt(req.params.id, 10);
+    const event = req.body;
+
+    if (Number.isNaN(eventId)) throw new Error();
+
+    const result = await editOneEvent(eventId, event);
+    if (!result) throw new Error();
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   getAllEvent,
   getOneEvent,
   getByCategory,
   createOneEvent,
   deleteEvent,
+  editEvent,
 };

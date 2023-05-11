@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // MATERIAL
 import Dialog from "@mui/material/Dialog";
@@ -9,39 +9,104 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 // SERVICE
 import eventAPI from "../services/eventAPI";
 
 function Admin() {
   const [events, setEvents] = useState([]);
-  const [open, setOpen] = useState(false);
-
-  const { id } = useParams;
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [deletingEventId, setDeletingEventId] = useState(null);
+  const [categorieList, setCategorieList] = useState([]);
+  const [editingEvent, setEditingEvent] = useState({
+    title: "",
+    description: "",
+    address: "",
+    site: "",
+    date: "",
+    categorie_id: "",
+  });
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/`)
       .then((response) => setEvents(response.data))
       .catch((error) => console.error(error));
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories/`)
+      .then((response) => setCategorieList(response.data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpenDelete = (eventId) => {
+    setDeletingEventId(eventId);
+    setOpenDelete(true);
   };
 
-  const handleDelete = (eventId) => {
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleClickOpenEdit = (event) => {
+    // Rendre la date au format format 'yyyy-mm-dd'
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(event.date)) {
+      // The date is not in the correct format
+      console.error("Invalid date:", event.date);
+    } else {
+      // La date est correcte
+      setEditingEvent({
+        ...event,
+        date: event.date,
+        categorie_id: event.categorie_id,
+      });
+
+      setOpenEdit(true);
+    }
+  };
+
+  const handleDelete = () => {
     eventAPI
-      .delete(eventId)
+      .delete(deletingEventId)
       .then(() => {
-        setEvents(events.filter((event) => event.id !== eventId));
+        setEvents(events.filter((event) => event.id !== deletingEventId));
       })
       .catch((error) => console.error(error));
-    handleClose();
+    handleCloseDelete();
+  };
+
+  const handleUpdate = () => {
+    eventAPI
+      .update(editingEvent.id, editingEvent)
+      .then(() => {
+        setEvents(
+          events.map((event) =>
+            event.id === editingEvent.id ? editingEvent : event
+          )
+        );
+        handleCloseEdit();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleChange = (event) => {
+    setEditingEvent({
+      ...editingEvent,
+      categorie_id: Number(event.target.value),
+    });
   };
 
   return (
@@ -54,13 +119,16 @@ function Admin() {
             <h3>{event.title}</h3>
           </Link>
           <p>{event.description}</p>
-          <button type="submit" onClick={handleClickOpen}>
+          <p>{event.category}</p>
+          <button type="submit" onClick={() => handleClickOpenDelete(event.id)}>
             Supprimer
           </button>
-          <button type="submit">Modifier</button>
+          <button type="submit" onClick={() => handleClickOpenEdit(event)}>
+            Modifier
+          </button>
         </div>
       ))}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openDelete} onClose={handleCloseDelete}>
         <DialogTitle>Supprimer l'événement</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -68,8 +136,120 @@ function Admin() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Annuler</Button>
-          <Button onClick={() => handleDelete(event.id)}>Supprimer</Button>
+          <Button onClick={handleCloseDelete}>Annuler</Button>
+          <Button onClick={handleDelete}>Supprimer</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openEdit}
+        onClose={handleCloseEdit}
+        PaperProps={{
+          style: {
+            height: "80vh",
+          },
+        }}
+      >
+        <DialogTitle>Modifier l'événement</DialogTitle>
+        <DialogContent>
+          {editingEvent && (
+            <>
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Titre"
+                value={editingEvent.title}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, title: e.target.value })
+                }
+              />
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "200px",
+                  },
+                }}
+                multiline
+                rows={4}
+                label="Description"
+                value={editingEvent.description}
+                onChange={(e) =>
+                  setEditingEvent({
+                    ...editingEvent,
+                    description: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Adresse"
+                value={editingEvent.address}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, address: e.target.value })
+                }
+              />
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Site"
+                value={editingEvent.site}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, site: e.target.value })
+                }
+              />
+              <TextField
+                label="Date"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={editingEvent.date}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, date: e.target.value })
+                }
+              />
+              <FormControl style={{ minWidth: 120 }}>
+                <InputLabel id="categorie-label">Catégorie</InputLabel>
+                <Select
+                  value={
+                    editingEvent.categorie_id
+                      ? String(editingEvent.categorie_id)
+                      : ""
+                  }
+                  onChange={handleChange}
+                >
+                  {categorieList.map((category) => (
+                    <MenuItem key={category.id} value={String(category.id)}>
+                      {category.cat_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEdit}>Annuler</Button>
+          <Button onClick={handleUpdate}>Sauvegarder</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -52,11 +52,11 @@ function Header() {
     <header className="header">
       <nav className="header--nav">
         <ul>
-          <li>
+          {/* <li>
             <Link className="header--link" to="/map">
               CARTE
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link className="header--link" to="/">
               <span>ESCALE MEDIEVALE</span>

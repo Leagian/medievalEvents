@@ -3,7 +3,7 @@ const db = require("./db");
 const findAllEvents = async () => {
   try {
     const [events] =
-      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.id as category_id, cat.cat_name as category
+      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category
     FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id`);
 
@@ -17,7 +17,7 @@ const findAllEvents = async () => {
 const findOneEvent = async (id) => {
   try {
     const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.id as category_id, cat.cat_name as category
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category
       FROM events
       INNER JOIN categorie AS cat ON cat.id=events.categorie_id
       WHERE events.id = ?`,
@@ -34,7 +34,7 @@ const findOneEvent = async (id) => {
 const findByCategory = async (categoryId) => {
   try {
     const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%d/%m/%Y') as date, description, cat.id as category_id,  cat.cat_name as category FROM events AS events
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id,  cat.cat_name as category FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id
      WHERE events.categorie_id = ?`,
       [categoryId]
@@ -47,10 +47,10 @@ const findByCategory = async (categoryId) => {
   }
 };
 
-const addOneEvent = async (events, connection, table) => {
+const addOneEvent = async (events) => {
   try {
-    const result = await connection.query(
-      `INSERT INTO ${table} (title, image, address, site, date, description, cat.id as category_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    const result = await db.query(
+      `INSERT INTO events (title, image, address, site, date, description, categorie_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         events.title,
         events.image,
@@ -78,10 +78,36 @@ const deleteOneEvent = async (id) => {
   }
 };
 
+const editOneEvent = async (id, event) => {
+  try {
+    const result = await db.query(
+      "UPDATE events SET title = ?, image = ?, address = ?, site = ?, date = ?, description = ?, categorie_id = ? WHERE id = ?",
+      [
+        event.title,
+        event.image,
+        event.address,
+        event.site,
+        event.date,
+        event.description,
+        event.categorie_id,
+        id,
+      ]
+    );
+
+    if (result.affectedRows === 0) return null;
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 module.exports = {
   findAllEvents,
   findOneEvent,
   findByCategory,
   addOneEvent,
   deleteOneEvent,
+  editOneEvent,
 };

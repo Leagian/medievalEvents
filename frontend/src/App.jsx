@@ -11,7 +11,7 @@ import EventDetail from "./pages/EventDetail";
 import SearchEvents from "./pages/SearchEvents";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
-import Map from "./pages/Map";
+// import Map from "./pages/Map";
 import Admin from "./pages/Admin";
 import CategoryEvents from "./pages/CategoryEvents";
 
@@ -32,7 +32,7 @@ function App() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/events" element={<SearchEvents />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/map" element={<Map />} />
+        {/* <Route path="/map" element={<Map />} /> */}
         <Route
           element={
             <ProtectedRoute
