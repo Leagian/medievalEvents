@@ -4,6 +4,7 @@ const {
   findUserFavorites,
   addFavoriteToUser,
   removeFavoriteFromUser,
+  setUserAvatar,
 } = require("../models/user.model");
 const validateUser = require("../validator/user.validator");
 const { hashPassword } = require("../helper/argon.helper");
@@ -85,10 +86,37 @@ const removeFavorite = async (req, res) => {
   }
 };
 
+const AvatarUploadController = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10);
+
+    if (Number.isNaN(userId)) throw new Error("Invalid user ID");
+
+    if (req.file === undefined) {
+      res.status(400).send("Erreur: Aucun fichier sélectionné!");
+      return;
+    }
+
+    const avatarPath = `/uploads/avatar/${req.file.filename}`;
+
+    await setUserAvatar(userId, avatarPath);
+
+    // Envoi de l'URL de l'avatar avec la réponse
+    res.send({
+      message: "Avatar téléchargé avec succès!",
+      avatarUrl: avatarPath,
+    });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
 module.exports = {
   getOneUser,
   createOneUser,
   getUserFavorites,
   addFavorite,
   removeFavorite,
+  AvatarUploadController,
 };

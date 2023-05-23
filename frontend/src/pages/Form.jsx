@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -22,20 +21,7 @@ function Form() {
   const [categorieList, setCategorieList] = useState([]);
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/categories`
-        );
-        setCategorieList(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données:", error);
-      }
-    }
-    fetchData();
-  }, []);
+  const [file, setFile] = useState(null); // image
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,15 +32,22 @@ function Form() {
         return;
       }
     }
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+    if (file) {
+      data.append("image", file);
+    }
 
     try {
-      await profileAPI.post(`/api/events`, formData, {
+      await profileAPI.post(`/api/events`, data, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       });
+      setOpen(true); // Set open to true when submit is successful
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
+      setErrorOpen(true); // Set errorOpen to true when an error occurs
     }
   };
 
@@ -79,6 +72,22 @@ function Form() {
     setOpen(false);
     setErrorOpen(false);
   };
+
+  // image
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await profileAPI.get(`/api/categories`);
+        setCategorieList(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -141,6 +150,10 @@ function Form() {
           value={formData.address}
           onChange={handleChange}
         />
+      </label>
+      <label htmlFor="image">
+        Image:
+        <input type="file" id="image" onChange={handleFileChange} />
       </label>
 
       <button type="submit">Submit</button>

@@ -28,14 +28,14 @@ const findByEmail = async (email) => {
 
 const addOneUser = async (user) => {
   try {
-    const { name, email, password, role = "user" } = user;
+    const { name, email, password, avatar = "", role = "user" } = user;
 
     const [result] = await db.query(
-      "INSERT INTO `users` (name, email, password, role) VALUES (?, ?, ?, ?)",
-      [name, email, password, role]
+      "INSERT INTO `users` (name, email, password, avatar, role) VALUES (?, ?, ?, ?, ?)",
+      [name, email, password, avatar, role]
     );
 
-    return { id: result.insertId, name, email, role };
+    return { id: result.insertId, name, email, avatar, role };
   } catch (error) {
     console.error(error);
     return null;
@@ -86,6 +86,40 @@ const removeFavoriteFromUser = async (userId, eventId) => {
   }
 };
 
+const editOneUser = async (id, user) => {
+  try {
+    const { name, email, avatar } = user;
+
+    const result = await db.query(
+      "UPDATE `users` SET name = ?, email = ?, avatar = ? WHERE id = ?",
+      [name, email, avatar, id]
+    );
+
+    if (result.affectedRows === 0) return null;
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const setUserAvatar = async (id, avatarPath) => {
+  try {
+    const result = await db.query(
+      "UPDATE `users` SET avatar = ? WHERE id = ?",
+      [avatarPath, id]
+    );
+
+    if (result.affectedRows === 0) return null;
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 module.exports = {
   findOneUser,
   addOneUser,
@@ -93,4 +127,6 @@ module.exports = {
   findUserFavorites,
   removeFavoriteFromUser,
   addFavoriteToUser,
+  editOneUser,
+  setUserAvatar,
 };

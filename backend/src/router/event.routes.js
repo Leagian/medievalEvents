@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { uploadEvent } = require("../middleware/multer");
+
 const {
   getAllEvent,
   getOneEvent,
@@ -19,7 +21,7 @@ router.get("/:id", getOneEvent); // event details
 router.get("/filter", getByCategory); // filter page
 
 // POST
-router.post("/", authorization, createOneEvent); // ajout d'un event
+router.post("/", authorization, uploadEvent.single("image"), createOneEvent); // ajout d'un event
 
 // UPDATE
 router.put("/:id", authorization, admin, editEvent); // modifier un event par l'admin

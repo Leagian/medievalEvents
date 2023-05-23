@@ -11,12 +11,15 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import profileAPI from "../services/profileAPI";
+
+// CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
 
 function Login({ isOpen, closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const { setUser } = useAuthContext();
   const navigate = useNavigate();
 
@@ -29,14 +32,26 @@ function Login({ isOpen, closeModal }) {
           password,
         })
         .then((res) => {
-          setUser(res.data);
-          localStorage.setItem("user", JSON.stringify(res.data));
-          if (res.data.role === "admin") {
-            navigate("/admin");
-          } else {
-            navigate(`/profile/${res.data.id}`);
-          }
-          closeModal();
+          // Après une authentification réussie, faire une requête GET pour récupérer toutes les données de l'utilisateur
+          profileAPI
+            .get(`/api/users/${res.data.id}`)
+            .then((response) => {
+              setUser(response.data);
+              localStorage.setItem("user", JSON.stringify(response.data));
+              // Redirection basée sur le rôle de l'utilisateur
+              if (response.data.role === "admin") {
+                navigate("/admin");
+              } else {
+                navigate(`/profile/${response.data.id}`);
+              }
+              closeModal();
+            })
+            .catch((error) => {
+              console.error(
+                "Erreur lors de la récupération des informations de l'utilisateur :",
+                error
+              );
+            });
         })
         .catch((err) => {
           console.error(err);

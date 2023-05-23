@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-// import Main from "./components/Main";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -11,7 +10,6 @@ import EventDetail from "./pages/EventDetail";
 import SearchEvents from "./pages/SearchEvents";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
-// import Map from "./pages/Map";
 import Admin from "./pages/Admin";
 import CategoryEvents from "./pages/CategoryEvents";
 
@@ -32,7 +30,6 @@ function App() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/events" element={<SearchEvents />} />
         <Route path="/contact" element={<Contact />} />
-        {/* <Route path="/map" element={<Map />} /> */}
         <Route
           element={
             <ProtectedRoute

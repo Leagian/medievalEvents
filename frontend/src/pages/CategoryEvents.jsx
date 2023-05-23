@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
@@ -24,7 +23,9 @@ function CategoryEvents() {
       {/* Affichez les événements de la catégorie */}
       {categoryEvents.map((event) => (
         <div key={event.id}>
-          <h3>{event.title}</h3>
+          <Link to={`/events/${event.id}`}>
+            <h3>{event.title}</h3>
+          </Link>
           <p>{event.description}</p>
           {/* Affichez d'autres détails de l'événement si nécessaire */}
         </div>

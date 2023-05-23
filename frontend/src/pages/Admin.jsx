@@ -15,8 +15,16 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
+// COMPONENT
+import Pagination from "../components/Pagination";
+
+// HOOK
+import usePagination from "../hooks/usePagination";
+
 // SERVICE
 import eventAPI from "../services/eventAPI";
+
+const RESULTS_PER_PAGE = 10;
 
 function Admin() {
   const [events, setEvents] = useState([]);
@@ -109,11 +117,16 @@ function Admin() {
     });
   };
 
+  const { currentPage, jump, maxPage, currentData } = usePagination(
+    events,
+    RESULTS_PER_PAGE
+  );
+
   return (
     <div>
       <h1>Page d'administration</h1>
       <h2>Liste des événements</h2>
-      {events.map((event) => (
+      {currentData().map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
             <h3>{event.title}</h3>
@@ -252,6 +265,11 @@ function Admin() {
           <Button onClick={handleUpdate}>Sauvegarder</Button>
         </DialogActions>
       </Dialog>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={maxPage}
+        onPageChange={jump}
+      />
     </div>
   );
 }

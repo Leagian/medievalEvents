@@ -26,7 +26,11 @@ const login = async (req, res) => {
 
     const token = encodeJWT(user);
 
-    res.cookie("auth_token", token, { httpOnly: true, secure: false });
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: false, // true en production
+      sameSite: "strict", // use sameSite flag
+    });
 
     res.status(200).json({ id: user.id, username: user.name, role: user.role });
   } catch (error) {

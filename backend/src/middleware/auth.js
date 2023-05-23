@@ -4,7 +4,7 @@ const authorization = async (req, res, next) => {
   try {
     const token = req.cookies.auth_token;
 
-    if (!token) throw new Error();
+    if (!token) throw new Error("Token not found");
 
     const data = decodeJWT(token);
 
@@ -15,7 +15,19 @@ const authorization = async (req, res, next) => {
     return next();
   } catch (error) {
     console.error(error);
-    res.sendStatus(401);
+
+    // Send more explicit error message
+    if (error.message === "Token not found") {
+      res.status(401).send("Authentication token not found. Please log in.");
+    } else if (error.message === "jwt expired") {
+      res
+        .status(401)
+        .send("Authentication token expired. Please log in again.");
+    } else {
+      res
+        .status(401)
+        .send("Invalid authentication token. Please log in again.");
+    }
   }
   return null;
 };

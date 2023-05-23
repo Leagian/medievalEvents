@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
-import Avatar from "./Avatar";
+import CustomAvatar from "./CustomAvatar";
 
+// CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
 
+// SERVICE
 import profileAPI from "../services/profileAPI";
+
+// HOOK
+import useUserProfile from "../hooks/useUserProfile";
 
 function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [signupModalOpen, setSignupModalOpen] = useState(false);
+  const { id } = useParams();
+  const { handleAvatarUpload } = useUserProfile(id);
 
   const { user, setUser } = useAuthContext();
 
@@ -52,11 +59,6 @@ function Header() {
     <header className="header">
       <nav className="header--nav">
         <ul>
-          {/* <li>
-            <Link className="header--link" to="/map">
-              CARTE
-            </Link>
-          </li> */}
           <li>
             <Link className="header--link" to="/">
               <span>ESCALE MEDIEVALE</span>
@@ -79,17 +81,16 @@ function Header() {
       <div>
         {user ? (
           <div>
-            {user.role !== "admin" ? (
+            {user.role !== "admin" && (
               <Link to={`/profile/${user.id}`}>
-                <Avatar />
-              </Link>
-            ) : (
-              <Link to="/admin">
-                <Avatar />
+                <CustomAvatar
+                  imageUrl={user.avatar}
+                  handleAvatarUpload={handleAvatarUpload}
+                />
               </Link>
             )}
             <button type="submit" onClick={handleDisconnection}>
-              Se Déconnecter
+              Déconnexion
             </button>
           </div>
         ) : (

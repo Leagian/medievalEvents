@@ -21,7 +21,6 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
     });
   };
 
-  console.log("searchCat:", searchCat);
   return (
     <div className="SearchFilters">
       <input

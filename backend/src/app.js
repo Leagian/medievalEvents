@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const router = require("./router/router");
 
 const app = express();
 
@@ -18,12 +17,19 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static("public"));
+app.use(
+  "/avatar",
+  express.static(path.join(__dirname, "public/uploads/avatar"))
+);
 
 // Serve the public folder for public resources
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Serve REACT APP
 app.use(express.static(path.join(__dirname, "..", "..", "frontend", "dist")));
+
+const router = require("./router/router");
 
 // API routes
 app.use("/api", router);

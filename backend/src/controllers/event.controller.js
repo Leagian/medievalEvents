@@ -43,7 +43,7 @@ const getByCategory = async (req, res) => {
 
 const createOneEvent = async (req, res) => {
   const event = req.body;
-
+  event.image = req.file.path;
   // TODO validations (length, format...)
 
   try {

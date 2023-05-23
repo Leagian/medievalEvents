@@ -5,7 +5,7 @@ const encodeJWT = (payload) => {
 };
 
 const decodeJWT = (token) => {
-  return jwt.decode(token, process.env.TOKEN_SECRET);
+  return jwt.verify(token, process.env.TOKEN_SECRET);
 };
 
 module.exports = { encodeJWT, decodeJWT };

@@ -3,6 +3,12 @@ import axios from "axios";
 import { useDataContext } from "../contexts/DataContext";
 import SearchFilters from "../components/SearchFilters";
 import SearchResults from "../components/SearchResults";
+import Pagination from "../components/Pagination";
+
+// HOOK
+import usePagination from "../hooks/usePagination";
+
+const RESULTS_PER_PAGE = 10;
 
 function SearchEvents() {
   const { dataEvents } = useDataContext();
@@ -42,6 +48,11 @@ function SearchEvents() {
     return isInSelectedCategories && isInSearchText;
   });
 
+  const { currentPage, jump, maxPage, currentData } = usePagination(
+    filteredEvents,
+    RESULTS_PER_PAGE
+  );
+
   return (
     <div className="SearchEvents--global">
       <div className="SearchEvents--container">
@@ -49,9 +60,14 @@ function SearchEvents() {
           searchCat={searchCat}
           onSearch={setSearchText}
           onFilter={handleFilterChange}
-          selectedCategories={selectedCategories} // Passer selectedCategories en tant que props
+          selectedCategories={selectedCategories}
         />
-        <SearchResults events={filteredEvents} />
+        <SearchResults events={currentData()} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={maxPage}
+          onPageChange={jump}
+        />
       </div>
     </div>
   );
