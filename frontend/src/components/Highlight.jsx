@@ -31,7 +31,7 @@ function Highlight() {
     <div className="highlight--global">
       <h2>{title}</h2>
       <Link to={`/events/${id}`}>
-        <EventImage imageUrl={image} alt={title} />
+        <EventImage image={image} alt={title} />
       </Link>
       <p>{description}</p>
       <Link to={`/categories/${category}`}>

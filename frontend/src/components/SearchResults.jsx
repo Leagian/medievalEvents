@@ -9,10 +9,10 @@ function SearchResults({ events }) {
     <div className="SearchResults">
       {events.map((event) => (
         <div className="SearchResults--item" key={event.id}>
+          <h1>{event.title}</h1>
           <Link to={`/events/${event.id}`}>
             <EventImage image={event.image} alt={event.title} />
           </Link>
-          <h1>{event.title}</h1>
         </div>
       ))}
     </div>

@@ -20,6 +20,7 @@ import eventAPI from "../services/eventAPI";
 
 function Admin() {
   const [events, setEvents] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false); // event ajouté
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
   const [openDelete, setOpenDelete] = useState(false);
@@ -109,7 +110,8 @@ function Admin() {
             event.id === editingEvent.id ? editingEvent : event
           )
         );
-        handleCloseEdit();
+        setShowConfirmation(true); // Afficher le message de confirmation
+        handleCloseEdit(); // Fermer la boîte de dialogue
       })
       .catch((error) => console.error(error));
   };
@@ -135,6 +137,10 @@ function Admin() {
   const handleSearch = ({ target }) => {
     setSearchText(target.value);
     onSearch(target.value);
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
   };
 
   return (
@@ -223,7 +229,6 @@ function Admin() {
               />
               <TextField
                 type="file"
-                label="Image"
                 onChange={(e) => handleImageChange(e.target.files[0])}
               />
 
@@ -293,6 +298,19 @@ function Admin() {
           <Button onClick={handleUpdate}>Sauvegarder</Button>
         </DialogActions>
       </Dialog>
+      {showConfirmation && (
+        <Dialog onClose={handleCloseConfirmation}>
+          <DialogTitle>Confirmation</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              L'événement a bien été ajouté !
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseConfirmation}>OK</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 }
