@@ -21,8 +21,8 @@ import eventAPI from "../services/eventAPI";
 function Admin() {
   const [events, setEvents] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false); // event ajouté
-  const [filteredEvents, setFilteredEvents] = useState([]);
   const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [deletingEventId, setDeletingEventId] = useState(null);
@@ -100,7 +100,10 @@ function Admin() {
     Object.entries(editingEvent).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    formData.append("image", imageFile);
+
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
     eventAPI
       .update(editingEvent.id, formData)
@@ -117,7 +120,9 @@ function Admin() {
   };
 
   const handleImageChange = (file) => {
-    setImageFile(file);
+    if (file) {
+      setImageFile(file);
+    }
   };
 
   const handleChange = (event) => {

@@ -27,7 +27,7 @@ function CategoryEvents() {
       {categoryEvents.map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
-            <EventImage imageUrl={event.image} alt={event.title} />
+            <EventImage image={event.image} alt={event.title} />
           </Link>
           <h3>{event.title}</h3>
           <p>{event.description}</p>

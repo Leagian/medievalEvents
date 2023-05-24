@@ -14,7 +14,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
           return (
             <div key={event.id}>
               <Link to={`/events/${event.id}`}>
-                <EventImage imageUrl={event.image} alt={event.title} />
+                <EventImage image={event.image} alt={event.title} />
               </Link>
               <Link to={`/categories/${event.category}`}>
                 <h5>{event.category}</h5>

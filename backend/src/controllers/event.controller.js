@@ -80,10 +80,13 @@ const editEvent = async (req, res) => {
 
     if (Number.isNaN(eventId)) throw new Error();
 
-    const result = await editOneEvent(eventId, {
-      ...event,
-      image: `/uploads/image/${image.filename}`,
-    });
+    const eventData = { ...event };
+
+    if (image) {
+      eventData.image = `/uploads/image/${image.filename}`;
+    }
+
+    const result = await editOneEvent(eventId, eventData);
 
     if (!result) throw new Error();
 
