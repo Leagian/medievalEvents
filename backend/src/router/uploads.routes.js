@@ -7,6 +7,7 @@ const { uploadAvatar, uploadEvent } = require("../middleware/multer");
 const authorization = require("../middleware/auth");
 
 const { AvatarUploadController } = require("../controllers/user.controller");
+const { createOneEvent } = require("../controllers/event.controller");
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ const resizeImage = async (req, res, next) => {
   }
   try {
     await sharp(req.file.path)
-      .resize({ width: 1000, height: 500 })
+      .resize({ width: 1000, height: 1000 })
       .toFile(`./public/uploads/${req.file.filename}`);
     next();
   } catch (err) {
@@ -26,13 +27,17 @@ const resizeImage = async (req, res, next) => {
   }
 };
 
-router.post("/upload", uploadEvent.single("file"), resizeImage, (req, res) => {
-  res.send("Fichier téléchargé et redimensionné avec succès!");
-});
+// Route pour créer un événement avec une image
+router.post(
+  "/",
+  authorization,
+  uploadEvent.single("image"),
+  resizeImage,
+  createOneEvent
+);
 
 router.post(
   "/:id/avatar",
-
   uploadAvatar.single("avatar"),
   authorization,
   AvatarUploadController,

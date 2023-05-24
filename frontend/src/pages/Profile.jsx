@@ -17,7 +17,6 @@ function Profile() {
     user,
     userEvents,
     handleAvatarUpload,
-    // handleAvatarUpload,
     open,
     handleOpenDialog,
     handleRemoveFromFavorites,
@@ -34,13 +33,14 @@ function Profile() {
   return (
     <div>
       <h1>
-        Hello, {user.username} {user.id}
+        Hello, {user.name} {user.id}
       </h1>
       <CustomAvatar
-        imageUrl={user.avatar}
+        photoUrl={user.avatar}
         handleAvatarUpload={handleAvatarUpload}
       />
-      {/* Utilisation de la composante Avatar avec la prop imageUrl et handleAvatarUpload */}
+
+      {/* Utilisation de la composante Avatar avec la prop photoUrl et handleAvatarUpload */}
       <button type="submit" onClick={handleFileSelect}>
         Modifier
       </button>

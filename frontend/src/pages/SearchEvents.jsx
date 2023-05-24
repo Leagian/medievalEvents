@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDataContext } from "../contexts/DataContext";
+
+// COMPONENT
 import SearchFilters from "../components/SearchFilters";
 import SearchResults from "../components/SearchResults";
 import Pagination from "../components/Pagination";

@@ -11,6 +11,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+// COMPONENT
+import EventImage from "../components/EventImage";
+
 // CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
 
@@ -31,6 +34,7 @@ function EventDetail() {
       .get(`/api/events/${id}`)
       .then((res) => {
         setEventId(res.data);
+        console.log("Image URL eventdetail:", res.data.image);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
@@ -92,7 +96,7 @@ function EventDetail() {
   return (
     <div className="detailsEvent--global">
       <div key={eventId.id}>
-        <img src={eventId.image} alt={eventId.title} />
+        <EventImage image={eventId.image} alt={eventId.title} />
         <h1>{eventId.title}</h1>
         {isSaved ? (
           <BookmarkIcon onClick={handleBookmarkToggle} />

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+// COMPONENT
+import EventImage from "./EventImage";
+
 function Highlight() {
   const [highlightedEvent, setHighlightedEvent] = useState(null);
   const getRandomId = Math.floor(Math.random() * 10) + 1;
@@ -28,7 +31,7 @@ function Highlight() {
     <div className="highlight--global">
       <h2>{title}</h2>
       <Link to={`/events/${id}`}>
-        <img src={image} alt={title} />
+        <EventImage imageUrl={image} alt={title} />
       </Link>
       <p>{description}</p>
       <Link to={`/categories/${category}`}>

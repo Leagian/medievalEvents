@@ -5,11 +5,16 @@ const eventAPI = {
     axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/events/${eventId}`, {
       withCredentials: true,
     }),
-  update: (eventId, updatedEvent) =>
+  update: (eventId, formData) =>
     axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/api/events/${eventId}`,
-      updatedEvent,
-      { withCredentials: true }
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      }
     ),
 };
 

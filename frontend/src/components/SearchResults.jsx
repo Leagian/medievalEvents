@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+// COMPONENT
+import EventImage from "./EventImage";
+
 function SearchResults({ events }) {
   return (
     <div className="SearchResults">
       {events.map((event) => (
         <div className="SearchResults--item" key={event.id}>
           <Link to={`/events/${event.id}`}>
-            <img src={event.image} alt={event.title} />
+            <EventImage image={event.image} alt={event.title} />
           </Link>
           <h1>{event.title}</h1>
         </div>

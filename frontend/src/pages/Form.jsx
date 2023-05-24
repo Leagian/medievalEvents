@@ -9,6 +9,7 @@ import Alert from "@mui/material/Alert";
 import profileAPI from "../services/profileAPI";
 
 function Form() {
+  const [file, setFile] = useState(null); // image
   const [formData, setFormData] = useState({
     title: "",
     address: "",
@@ -18,10 +19,21 @@ function Form() {
     categorie_id: "",
   });
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      address: "",
+      site: "",
+      date: "",
+      description: "",
+      categorie_id: "",
+    });
+    setFile(null);
+  };
+
   const [categorieList, setCategorieList] = useState([]);
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-  const [file, setFile] = useState(null); // image
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +56,8 @@ function Form() {
           "Content-Type": "multipart/form-data",
         },
       });
-      setOpen(true); // Set open to true when submit is successful
+      setOpen(true);
+      resetForm(); // Set open to true when submit is successful
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
       setErrorOpen(true); // Set errorOpen to true when an error occurs
@@ -155,7 +168,6 @@ function Form() {
         Image:
         <input type="file" id="image" onChange={handleFileChange} />
       </label>
-
       <button type="submit">Submit</button>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>

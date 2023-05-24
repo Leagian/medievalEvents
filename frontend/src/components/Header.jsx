@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie"; // Importez la bibliothèque js-cookie
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import CustomAvatar from "./CustomAvatar";
+
+// IMAGE
+import defaultAdminAvatar from "../assets/defaultAdminAvatar.png";
 
 // CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
@@ -13,14 +17,26 @@ import profileAPI from "../services/profileAPI";
 // HOOK
 import useUserProfile from "../hooks/useUserProfile";
 
+function getUserFromCookie() {
+  const userCookie = Cookies.get("user");
+  if (userCookie) {
+    try {
+      return JSON.parse(userCookie);
+    } catch (error) {
+      console.error("Erreur lors de la conversion du cookie en JSON :", error);
+    }
+  }
+  return null;
+}
+
 function Header() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [signupModalOpen, setSignupModalOpen] = useState(false);
   const { id } = useParams();
   const { handleAvatarUpload } = useUserProfile(id);
+  const user = getUserFromCookie();
 
-  const { user, setUser } = useAuthContext();
-
+  const { setUser } = useAuthContext();
   const navigate = useNavigate();
 
   const openLoginModal = () => {
@@ -48,7 +64,7 @@ function Header() {
     profileAPI
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/logout`)
       .then(() => {
-        localStorage.clear();
+        Cookies.remove("user"); // Supprimez le cookie contenant les informations de l'utilisateur
         setUser(null);
         navigate("/");
       })
@@ -84,8 +100,17 @@ function Header() {
             {user.role !== "admin" && (
               <Link to={`/profile/${user.id}`}>
                 <CustomAvatar
-                  imageUrl={user.avatar}
+                  photoUrl={user.avatar}
                   handleAvatarUpload={handleAvatarUpload}
+                />
+              </Link>
+            )}
+            {user.role === "admin" && (
+              <Link to="/admin">
+                <img
+                  src={defaultAdminAvatar}
+                  alt="Admin Avatar"
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Link>
             )}

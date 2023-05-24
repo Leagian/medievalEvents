@@ -22,7 +22,7 @@ USE `medieval` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `medieval`.`categorie` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `cat_name` VARCHAR(45) NOT NULL,
+  `cat_name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 6
@@ -37,8 +37,10 @@ CREATE TABLE IF NOT EXISTS `medieval`.`user_favorites` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `event_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `unique_user_event` (`event_id` ASC, `user_id` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 64
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -48,10 +50,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `medieval`.`events` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(45) NOT NULL,
-  `image` BLOB NULL DEFAULT NULL,
-  `address` VARCHAR(45) NOT NULL,
-  `site` VARCHAR(45) NULL DEFAULT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `image` VARCHAR(255) NULL DEFAULT NULL,
+  `address` VARCHAR(255) NOT NULL,
+  `site` VARCHAR(255) NULL DEFAULT NULL,
   `date` DATE NOT NULL,
   `description` LONGTEXT NOT NULL,
   `categorie_id` INT NOT NULL,
@@ -68,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `medieval`.`events` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 15
+AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -82,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `medieval`.`users` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `role` ENUM('admin', 'user') NOT NULL,
+  `avatar` VARCHAR(255) NULL DEFAULT NULL,
   `events_id` INT NOT NULL,
   `events_categorie_id` INT NOT NULL,
   `user_favorites_id` INT NOT NULL,
@@ -99,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `medieval`.`users` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

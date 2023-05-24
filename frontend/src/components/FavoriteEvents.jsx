@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+// COMPONENT
+import EventImage from "./EventImage";
+
 function FavoriteEvents({ userEvents, handleOpenDialog }) {
   return (
     <div>
@@ -11,7 +14,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
           return (
             <div key={event.id}>
               <Link to={`/events/${event.id}`}>
-                <img src={event.image} alt={event.title} />
+                <EventImage imageUrl={event.image} alt={event.title} />
               </Link>
               <Link to={`/categories/${event.category}`}>
                 <h5>{event.category}</h5>
@@ -25,7 +28,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
             </div>
           );
         }
-        return null; // Ignorer les objets sans clé
+        return null;
       })}
     </div>
   );

@@ -15,23 +15,18 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-// COMPONENT
-import Pagination from "../components/Pagination";
-
-// HOOK
-import usePagination from "../hooks/usePagination";
-
 // SERVICE
 import eventAPI from "../services/eventAPI";
 
-const RESULTS_PER_PAGE = 10;
-
 function Admin() {
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [deletingEventId, setDeletingEventId] = useState(null);
   const [categorieList, setCategorieList] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
   const [editingEvent, setEditingEvent] = useState({
     title: "",
     description: "",
@@ -44,7 +39,10 @@ function Admin() {
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/`)
-      .then((response) => setEvents(response.data))
+      .then((response) => {
+        setEvents(response.data);
+        setFilteredEvents(response.data);
+      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -97,8 +95,14 @@ function Admin() {
   };
 
   const handleUpdate = () => {
+    const formData = new FormData();
+    Object.entries(editingEvent).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append("image", imageFile);
+
     eventAPI
-      .update(editingEvent.id, editingEvent)
+      .update(editingEvent.id, formData)
       .then(() => {
         setEvents(
           events.map((event) =>
@@ -110,6 +114,10 @@ function Admin() {
       .catch((error) => console.error(error));
   };
 
+  const handleImageChange = (file) => {
+    setImageFile(file);
+  };
+
   const handleChange = (event) => {
     setEditingEvent({
       ...editingEvent,
@@ -117,16 +125,30 @@ function Admin() {
     });
   };
 
-  const { currentPage, jump, maxPage, currentData } = usePagination(
-    events,
-    RESULTS_PER_PAGE
-  );
+  const onSearch = (text) => {
+    const filtered = events.filter((event) =>
+      event.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredEvents(filtered);
+  };
+
+  const handleSearch = ({ target }) => {
+    setSearchText(target.value);
+    onSearch(target.value);
+  };
 
   return (
     <div>
       <h1>Page d'administration</h1>
       <h2>Liste des événements</h2>
-      {currentData().map((event) => (
+      <input
+        type="text"
+        value={searchText}
+        onChange={handleSearch}
+        placeholder="Rechercher"
+      />
+
+      {filteredEvents.map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
             <h3>{event.title}</h3>
@@ -200,6 +222,12 @@ function Admin() {
                 }
               />
               <TextField
+                type="file"
+                label="Image"
+                onChange={(e) => handleImageChange(e.target.files[0])}
+              />
+
+              <TextField
                 inputProps={{
                   style: {
                     width: "400px",
@@ -265,11 +293,6 @@ function Admin() {
           <Button onClick={handleUpdate}>Sauvegarder</Button>
         </DialogActions>
       </Dialog>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={maxPage}
-        onPageChange={jump}
-      />
     </div>
   );
 }

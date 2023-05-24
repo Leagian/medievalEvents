@@ -43,7 +43,7 @@ const getByCategory = async (req, res) => {
 
 const createOneEvent = async (req, res) => {
   const event = req.body;
-  event.image = req.file.path;
+  event.image = `/uploads/${req.file.filename}`;
   // TODO validations (length, format...)
 
   try {
@@ -76,10 +76,15 @@ const editEvent = async (req, res) => {
   try {
     const eventId = parseInt(req.params.id, 10);
     const event = req.body;
+    const image = req.file; // Image est disponible en tant que req.file grâce à multer
 
     if (Number.isNaN(eventId)) throw new Error();
 
-    const result = await editOneEvent(eventId, event);
+    const result = await editOneEvent(eventId, {
+      ...event,
+      image: `/uploads/image/${image.filename}`,
+    });
+
     if (!result) throw new Error();
 
     res.sendStatus(200);

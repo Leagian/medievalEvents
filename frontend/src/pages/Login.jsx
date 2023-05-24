@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Importez la bibliothèque js-cookie
 import profileAPI from "../services/profileAPI";
 
 // CONTEXT
@@ -32,12 +33,19 @@ function Login({ isOpen, closeModal }) {
           password,
         })
         .then((res) => {
+          // Stocker le JWT dans un cookie
+          Cookies.set("auth_token", res.data.token);
+
           // Après une authentification réussie, faire une requête GET pour récupérer toutes les données de l'utilisateur
           profileAPI
             .get(`/api/users/${res.data.id}`)
             .then((response) => {
-              setUser(response.data);
-              localStorage.setItem("user", JSON.stringify(response.data));
+              setUser({
+                id: response.data.id,
+                name: response.data.name,
+                role: response.data.role,
+              });
+              Cookies.set("user", JSON.stringify(response.data)); // Stockez le user dans un cookie
               // Redirection basée sur le rôle de l'utilisateur
               if (response.data.role === "admin") {
                 navigate("/admin");

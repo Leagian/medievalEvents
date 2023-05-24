@@ -8,7 +8,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import profileAPI from "../services/profileAPI";
 import avatarAPI from "../services/avatarAPI";
 
-function useUserProfile(id) {
+function useUserProfile() {
   const [userEvents, setUserEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [eventDelete, setEventDelete] = useState(null);
@@ -16,18 +16,23 @@ function useUserProfile(id) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    profileAPI
-      .get(`/api/users/${id}/favorites`)
-      .then((response) => setUserEvents(response.data))
-      .catch((error) => {
-        console.error(error);
-        if (
-          error.response.status === 401 &&
-          error.response.data === "Authentication token expired"
-        ) {
-          navigate.push("/login"); // redirection vers la page de connexion
-        }
-      });
+    if (user) {
+      // vérifier que l'utilisateur est connecté
+      profileAPI
+        .get(`/api/users/${user.id}/favorites`)
+        .then((response) => {
+          setUserEvents(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          if (
+            error.response.status === 401 &&
+            error.response.data === "Authentication token expired"
+          ) {
+            navigate.push("/login"); // redirection vers la page de connexion
+          }
+        });
+    }
   }, [user, navigate]);
 
   const handleClose = () => {

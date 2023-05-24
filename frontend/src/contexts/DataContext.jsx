@@ -15,6 +15,7 @@ export function DataContextProvider({ children }) {
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/events`)
       .then((response) => {
         setDataEvents(response.data);
+        console.log("DataEvents:", response.data);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);

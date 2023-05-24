@@ -35,10 +35,11 @@ EventDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleRemoveFromFavorites: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/require-default-props
   eventDelete: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
-  }).isRequired,
+  }),
 };
 
 export default EventDialog;
