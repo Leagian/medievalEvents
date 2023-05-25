@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 
 const DataContext = createContext();
@@ -15,7 +15,6 @@ export function DataContextProvider({ children }) {
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/events`)
       .then((response) => {
         setDataEvents(response.data);
-        console.log("DataEvents:", response.data);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
@@ -33,8 +32,23 @@ export function DataContextProvider({ children }) {
       });
   }, []);
 
+  // Fonction de filtrage des événements approuvés
+  const filterApprovedEvents = (events) => {
+    return events.filter((event) => event.isApproved === 1);
+  };
+
+  // Fonction de filtrage des événements non approuvés
+  const filterNonApprovedEvents = (events) => {
+    return events.filter((event) => event.isApproved === 0);
+  };
+
   const value = useMemo(
-    () => ({ dataEvents, categories }),
+    () => ({
+      dataEvents,
+      categories,
+      filterApprovedEvents,
+      filterNonApprovedEvents,
+    }),
     [dataEvents, categories]
   );
 

@@ -10,18 +10,22 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+
+// CONTEXT
+import { useDataContext } from "../contexts/DataContext";
 
 // SERVICE
 import eventAPI from "../services/eventAPI";
 
 function Admin() {
+  const { filterApprovedEvents, filterNonApprovedEvents } = useDataContext();
   const [events, setEvents] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false); // event ajouté
   const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
+  const [showApprovedOnly, setShowApprovedOnly] = useState(true); // checkbox filtre approved
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -35,6 +39,7 @@ function Admin() {
     site: "",
     date: "",
     categorie_id: "",
+    isApproved: 0,
   });
 
   useEffect(() => {
@@ -132,16 +137,29 @@ function Admin() {
     });
   };
 
-  const onSearch = (text) => {
-    const filtered = events.filter((event) =>
+  const onSearch = (text, newShowApprovedOnly) => {
+    let filtered = events.filter((event) =>
       event.title.toLowerCase().includes(text.toLowerCase())
     );
+
+    if (newShowApprovedOnly) {
+      filtered = filterApprovedEvents(filtered);
+    } else {
+      filtered = filterNonApprovedEvents(filtered);
+    }
+
     setFilteredEvents(filtered);
+  };
+
+  const handleShowApprovedChange = (event) => {
+    const newShowApprovedOnly = event.target.checked;
+    setShowApprovedOnly(newShowApprovedOnly);
+    onSearch(searchText, newShowApprovedOnly);
   };
 
   const handleSearch = ({ target }) => {
     setSearchText(target.value);
-    onSearch(target.value);
+    onSearch(target.value, showApprovedOnly);
   };
 
   const handleCloseConfirmation = () => {
@@ -157,6 +175,15 @@ function Admin() {
         value={searchText}
         onChange={handleSearch}
         placeholder="Rechercher"
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showApprovedOnly}
+            onChange={handleShowApprovedChange}
+          />
+        }
+        label="Approuvé"
       />
 
       {filteredEvents.map((event) => (
@@ -293,6 +320,22 @@ function Admin() {
                       {category.cat_name}
                     </MenuItem>
                   ))}
+                </Select>
+              </FormControl>
+              <FormControl style={{ minWidth: 200 }}>
+                <InputLabel id="isApproved-label">Pending</InputLabel>
+                <Select
+                  value={editingEvent.isApproved}
+                  onChange={(e) =>
+                    setEditingEvent({
+                      ...editingEvent,
+                      isApproved: Number(e.target.value),
+                    })
+                  }
+                  style={{ width: 150 }} // Agrandissement du SELECT
+                >
+                  <MenuItem value={0}>Non approuvé</MenuItem>
+                  <MenuItem value={1}>Approuvé</MenuItem>
                 </Select>
               </FormControl>
             </>

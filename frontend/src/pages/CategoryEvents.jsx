@@ -9,8 +9,11 @@ import { useDataContext } from "../contexts/DataContext";
 
 function CategoryEvents() {
   const [categoryEvents, setCategoryEvents] = useState([]);
+
   const { id: category } = useParams();
-  const { dataEvents } = useDataContext();
+
+  const { dataEvents, filterApprovedEvents } = useDataContext();
+  const filteredCategoryEvents = filterApprovedEvents(categoryEvents);
 
   useEffect(() => {
     const filteredEvents = dataEvents.filter(
@@ -24,7 +27,7 @@ function CategoryEvents() {
     <div>
       <h1>{category.toUpperCase()}</h1>
       {/* Affichez les événements de la catégorie */}
-      {categoryEvents.map((event) => (
+      {filteredCategoryEvents.map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
             <EventImage image={event.image} alt={event.title} />

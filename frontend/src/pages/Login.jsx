@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+
+// COOKIE
+import Cookies from "js-cookie"; // Importez la bibliothèque js-cookie
+
+// MATERIAL
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
-  TextField,
   Button,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; // Importez la bibliothèque js-cookie
+
+// COMPONENTS
+import PasswordField from "../components/PasswordField";
+import ErrorMessage from "../components/ErrorMessage";
+
+// SERVICE
 import profileAPI from "../services/profileAPI";
 
 // CONTEXT
@@ -89,14 +99,13 @@ function Login({ isOpen, closeModal }) {
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
           />
-          <TextField
+          <PasswordField
             label="Mot de passe"
-            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && <ErrorMessage message={errorMessage} />}
           <Button type="submit">Connexion</Button>
         </form>
       </DialogContent>

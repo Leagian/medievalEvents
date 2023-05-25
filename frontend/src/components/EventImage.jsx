@@ -20,9 +20,6 @@ function EventImage({ image, alt }) {
     ? `${import.meta.env.VITE_BACKEND_URL}/${image}`
     : defaultImage;
 
-  console.log("Image URL in EventImage:", imageUrl);
-  console.log("Title in EventImage:", alt);
-
   return <img src={imageUrl} alt={alt} className={classes.eventImage} />;
 }
 

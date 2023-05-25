@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 // COMPONENT
 import EventImage from "./EventImage";
+import { useDataContext } from "../contexts/DataContext";
 
 function Highlight() {
   const [highlightedEvent, setHighlightedEvent] = useState(null);
-  const getRandomId = Math.floor(Math.random() * 10) + 1;
+  const { dataEvents, filterApprovedEvents } = useDataContext();
+
+  // Filtrer les événements approuvés
+  const approvedEvents = filterApprovedEvents(dataEvents);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/${getRandomId}`)
-      .then((res) => {
-        setHighlightedEvent(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    // Choisissez un événement approuvé aléatoire
+    const randomIndex = Math.floor(Math.random() * approvedEvents.length);
+    setHighlightedEvent(approvedEvents[randomIndex]);
+  }, [approvedEvents]);
 
   if (!highlightedEvent) {
     return <div>Loading...</div>;

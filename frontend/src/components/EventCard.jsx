@@ -5,9 +5,6 @@ import PropTypes from "prop-types";
 import EventImage from "./EventImage";
 
 function EventCard({ id, image, title, category, description, date, address }) {
-  console.log("Image in EventCard:", image);
-  console.log("Title in EventCard:", title);
-
   return (
     <div className="allEventsCards--global">
       <Link to={`/events/${id}`}>

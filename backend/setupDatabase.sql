@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `medieval`.`events` (
   `site` VARCHAR(255) NULL DEFAULT NULL,
   `date` DATE NOT NULL,
   `description` LONGTEXT NOT NULL,
+  `isApproved` TINYINT(1) NOT NULL DEFAULT 0,
   `categorie_id` INT NOT NULL,
   `user_favorites_id` INT NOT NULL,
   PRIMARY KEY (`id`, `categorie_id`),

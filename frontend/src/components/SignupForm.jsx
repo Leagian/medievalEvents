@@ -1,24 +1,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  IconButton,
-  Input,
-  InputAdornment,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { TextField, Button, FormControl } from "@mui/material";
 import profileAPI from "../services/profileAPI";
+
+// COMPONENT
+import ErrorMessage from "./ErrorMessage";
+import PasswordField from "./PasswordField";
 
 function SignupForm({ onSignUpSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleForm = (event) => {
     event.preventDefault();
@@ -39,14 +32,10 @@ function SignupForm({ onSignUpSuccess }) {
     }
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <>
       <h5>Inscrivez-vous pour pouvoir ajouter votre évènement</h5>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
       <form onSubmit={handleForm}>
         <TextField
           label="Nom"
@@ -63,21 +52,10 @@ function SignupForm({ onSignUpSuccess }) {
           fullWidth
         />
         <FormControl fullWidth margin="normal">
-          <InputLabel>Mot de passe</InputLabel>
-          <Input
-            type={showPassword ? "text" : "password"}
+          <PasswordField
+            label="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={toggleShowPassword}
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
           />
         </FormControl>
         <Button

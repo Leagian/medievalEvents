@@ -3,7 +3,7 @@ const db = require("./db");
 const findAllEvents = async () => {
   try {
     const [events] =
-      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category
+      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category, isApproved
     FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id`);
 
@@ -17,7 +17,7 @@ const findAllEvents = async () => {
 const findOneEvent = async (id) => {
   try {
     const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category, isApproved
       FROM events
       INNER JOIN categorie AS cat ON cat.id=events.categorie_id
       WHERE events.id = ?`,
@@ -34,7 +34,7 @@ const findOneEvent = async (id) => {
 const findByCategory = async (categoryId) => {
   try {
     const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id,  cat.cat_name as category FROM events AS events
+      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id,  cat.cat_name as category, isApproved FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id
      WHERE events.categorie_id = ?`,
       [categoryId]
@@ -50,7 +50,7 @@ const findByCategory = async (categoryId) => {
 const addOneEvent = async (events) => {
   try {
     const result = await db.query(
-      `INSERT INTO events (title, image, address, site, date, description, categorie_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO events (title, image, address, site, date, description, categorie_id, isApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         events.title,
         events.image,
@@ -59,6 +59,7 @@ const addOneEvent = async (events) => {
         events.date,
         events.description,
         events.categorie_id,
+        events.isApproved,
       ]
     );
     return result;
@@ -81,7 +82,7 @@ const deleteOneEvent = async (id) => {
 const editOneEvent = async (id, event) => {
   try {
     const result = await db.query(
-      "UPDATE events SET title = ?, image = ?, address = ?, site = ?, date = ?, description = ?, categorie_id = ? WHERE id = ?",
+      "UPDATE events SET title = ?, image = ?, address = ?, site = ?, date = ?, description = ?, categorie_id = ?, isApproved = ? WHERE id = ?",
       [
         event.title,
         event.image,
@@ -90,6 +91,7 @@ const editOneEvent = async (id, event) => {
         event.date,
         event.description,
         event.categorie_id,
+        event.isApproved,
         id,
       ]
     );
