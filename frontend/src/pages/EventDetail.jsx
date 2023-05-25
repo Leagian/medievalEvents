@@ -21,7 +21,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 // SERVICE
 import profileAPI from "../services/profileAPI";
 
-// Dialog Component
+// DIALOG COMPONENT
 function AlertDialog({ open, setOpen, title, description }) {
   return (
     <Dialog

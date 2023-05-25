@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// COMPONENT
 import SignupModal from "../components/SignupModal";
 
 function Signup({ isOpen, closeModal, toggleLoginModal }) {

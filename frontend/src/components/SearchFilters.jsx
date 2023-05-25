@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 function SearchFilters({ onSearch, searchCat, onFilter }) {
-  const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
+  const [searchText, setSearchText] = useState(""); // stock le texte de recherche
 
   // Gère les changements de texte de recherche
   const handleSearch = ({ target }) => {

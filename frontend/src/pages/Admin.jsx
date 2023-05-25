@@ -3,16 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 // MATERIAL
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+
+// DIALOG
+import DeleteAdminDialog from "../dialogs/DeleteAdminDialog";
+import EditAdminDialog from "../dialogs/EditAdminDialog";
+import ConfirmationAdminDialog from "../dialogs/ConfirmationAdminDialog";
 
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
@@ -185,7 +182,6 @@ function Admin() {
         }
         label="Approuvé"
       />
-
       {filteredEvents.map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
@@ -201,164 +197,25 @@ function Admin() {
           </button>
         </div>
       ))}
-      <Dialog open={openDelete} onClose={handleCloseDelete}>
-        <DialogTitle>Supprimer l'événement</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Êtes-vous sûr de vouloir supprimer cet événement ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDelete}>Annuler</Button>
-          <Button onClick={handleDelete}>Supprimer</Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog
+      <DeleteAdminDialog
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        handleDelete={handleDelete}
+      />
+      <EditAdminDialog
         open={openEdit}
-        onClose={handleCloseEdit}
-        PaperProps={{
-          style: {
-            height: "80vh",
-          },
-        }}
-      >
-        <DialogTitle>Modifier l'événement</DialogTitle>
-        <DialogContent>
-          {editingEvent && (
-            <>
-              <TextField
-                inputProps={{
-                  style: {
-                    width: "400px",
-                    height: "50px",
-                    paddingTop: "5px",
-                    paddingBottom: "5px",
-                  },
-                }}
-                label="Titre"
-                value={editingEvent.title}
-                onChange={(e) =>
-                  setEditingEvent({ ...editingEvent, title: e.target.value })
-                }
-              />
-              <TextField
-                inputProps={{
-                  style: {
-                    width: "400px",
-                    height: "200px",
-                  },
-                }}
-                multiline
-                rows={4}
-                label="Description"
-                value={editingEvent.description}
-                onChange={(e) =>
-                  setEditingEvent({
-                    ...editingEvent,
-                    description: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                type="file"
-                onChange={(e) => handleImageChange(e.target.files[0])}
-              />
-
-              <TextField
-                inputProps={{
-                  style: {
-                    width: "400px",
-                    height: "50px",
-                    paddingTop: "5px",
-                    paddingBottom: "5px",
-                  },
-                }}
-                label="Adresse"
-                value={editingEvent.address}
-                onChange={(e) =>
-                  setEditingEvent({ ...editingEvent, address: e.target.value })
-                }
-              />
-              <TextField
-                inputProps={{
-                  style: {
-                    width: "400px",
-                    height: "50px",
-                    paddingTop: "5px",
-                    paddingBottom: "5px",
-                  },
-                }}
-                label="Site"
-                value={editingEvent.site}
-                onChange={(e) =>
-                  setEditingEvent({ ...editingEvent, site: e.target.value })
-                }
-              />
-              <TextField
-                label="Date"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={editingEvent.date}
-                onChange={(e) =>
-                  setEditingEvent({ ...editingEvent, date: e.target.value })
-                }
-              />
-              <FormControl style={{ minWidth: 120 }}>
-                <InputLabel id="categorie-label">Catégorie</InputLabel>
-                <Select
-                  value={
-                    editingEvent.categorie_id
-                      ? String(editingEvent.categorie_id)
-                      : ""
-                  }
-                  onChange={handleChange}
-                >
-                  {categorieList.map((category) => (
-                    <MenuItem key={category.id} value={String(category.id)}>
-                      {category.cat_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl style={{ minWidth: 200 }}>
-                <InputLabel id="isApproved-label">Pending</InputLabel>
-                <Select
-                  value={editingEvent.isApproved}
-                  onChange={(e) =>
-                    setEditingEvent({
-                      ...editingEvent,
-                      isApproved: Number(e.target.value),
-                    })
-                  }
-                  style={{ width: 150 }} // Agrandissement du SELECT
-                >
-                  <MenuItem value={0}>Non approuvé</MenuItem>
-                  <MenuItem value={1}>Approuvé</MenuItem>
-                </Select>
-              </FormControl>
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEdit}>Annuler</Button>
-          <Button onClick={handleUpdate}>Sauvegarder</Button>
-        </DialogActions>
-      </Dialog>
-      {showConfirmation && (
-        <Dialog onClose={handleCloseConfirmation}>
-          <DialogTitle>Confirmation</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              L'événement a bien été ajouté !
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseConfirmation}>OK</Button>
-          </DialogActions>
-        </Dialog>
-      )}
+        handleClose={handleCloseEdit}
+        handleUpdate={handleUpdate}
+        handleImageChange={handleImageChange}
+        handleChange={handleChange}
+        editingEvent={editingEvent}
+        setEditingEvent={setEditingEvent}
+        categorieList={categorieList}
+      />
+      <ConfirmationAdminDialog
+        open={showConfirmation}
+        handleClose={handleCloseConfirmation}
+      />
     </div>
   );
 }

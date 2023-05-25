@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie"; // Importez la bibliothèque js-cookie
+
+// COMPONENT
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import CustomAvatar from "./CustomAvatar";

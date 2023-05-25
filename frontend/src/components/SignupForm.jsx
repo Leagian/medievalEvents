@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+
+// MATERIAL
 import { TextField, Button, FormControl } from "@mui/material";
+
+// SERVICE
 import profileAPI from "../services/profileAPI";
 
 // COMPONENT

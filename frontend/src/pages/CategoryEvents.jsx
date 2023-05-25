@@ -26,7 +26,6 @@ function CategoryEvents() {
   return (
     <div>
       <h1>{category.toUpperCase()}</h1>
-      {/* Affichez les événements de la catégorie */}
       {filteredCategoryEvents.map((event) => (
         <div key={event.id}>
           <Link to={`/events/${event.id}`}>
@@ -34,7 +33,6 @@ function CategoryEvents() {
           </Link>
           <h3>{event.title}</h3>
           <p>{event.description}</p>
-          {/* Affichez d'autres détails de l'événement si nécessaire */}
         </div>
       ))}
     </div>

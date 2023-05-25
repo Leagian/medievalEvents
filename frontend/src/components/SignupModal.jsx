@@ -1,7 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// MATERIAL
 import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+
+// COMPONENT
 import SignupForm from "./SignupForm";
 
 function SignupModal({ isOpen, closeModal, toggleLoginModal }) {

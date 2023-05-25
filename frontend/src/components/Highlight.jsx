@@ -9,14 +9,16 @@ function Highlight() {
   const [highlightedEvent, setHighlightedEvent] = useState(null);
   const { dataEvents, filterApprovedEvents } = useDataContext();
 
-  // Filtrer les événements approuvés
-  const approvedEvents = filterApprovedEvents(dataEvents);
-
   useEffect(() => {
+    // Filtrer les événements approuvés
+    const approvedEvents = filterApprovedEvents(dataEvents);
     // Choisissez un événement approuvé aléatoire
-    const randomIndex = Math.floor(Math.random() * approvedEvents.length);
-    setHighlightedEvent(approvedEvents[randomIndex]);
-  }, [approvedEvents]);
+    if (approvedEvents.length > 0) {
+      const randomIndex = Math.floor(Math.random() * approvedEvents.length);
+      const event = approvedEvents[randomIndex];
+      setHighlightedEvent(event);
+    }
+  }, [dataEvents, filterApprovedEvents]);
 
   if (!highlightedEvent) {
     return <div>Loading...</div>;

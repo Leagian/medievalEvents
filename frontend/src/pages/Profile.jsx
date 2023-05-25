@@ -69,7 +69,6 @@ function Profile() {
         photoUrl={user.avatar}
         handleAvatarUpload={handleAvatarUpload}
       />
-      {/* Utilisation de la composante Avatar avec la prop photoUrl et handleAvatarUpload */}
       <button type="submit" onClick={handleFileSelect}>
         Modifier
       </button>
@@ -80,7 +79,6 @@ function Profile() {
         ref={fileInputRef}
         onChange={handleAvatarUpload}
       />
-      {/* Input de type file pour sélectionner le fichier */}
       <FavoriteEvents
         userEvents={userEvents}
         handleOpenDialog={handleOpenDialog}
@@ -100,7 +98,6 @@ DeleteEventDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleRemoveFromFavorites: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/require-default-props
   eventDelete: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,

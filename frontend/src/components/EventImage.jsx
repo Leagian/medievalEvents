@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+
+// MATERIAL
 import { makeStyles } from "@material-ui/core/styles";
 
 // IMAGE
@@ -25,7 +27,6 @@ function EventImage({ image, alt }) {
 
 EventImage.propTypes = {
   image: PropTypes.string,
-  // eslint-disable-next-line react/require-default-props
   alt: PropTypes.string,
 };
 

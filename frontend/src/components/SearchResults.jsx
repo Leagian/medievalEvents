@@ -1,26 +1,12 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-// CONTEXT
-import { useDataContext } from "../contexts/DataContext";
-
 // COMPONENT
-import EventImage from "./EventImage";
+import EventList from "./EventList";
 
 function SearchResults({ events }) {
-  const { filterApprovedEvents } = useDataContext();
-  const approvedEvents = filterApprovedEvents(events);
-
   return (
     <div className="SearchResults">
-      {approvedEvents.map((event) => (
-        <div className="SearchResults--item" key={event.id}>
-          <h1>{event.title}</h1>
-          <Link to={`/events/${event.id}`}>
-            <EventImage image={event.image} alt={event.title} />
-          </Link>
-        </div>
-      ))}
+      <EventList events={events} limitedInfo={false} />
     </div>
   );
 }
