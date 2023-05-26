@@ -1,7 +1,7 @@
 const {
   findAllEvents,
   findOneEvent,
-  findByCategory,
+  // findByCategory,
   addOneEvent,
   deleteOneEvent,
   editOneEvent,
@@ -31,15 +31,15 @@ const getOneEvent = async (req, res) => {
   }
 };
 
-const getByCategory = async (req, res) => {
-  try {
-    const events = await findByCategory(req.query.categoryId);
+// const getByCategory = async (req, res) => {
+//   try {
+//     const events = await findByCategory(req.query.categoryId);
 
-    res.send(events);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-};
+//     res.send(events);
+//   } catch (error) {
+//     res.sendStatus(500);
+//   }
+// };
 
 const createOneEvent = async (req, res) => {
   const event = req.body;
@@ -106,7 +106,7 @@ const editEvent = async (req, res) => {
 module.exports = {
   getAllEvents,
   getOneEvent,
-  getByCategory,
+  // getByCategory,
   createOneEvent,
   deleteEvent,
   editEvent,

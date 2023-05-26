@@ -31,21 +31,21 @@ const findOneEvent = async (id) => {
   }
 };
 
-const findByCategory = async (categoryId) => {
-  try {
-    const [event] = await db.query(
-      `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id,  cat.cat_name as category, isApproved FROM events AS events
-    INNER JOIN categorie AS cat ON cat.id=events.categorie_id
-     WHERE events.categorie_id = ?`,
-      [categoryId]
-    );
+// const findByCategory = async (categoryId) => {
+//   try {
+//     const [event] = await db.query(
+//       `SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id,  cat.cat_name as category, isApproved FROM events AS events
+//     INNER JOIN categorie AS cat ON cat.id=events.categorie_id
+//      WHERE events.categorie_id = ?`,
+//       [categoryId]
+//     );
 
-    return event;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
+//     return event;
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// };
 
 const addOneEvent = async (events) => {
   try {
@@ -105,7 +105,7 @@ const editOneEvent = async (id, event) => {
 module.exports = {
   findAllEvents,
   findOneEvent,
-  findByCategory,
+  // findByCategory,
   addOneEvent,
   deleteOneEvent,
   editOneEvent,

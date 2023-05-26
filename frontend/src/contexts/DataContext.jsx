@@ -1,6 +1,9 @@
-import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+
+// SERVICE
+import eventAPI from "../services/eventAPI";
+import categoryAPI from "../services/categoryAPI";
 
 const DataContext = createContext();
 
@@ -12,25 +15,15 @@ export function DataContextProvider({ children }) {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events`)
-      .then((response) => {
-        setDataEvents(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des données :", error);
-      });
-  }, []);
+    const fetchDataAPI = async () => {
+      const eventsAPI = await eventAPI();
+      setDataEvents(eventsAPI);
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des catégories :", error);
-      });
+      const categoriesAPI = await categoryAPI();
+      setCategories(categoriesAPI);
+    };
+
+    fetchDataAPI();
   }, []);
 
   // Fonction de filtrage des événements approuvés

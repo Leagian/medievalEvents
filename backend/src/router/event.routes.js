@@ -3,7 +3,7 @@ const express = require("express");
 const {
   getAllEvents,
   getOneEvent,
-  getByCategory,
+  // getByCategory,
   deleteEvent,
   editEvent,
   createOneEvent,
@@ -22,7 +22,7 @@ const router = express.Router();
 // GET
 router.get("/", getAllEvents); // affiche tous les events
 router.get("/:id", getOneEvent); // event details
-router.get("/filter", getByCategory); // filter page
+// router.get("/filter", getByCategory); // filter page
 
 // POST
 router.post(

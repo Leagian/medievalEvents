@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
+
+// SERVICE
+import categoryAPI from "../services/categoryAPI";
 
 // COMPONENT
 import SearchFilters from "../components/SearchFilters";
@@ -15,18 +17,16 @@ function SearchEvents() {
   const [searchCat, setSearchCat] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`)
-      .then((response) => {
-        const categoriesFilterKey = response.data.map((cat) => ({
-          ...cat,
-          filterKey: cat.cat_name,
-        }));
-        setSearchCat(categoriesFilterKey);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des données :", error);
-      });
+    const fetchDataAPI = async () => {
+      const categoriesAPI = await categoryAPI();
+      const categoriesFilterKey = categoriesAPI.map((cat) => ({
+        ...cat,
+        filterKey: cat.cat_name,
+      }));
+      setSearchCat(categoriesFilterKey);
+    };
+
+    fetchDataAPI();
   }, []);
 
   const handleFilterChange = (newSelectedCategories) => {

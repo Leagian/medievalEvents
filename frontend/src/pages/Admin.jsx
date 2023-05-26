@@ -15,7 +15,7 @@ import ConfirmationAdminDialog from "../dialogs/ConfirmationAdminDialog";
 import { useDataContext } from "../contexts/DataContext";
 
 // SERVICE
-import eventAPI from "../services/eventAPI";
+import eventManagerAPI from "../services/eventManagrAPI";
 
 function Admin() {
   const { filterApprovedEvents, filterNonApprovedEvents } = useDataContext();
@@ -88,7 +88,7 @@ function Admin() {
   };
 
   const handleDelete = () => {
-    eventAPI
+    eventManagerAPI
       .delete(deletingEventId)
       .then(() => {
         setEvents(events.filter((event) => event.id !== deletingEventId));
@@ -110,7 +110,7 @@ function Admin() {
       formData.append("image", imageFile);
     }
 
-    eventAPI
+    eventManagerAPI
       .update(editingEvent.id, formData)
       .then(() => {
         setEvents(
