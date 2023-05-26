@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(7),
     height: theme.spacing(7),
-    borderRadius: "50%",
+    // borderRadius: "50%",
   },
 }));
 

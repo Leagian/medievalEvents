@@ -1,6 +1,7 @@
 import { useEffect, createContext, useContext, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const CurrentUserContext = createContext();
 
@@ -20,6 +21,19 @@ export function CurrentUserContextProvider({ children }) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (user && user.id) {
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/users/${user.id}`)
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des données :", error);
+        });
+    }
+  }, [user && user.id]);
 
   const updateUserAvatar = (avatarUrl) => {
     setUser((prevUser) => {

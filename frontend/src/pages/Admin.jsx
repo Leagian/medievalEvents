@@ -92,6 +92,9 @@ function Admin() {
       .delete(deletingEventId)
       .then(() => {
         setEvents(events.filter((event) => event.id !== deletingEventId));
+        setFilteredEvents(
+          filteredEvents.filter((event) => event.id !== deletingEventId)
+        );
       })
       .catch((error) => console.error(error));
     handleCloseDelete();

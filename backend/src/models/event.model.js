@@ -50,16 +50,13 @@ const findByCategory = async (categoryId) => {
 const addOneEvent = async (events) => {
   try {
     const result = await db.query(
-      `INSERT INTO events (title, image, address, site, date, description, categorie_id, isApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO events (title, address, date, description, categorie_id) VALUES (?, ?, ?, ?, ?)`,
       [
         events.title,
-        events.image,
         events.address,
-        events.site,
         events.date,
         events.description,
         events.categorie_id,
-        events.isApproved,
       ]
     );
     return result;

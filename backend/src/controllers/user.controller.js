@@ -97,7 +97,7 @@ const AvatarUploadController = async (req, res) => {
       return;
     }
 
-    const avatarPath = `/uploads/avatar/${req.file.filename}`;
+    const avatarPath = `/uploads/resized_avatar/${req.file.filename}`;
 
     await setUserAvatar(userId, avatarPath);
 

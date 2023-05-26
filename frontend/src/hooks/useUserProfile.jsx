@@ -68,7 +68,7 @@ function useUserProfile() {
     formData.append("avatar", file);
 
     avatarAPI
-      .post(`/api/uploads/${user.id}/avatar`, formData)
+      .post(`/api/users/${user.id}/avatar`, formData)
       .then((response) => {
         updateUserAvatar(response.data.avatarUrl);
       })

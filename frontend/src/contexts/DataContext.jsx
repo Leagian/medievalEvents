@@ -9,6 +9,7 @@ export const useDataContext = () => useContext(DataContext);
 export function DataContextProvider({ children }) {
   const [dataEvents, setDataEvents] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     axios
@@ -33,13 +34,13 @@ export function DataContextProvider({ children }) {
   }, []);
 
   // Fonction de filtrage des événements approuvés
-  const filterApprovedEvents = (events) => {
-    return events.filter((event) => event.isApproved === 1);
+  const filterApprovedEvents = (eventList) => {
+    return eventList.filter((event) => event.isApproved === 1);
   };
 
   // Fonction de filtrage des événements non approuvés
-  const filterNonApprovedEvents = (events) => {
-    return events.filter((event) => event.isApproved === 0);
+  const filterNonApprovedEvents = (eventList) => {
+    return eventList.filter((event) => event.isApproved === 0);
   };
 
   const value = useMemo(
@@ -48,8 +49,10 @@ export function DataContextProvider({ children }) {
       categories,
       filterApprovedEvents,
       filterNonApprovedEvents,
+      events,
+      setEvents,
     }),
-    [dataEvents, categories]
+    [dataEvents, categories, events]
   );
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

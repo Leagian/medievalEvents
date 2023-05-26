@@ -17,12 +17,12 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use(express.static("public"));
-// // app.use(
-//   "/avatar",
-//   express.static(path.join(__dirname, "public/uploads/avatar"))
-// );
-// app.use("/image", express.static(path.join(__dirname, "public/uploads/image")));
+app.use(express.static("public"));
+app.use(
+  "/avatar",
+  express.static(path.join(__dirname, "public/uploads/avatar"))
+);
+app.use("/image", express.static(path.join(__dirname, "public/uploads/image")));
 
 // Serve the public folder for public resources
 app.use(express.static(path.join(__dirname, "../public")));

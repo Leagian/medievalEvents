@@ -9,8 +9,10 @@ import defaultImage from "../assets/defaultImage.png";
 
 const useStyles = makeStyles({
   eventImage: {
-    width: "600px",
-    height: "300px",
+    // maxWidth: "600px",
+    // maxHeight: "350px",
+    width: "650px",
+    height: "360px",
     objectFit: "cover",
   },
 });

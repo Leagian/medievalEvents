@@ -7,7 +7,7 @@ const {
   editOneEvent,
 } = require("../models/event.model");
 
-const getAllEvent = async (req, res) => {
+const getAllEvents = async (req, res) => {
   try {
     const events = await findAllEvents();
 
@@ -43,7 +43,10 @@ const getByCategory = async (req, res) => {
 
 const createOneEvent = async (req, res) => {
   const event = req.body;
-  event.image = `/uploads/${req.file.filename}`;
+  // Vérifier si req.file existe
+  if (req.file) {
+    event.image = `/uploads/resized_image/${req.file.filename}`;
+  }
   // TODO validations (length, format...)
 
   try {
@@ -83,7 +86,7 @@ const editEvent = async (req, res) => {
     const eventData = { ...event };
 
     if (image) {
-      eventData.image = `/uploads/image/${image.filename}`;
+      eventData.image = `/uploads/resized_image/${image.filename}`;
     }
 
     // Mettez à jour la propriété isApproved à 1 (approuvé)
@@ -101,7 +104,7 @@ const editEvent = async (req, res) => {
 };
 
 module.exports = {
-  getAllEvent,
+  getAllEvents,
   getOneEvent,
   getByCategory,
   createOneEvent,

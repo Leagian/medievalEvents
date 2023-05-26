@@ -23,8 +23,8 @@ const authRoutes = require("./auth.routes");
 router.use(authRoutes);
 
 // UPLOADS
-const uploadRoutes = require("./uploads.routes");
+// const uploadRoutes = require("./uploads.routes");
 
-router.use("/uploads", uploadRoutes);
+// router.use("/uploads", uploadRoutes);
 
 module.exports = router;

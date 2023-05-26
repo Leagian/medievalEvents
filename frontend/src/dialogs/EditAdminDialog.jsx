@@ -175,12 +175,12 @@ EditAdminDialog.propTypes = {
     address: PropTypes.string,
     site: PropTypes.string,
     date: PropTypes.string,
-    categorie_id: PropTypes.string,
+    categorie_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     isApproved: PropTypes.number,
   }).isRequired,
   categorieList: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       cat_name: PropTypes.string,
     })
   ).isRequired,

@@ -38,12 +38,6 @@ function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    for (const field in formData) {
-      if (formData[field] === "") {
-        setErrorOpen(true);
-        return;
-      }
-    }
     const data = new FormData();
     Object.keys(formData).forEach((key) => data.append(key, formData[key]));
     if (file) {

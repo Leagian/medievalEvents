@@ -6,8 +6,13 @@ const {
   getUserFavorites,
   removeFavorite,
   addFavorite,
+  AvatarUploadController,
 } = require("../controllers/user.controller");
 const authorization = require("../middleware/auth");
+
+const { uploadAvatar } = require("../middleware/multer");
+
+const { resizeAvatar } = require("../middleware/resize");
 
 const router = express.Router();
 
@@ -18,6 +23,13 @@ router.get("/:id/favorites", authorization, getUserFavorites);
 // POST
 router.post("/", createOneUser); // signup user
 router.post("/:id/favorites", authorization, addFavorite); // ajout d'un event favori
+router.post(
+  "/:id/avatar",
+  authorization,
+  uploadAvatar.single("avatar"),
+  resizeAvatar,
+  AvatarUploadController
+);
 
 // DELETE
 router.delete("/:id/favorites", authorization, removeFavorite); // enlever des favoris

@@ -12,7 +12,7 @@ const avatarStorage = multer.diskStorage({
 
 const eventStorage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "./public/uploads/image");
+    cb(null, "./public/uploads/image/");
   },
   filename(req, file, cb) {
     cb(null, `${uuidv4()}-${file.originalname}`);

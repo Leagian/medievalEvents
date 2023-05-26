@@ -1,14 +1,17 @@
 const express = require("express");
 
 const {
-  getAllEvent,
+  getAllEvents,
   getOneEvent,
   getByCategory,
   deleteEvent,
   editEvent,
+  createOneEvent,
 } = require("../controllers/event.controller");
 
 const authorization = require("../middleware/auth");
+
+const { resizeImage } = require("../middleware/resize");
 
 const admin = require("../middleware/admin");
 
@@ -17,15 +20,25 @@ const { uploadEvent } = require("../middleware/multer");
 const router = express.Router();
 
 // GET
-router.get("/", getAllEvent); // affiche tous les events
+router.get("/", getAllEvents); // affiche tous les events
 router.get("/:id", getOneEvent); // event details
 router.get("/filter", getByCategory); // filter page
+
+// POST
+router.post(
+  "/",
+  authorization,
+  uploadEvent.single("image"),
+  resizeImage,
+  createOneEvent
+);
 
 // UPDATE
 router.put(
   "/:id",
-  uploadEvent.single("image"),
   authorization,
+  uploadEvent.single("image"),
+  resizeImage,
   admin,
   editEvent
 ); // modifier un event par l'admin
