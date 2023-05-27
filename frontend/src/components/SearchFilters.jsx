@@ -32,10 +32,10 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
         value={searchText}
         onChange={handleSearch}
         variant="standard"
-        t
+        fullWidth
         sx={{
           display: "block",
-          width: "80%",
+          maxWidth: "40%",
           marginBottom: "3rem",
           marginLeft: "6rem",
         }}

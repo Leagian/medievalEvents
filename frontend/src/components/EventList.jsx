@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+
+// CONTEXT
 import { useDataContext } from "../contexts/DataContext";
 
 // COMPONENT
@@ -17,24 +19,19 @@ function EventList({ events, limitEvents, limitedInfo }) {
 
   return (
     <div>
-      <div
-        className="allEvents--global"
-        style={{ maxWidth: "700px", margin: "auto" }}
-      >
-        {limitedEvents.map((event) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            image={event.image}
-            title={event.title}
-            category={event.category}
-            address={event.address}
-            description={event.description}
-            date={event.date}
-            limitedInfo={limitedInfo}
-          />
-        ))}
-      </div>
+      {limitedEvents.map((event) => (
+        <EventCard
+          key={event.id}
+          id={event.id}
+          image={event.image}
+          title={event.title}
+          category={event.category}
+          address={event.address}
+          description={event.description}
+          date={event.date}
+          limitedInfo={limitedInfo}
+        />
+      ))}
     </div>
   );
 }

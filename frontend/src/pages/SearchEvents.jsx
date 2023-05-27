@@ -34,6 +34,10 @@ function SearchEvents() {
     fetchDataAPI();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchText, selectedCategories]);
+
   const handleFilterChange = (newSelectedCategories) => {
     setSelectedCategories(newSelectedCategories);
   };
@@ -81,6 +85,7 @@ function SearchEvents() {
       <SearchResults events={displayedEvents} />
       <Grid container justifyContent="center">
         <Pagination
+          shape="rounded"
           count={Math.ceil(filteredEvents.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}

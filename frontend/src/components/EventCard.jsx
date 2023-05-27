@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // MATERIAL
-import { Link as MuiLink, Typography } from "@mui/material";
+import { Box, Link as MuiLink, Typography } from "@mui/material";
 
 // COMPONENT
 import EventImage from "./EventImage";
@@ -18,9 +18,21 @@ function EventCard({
   limitedInfo = false,
 }) {
   return (
-    <div className="allEventsCards--global">
-      <h1>{title}</h1>
-      <Link component={Link} to={`/events/${id}`}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      <MuiLink
+        component={Link}
+        to={`/events/${id}`}
+        underline="none"
+        color="inherit"
+        sx={{ "&:hover": { color: "#888" } }}
+      >
+        <Typography variant="h5" textAlign="center" marginTop="2rem">
+          {title}
+        </Typography>
+      </MuiLink>
+      <Link to={`/events/${id}`}>
         <EventImage image={image} alt={title} />
       </Link>
       {limitedInfo && (
@@ -41,7 +53,7 @@ function EventCard({
           <p>{date}</p>
         </>
       )}
-    </div>
+    </Box>
   );
 }
 

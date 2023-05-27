@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // MATERIAL
-import { Link as MuiLink, Typography } from "@mui/material";
+import { Link as MuiLink, Typography, Box } from "@mui/material";
 
 // COMPONENT
 import EventImage from "./EventImage";
@@ -31,9 +31,8 @@ function Highlight() {
     highlightedEvent;
 
   return (
-    <div
-      className="highlight--global"
-      style={{ maxWidth: "700px", margin: "auto" }}
+    <Box
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <h2>{title}</h2>
       <Link to={`/events/${id}`}>
@@ -53,7 +52,7 @@ function Highlight() {
       </MuiLink>
       <p>{address}</p>
       <p>{date}</p>
-    </div>
+    </Box>
   );
 }
 
