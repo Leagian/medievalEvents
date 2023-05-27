@@ -1,14 +1,8 @@
 import React, { useRef } from "react";
 import { Outlet, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
 
-// MATERIAL
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
+// DIALOG
+import DeleteEventDialog from "../dialogs/DeleteEventDialog";
 
 // COMPONENT
 import CustomAvatar from "../components/CustomAvatar";
@@ -16,30 +10,6 @@ import FavoriteEvents from "../components/FavoriteEvents";
 
 // HOOK
 import useUserProfile from "../hooks/useUserProfile";
-
-function DeleteEventDialog({
-  open,
-  handleClose,
-  handleRemoveFromFavorites,
-  eventDelete,
-}) {
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Supprimer l'événement</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Êtes-vous sûr de vouloir supprimer cet événement ?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
-        <Button onClick={() => handleRemoveFromFavorites(eventDelete)}>
-          Supprimer
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
 
 function Profile() {
   const { id } = useParams();
@@ -70,6 +40,7 @@ function Profile() {
       <CustomAvatar
         photoUrl={user.avatar}
         handleAvatarUpload={handleAvatarUpload}
+        style={{ width: "50px", height: "50px" }}
       />
       <button type="submit" onClick={handleFileSelect}>
         Modifier
@@ -95,15 +66,5 @@ function Profile() {
     </div>
   );
 }
-
-DeleteEventDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  handleRemoveFromFavorites: PropTypes.func.isRequired,
-  eventDelete: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
-};
 
 export default Profile;

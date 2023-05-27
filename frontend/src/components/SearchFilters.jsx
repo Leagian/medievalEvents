@@ -35,7 +35,7 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
         fullWidth
         sx={{
           display: "block",
-          maxWidth: "40%",
+          maxWidth: "30%",
           marginBottom: "3rem",
           marginLeft: "6rem",
         }}

@@ -1,72 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 
 // MATERIAL
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { IconButton, Typography, Link as MuiLink } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+// DIALOG
+import AlertFavDialog from "../dialogs/AlertFavDialog";
+
 // COMPONENT
 import EventImage from "../components/EventImage";
+import BookmarkButton from "../components/BookmarkButton";
 
 // CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
 
 // SERVICE
 import profileAPI from "../services/profileAPI";
-
-// DIALOG COMPONENT
-function AlertDialog({ open, setOpen, title, description }) {
-  return (
-    <Dialog
-      open={open}
-      onClose={() => setOpen(false)}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {description}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpen(false)} color="primary" autoFocus>
-          Ok
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-AlertDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-};
-
-// Bookmark Button
-function BookmarkButton({ isSaved, handleBookmarkToggle }) {
-  return isSaved ? (
-    <BookmarkIcon onClick={handleBookmarkToggle} />
-  ) : (
-    <BookmarkBorderIcon onClick={handleBookmarkToggle} />
-  );
-}
-
-BookmarkButton.propTypes = {
-  isSaved: PropTypes.bool.isRequired,
-  handleBookmarkToggle: PropTypes.func.isRequired,
-};
 
 function EventDetail() {
   const [eventId, setEventId] = useState({});
@@ -184,14 +134,14 @@ function EventDetail() {
         <p>{eventId.date}</p>
       </div>
 
-      <AlertDialog
+      <AlertFavDialog
         open={open}
         setOpen={setOpen}
         title="Sauvegarde d'événement"
         description="L'événement a été ajouté à vos favoris."
       />
 
-      <AlertDialog
+      <AlertFavDialog
         open={openLogin}
         setOpen={setOpenLogin}
         title="Connexion requise"

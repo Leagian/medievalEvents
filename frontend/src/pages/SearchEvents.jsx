@@ -19,7 +19,7 @@ function SearchEvents() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchCat, setSearchCat] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchDataAPI = async () => {
@@ -68,7 +68,7 @@ function SearchEvents() {
   };
 
   return (
-    <div className="SearchEvents--global">
+    <div>
       <Box
         display="flex"
         flexDirection="column"

@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 
+// MATERIAL
+import { Grid } from "@mui/material";
+
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
 
 // COMPONENT
 import EventCard from "./EventCard";
 
-function EventList({ events, limitEvents, limitedInfo }) {
+function EventList({ events, limitEvents, limitedInfo, columns }) {
   const { dataEvents, filterApprovedEvents } = useDataContext();
 
   // Utilise les événements passés par les props si disponibles, sinon utilise le contexte
@@ -17,22 +20,26 @@ function EventList({ events, limitEvents, limitedInfo }) {
     ? eventsToShow.slice(0, limitEvents)
     : eventsToShow;
 
+  const columnWidth = columns === 2 ? 6 : 12;
+
   return (
-    <div>
+    <Grid container spacing={3}>
       {limitedEvents.map((event) => (
-        <EventCard
-          key={event.id}
-          id={event.id}
-          image={event.image}
-          title={event.title}
-          category={event.category}
-          address={event.address}
-          description={event.description}
-          date={event.date}
-          limitedInfo={limitedInfo}
-        />
+        <Grid item xs={columnWidth} key={event.id}>
+          <EventCard
+            key={event.id}
+            id={event.id}
+            image={event.image}
+            title={event.title}
+            category={event.category}
+            address={event.address}
+            description={event.description}
+            date={event.date}
+            limitedInfo={limitedInfo}
+          />
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 }
 
@@ -44,6 +51,7 @@ EventList.propTypes = {
       title: PropTypes.string.isRequired,
     })
   ),
+  columns: PropTypes.number,
   limitEvents: PropTypes.number,
   limitedInfo: PropTypes.bool,
 };

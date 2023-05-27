@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 // MATERIAL
 import { IconButton, Typography } from "@mui/material";
@@ -15,6 +15,7 @@ function CategoryEvents() {
   const [categoryEvents, setCategoryEvents] = useState([]);
 
   const { id: category } = useParams();
+  const navigate = useNavigate(); // HandlePrevious retour à la page précédente
 
   const { dataEvents, filterApprovedEvents } = useDataContext();
   const filteredCategoryEvents = filterApprovedEvents(categoryEvents);
@@ -27,9 +28,13 @@ function CategoryEvents() {
     setCategoryEvents(filteredEvents);
   }, [dataEvents, category]);
 
+  const handlePrevious = () => {
+    navigate(-1);
+  };
+
   return (
     <div>
-      <IconButton component={Link} to="/">
+      <IconButton onClick={handlePrevious}>
         <ArrowBackIcon />
         <Typography variant="body1">RETOUR</Typography>
       </IconButton>

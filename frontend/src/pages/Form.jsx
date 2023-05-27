@@ -47,7 +47,13 @@ function Form() {
     e.preventDefault();
 
     const data = new FormData();
-    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+    Object.keys(formData).forEach((key) => {
+      let value = formData[key];
+      if (key === "title") {
+        value = value.toUpperCase();
+      }
+      data.append(key, value);
+    });
     if (file) {
       data.append("image", file);
     }
@@ -67,12 +73,7 @@ function Form() {
   };
 
   const handleChange = (e) => {
-    const { id, name, value: originalValue } = e.target;
-    const value =
-      id === "title" || name === "title"
-        ? originalValue.toUpperCase()
-        : originalValue;
-
+    const { id, name, value } = e.target;
     setFormData({
       ...formData,
       [id || name]: value,
@@ -105,11 +106,14 @@ function Form() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "auto" }}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ maxWidth: "600px", margin: "auto", marginTop: "3rem" }}
+    >
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="title" />
         <TextField
-          label="Titre"
+          label="Titre*"
           type="text"
           id="title"
           value={formData.title}
@@ -120,19 +124,19 @@ function Form() {
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="description" />
         <TextField
-          label="Description"
+          label="Description*"
           id="description"
           value={formData.description}
           onChange={handleChange}
           multiline
-          rows={5}
+          rows={8}
         />
       </FormControl>
 
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="date" />
         <TextField
-          label="Date"
+          label="Date*"
           type="date"
           id="date"
           value={formData.date}
@@ -168,6 +172,7 @@ function Form() {
         <TextField
           label="Site"
           type="text"
+          id="site"
           name="site"
           placeholder="www.medieval.com"
           value={formData.site}
@@ -178,8 +183,9 @@ function Form() {
       <FormControl fullWidth margin="normal">
         <InputLabel htmlFor="address" />
         <TextField
-          label="Adresse"
+          label="Adresse*"
           type="text"
+          id="address"
           name="address"
           placeholder="Ville, Département"
           value={formData.address}
@@ -217,7 +223,7 @@ function Form() {
 
       <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Veuillez remplir tous les champs.
+          Veuillez remplir champs Titre, Description, Date, Catégorie et Adresse
         </Alert>
       </Snackbar>
       <Outlet />

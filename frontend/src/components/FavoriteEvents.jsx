@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 // MATERIAL
-import { Button } from "@mui/material";
+import { Button, Box, Link as MuiLink, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // COMPONENT
@@ -13,31 +13,54 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
   return (
     <div>
       <h2>Evénements Favoris :</h2>
-      {userEvents.map((event) => {
-        if (event.id) {
-          return (
-            <div key={event.id}>
-              <Link to={`/events/${event.id}`}>
-                <EventImage image={event.image} alt={event.title} />
-              </Link>
-              <Link to={`/categories/${event.category}`}>
-                <h5>{event.category}</h5>
-              </Link>
-              <h3>{event.title}</h3>
-              <p>{event.description}</p>
-              <p>{event.address}</p>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleOpenDialog(event)}
-              >
-                Delete
-              </Button>
-            </div>
-          );
-        }
-        return null;
-      })}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {userEvents.map((event) => {
+          if (event.id) {
+            return (
+              <div key={event.id}>
+                <Link to={`/events/${event.id}`}>
+                  <EventImage image={event.image} alt={event.title} />
+                </Link>
+                <MuiLink
+                  component={Link}
+                  to={`/categories/${event.category}`}
+                  underline="hover"
+                  color="inherit"
+                  sx={{ "&:hover": { color: "#888" } }}
+                >
+                  <Typography variant="h6" sx={{ marginTop: "1rem" }}>
+                    {event.category}
+                  </Typography>
+                </MuiLink>
+                <h3>{event.title}</h3>
+                <p>{event.description}</p>
+                <p>{event.address}</p>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#f44336", // changer à votre couleur désirée
+                    },
+                  }}
+                  startIcon={<DeleteIcon />}
+                  onClick={() => handleOpenDialog(event)}
+                >
+                  Retirer
+                </Button>
+              </div>
+            );
+          }
+          return null;
+        })}
+      </Box>
     </div>
   );
 }

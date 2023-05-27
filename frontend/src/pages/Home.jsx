@@ -16,7 +16,6 @@ function Home() {
   return (
     <div>
       <Discover />
-
       <Highlight />
       <EventList events={sortedEvents} limitEvents={3} limitedInfo />
     </div>

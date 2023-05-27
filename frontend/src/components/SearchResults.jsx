@@ -6,7 +6,7 @@ import EventList from "./EventList";
 function SearchResults({ events }) {
   return (
     <div className="SearchResults">
-      <EventList events={events} limitedInfo={false} />
+      <EventList events={events} limitedInfo={false} columns={2} />
     </div>
   );
 }

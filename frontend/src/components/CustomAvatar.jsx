@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(5),
     height: theme.spacing(5),
-    // borderRadius: "50%",
   },
 }));
 
@@ -28,10 +27,6 @@ function CustomAvatar({ photoUrl }) {
 
 CustomAvatar.propTypes = {
   photoUrl: PropTypes.string,
-};
-
-CustomAvatar.defaultProps = {
-  photoUrl: null,
 };
 
 export default CustomAvatar;

@@ -80,7 +80,6 @@ function Header() {
   return (
     <nav>
       <Box component="nav" display="flex" mb={2} mt={1}>
-        <Box />
         <Box
           display="flex"
           justifyContent="space-evenly"
@@ -132,7 +131,7 @@ function Header() {
           {user ? (
             <Box display="flex" alignItems="center">
               {user.role !== "admin" && (
-                <Box margin={2}>
+                <Box>
                   <Link to={`/profile/${user.id}`}>
                     <CustomAvatar
                       photoUrl={user.avatar}
@@ -143,12 +142,12 @@ function Header() {
               )}
 
               {user.role === "admin" && (
-                <Box margin={2}>
+                <Box margin={1}>
                   <Link to="/admin">
                     <img
                       src={defaultAdminAvatar}
                       alt="Admin Avatar"
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "40px", height: "40px" }}
                     />
                   </Link>
                 </Box>
