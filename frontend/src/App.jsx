@@ -1,4 +1,9 @@
 import { Routes, Route } from "react-router-dom";
+
+// MATERIAL
+import { Box } from "@mui/material";
+
+// COMPONENT
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -23,48 +28,63 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/categories/:id" element={<CategoryEvents />} />
-        <Route path="/events/:id" element={<EventDetail />} />
-        <Route path="/events" element={<SearchEvents />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route
-          element={
-            <ProtectedRoute
-              user={user}
-              requiredRoles={["user"]}
-              redirectPath="/"
-            />
-          }
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Header />
+        <Box
+          sx={{
+            flex: "1",
+            overflow: "auto",
+          }}
         >
-          <Route path="/profile/:id" element={<Profile />} />
-        </Route>
-        <Route
-          element={
-            <ProtectedRoute
-              user={user}
-              requiredRoles={["admin"]}
-              redirectPath="/"
-            />
-          }
-        >
-          <Route path="/admin" element={<Admin />} />
-        </Route>
-        <Route
-          element={
-            <ProtectedRoute
-              user={user}
-              requiredRoles={["user", "admin"]}
-              redirectPath="/"
-            />
-          }
-        >
-          <Route path="/form" element={<Form />} />
-        </Route>
-      </Routes>
-      <Footer />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/categories/:id" element={<CategoryEvents />} />
+            <Route path="/events/:id" element={<EventDetail />} />
+            <Route path="/events" element={<SearchEvents />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route
+              element={
+                <ProtectedRoute
+                  user={user}
+                  requiredRoles={["user"]}
+                  redirectPath="/"
+                />
+              }
+            >
+              <Route path="/profile/:id" element={<Profile />} />
+            </Route>
+            <Route
+              element={
+                <ProtectedRoute
+                  user={user}
+                  requiredRoles={["admin"]}
+                  redirectPath="/"
+                />
+              }
+            >
+              <Route path="/admin" element={<Admin />} />
+            </Route>
+            <Route
+              element={
+                <ProtectedRoute
+                  user={user}
+                  requiredRoles={["user", "admin"]}
+                  redirectPath="/"
+                />
+              }
+            >
+              <Route path="/form" element={<Form />} />
+            </Route>
+          </Routes>
+        </Box>
+        <Footer />
+      </Box>
     </div>
   );
 }

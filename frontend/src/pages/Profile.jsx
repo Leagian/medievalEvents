@@ -62,9 +62,11 @@ function Profile() {
 
   return (
     <div>
-      <h1>
-        Hello, {user.name} {user.id}
-      </h1>
+      <h1>Hello, {user.name}!</h1>
+      <p>Bienvenue sur votre page de profil!</p>
+      <p>
+        Ici vous pouvez modifier votre avatar et ajouter vos évènements favoris
+      </p>
       <CustomAvatar
         photoUrl={user.avatar}
         handleAvatarUpload={handleAvatarUpload}

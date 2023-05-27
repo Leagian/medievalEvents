@@ -10,8 +10,8 @@ import defaultAvatar from "../assets/defaultAvatar.png";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     // borderRadius: "50%",
   },
 }));

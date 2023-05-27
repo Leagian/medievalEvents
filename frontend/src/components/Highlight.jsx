@@ -28,7 +28,10 @@ function Highlight() {
     highlightedEvent;
 
   return (
-    <div className="highlight--global">
+    <div
+      className="highlight--global"
+      style={{ maxWidth: "700px", margin: "auto" }}
+    >
       <h2>{title}</h2>
       <Link to={`/events/${id}`}>
         <EventImage image={image} alt={title} />

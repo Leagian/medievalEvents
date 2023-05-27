@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 // MATERIAL
-import { Typography } from "@mui/material";
+import { Typography, Box, Link as MuiLink } from "@mui/material";
+
+// CONTEXT
+import { useAuthContext } from "../contexts/AuthContext";
 
 function Discover() {
   const [categoriesName, setCategoriesName] = useState([]);
+  const { user } = useAuthContext();
 
   useEffect(() => {
     axios
@@ -20,19 +24,40 @@ function Discover() {
   }, []);
 
   return (
-    <div>
-      <Typography variant="h5">
-        DECOUVREZ TOUS LES EVENEMENTS MEDIEVAUX A VENIR
-      </Typography>
-      <h4>Connectez-vous pour pouvoir ajouter vos évènements !</h4>
-      <div className="discover--cat">
+    <header>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        mt={6}
+        ml={6}
+      >
+        <Typography variant="h5" fontWeight="bold">
+          DÉCOUVREZ TOUS LES ÉVÈNEMENTS MÉDIÉVAUX À VENIR
+        </Typography>
+        {!user && <h4>Connectez-vous pour pouvoir ajouter vos évènements !</h4>}
+      </Box>
+
+      <div className="discover--cat" style={{ display: "flex" }}>
         {categoriesName.map((category) => (
-          <Link key={category.id} to={`categories/${category.cat_name}`}>
-            <p>{category.cat_name}</p>
-          </Link>
+          <MuiLink
+            component={Link}
+            underline="none"
+            color="#3b4c54"
+            sx={{
+              "&:hover": { color: "#000" },
+              marginLeft: 6,
+              marginTop: 5,
+              marginBottom: 6,
+            }}
+            key={category.id}
+            to={`categories/${category.cat_name}`}
+          >
+            <Typography variant="h6">{category.cat_name}</Typography>
+          </MuiLink>
         ))}
       </div>
-    </div>
+    </header>
   );
 }
 

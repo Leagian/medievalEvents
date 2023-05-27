@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// MATERIAL
+import { Box, Pagination, Grid } from "@mui/material";
+
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
 
@@ -15,6 +18,8 @@ function SearchEvents() {
   const [searchText, setSearchText] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchCat, setSearchCat] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   useEffect(() => {
     const fetchDataAPI = async () => {
@@ -46,17 +51,43 @@ function SearchEvents() {
     return isInSelectedCategories && isInSearchText;
   });
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedEvents = filteredEvents.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className="SearchEvents--global">
-      <div className="SearchEvents--container">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        margin={6}
+      >
         <SearchFilters
           searchCat={searchCat}
           onSearch={setSearchText}
           onFilter={handleFilterChange}
           selectedCategories={selectedCategories}
         />
-        <SearchResults events={filteredEvents} />
-      </div>
+      </Box>
+      <SearchResults events={displayedEvents} />
+      <Grid container justifyContent="center">
+        <Pagination
+          count={Math.ceil(filteredEvents.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          style={{ marginTop: "20px" }}
+        />
+      </Grid>
     </div>
   );
 }

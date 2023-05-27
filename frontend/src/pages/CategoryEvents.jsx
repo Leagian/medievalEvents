@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
+// MATERIAL
+import { IconButton, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 // COMPONENT
 import EventImage from "../components/EventImage";
 
@@ -25,6 +29,11 @@ function CategoryEvents() {
 
   return (
     <div>
+      <IconButton component={Link} to="/">
+        <ArrowBackIcon />
+        <Typography variant="body1">RETOUR</Typography>
+      </IconButton>
+
       <h1>{category.toUpperCase()}</h1>
       {filteredCategoryEvents.map((event) => (
         <div key={event.id}>

@@ -17,7 +17,10 @@ function EventList({ events, limitEvents, limitedInfo }) {
 
   return (
     <div>
-      <div className="allEvents--global">
+      <div
+        className="allEvents--global"
+        style={{ maxWidth: "700px", margin: "auto" }}
+      >
         {limitedEvents.map((event) => (
           <EventCard
             key={event.id}

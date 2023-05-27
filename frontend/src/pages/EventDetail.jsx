@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // MATERIAL
@@ -11,6 +11,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { IconButton, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // COMPONENT
 import EventImage from "../components/EventImage";
@@ -71,6 +73,7 @@ function EventDetail() {
   const [open, setOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate(); // HandlePrevious retour à la page précédente
 
   const { id } = useParams();
   const { user } = useAuthContext();
@@ -148,8 +151,16 @@ function EventDetail() {
     }
   };
 
+  const handlePrevious = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="detailsEvent--global">
+      <IconButton onClick={handlePrevious}>
+        <ArrowBackIcon />
+        <Typography variant="body1">RETOUR</Typography>
+      </IconButton>
       <div key={eventId.id}>
         <EventImage image={eventId.image} alt={eventId.title} />
         <h1>{eventId.title}</h1>

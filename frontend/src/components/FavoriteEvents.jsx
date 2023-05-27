@@ -2,6 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+// MATERIAL
+import { Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 // COMPONENT
 import EventImage from "./EventImage";
 
@@ -22,9 +26,13 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
               <h3>{event.title}</h3>
               <p>{event.description}</p>
               <p>{event.address}</p>
-              <button type="submit" onClick={() => handleOpenDialog(event)}>
-                Retirer des favoris
-              </button>
+              <Button
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => handleOpenDialog(event)}
+              >
+                Delete
+              </Button>
             </div>
           );
         }

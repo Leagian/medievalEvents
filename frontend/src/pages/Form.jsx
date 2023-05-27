@@ -4,6 +4,14 @@ import { Outlet } from "react-router-dom";
 // MATERIAL
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 
 // SERVICES
 import profileAPI from "../services/profileAPI";
@@ -97,72 +105,109 @@ function Form() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">
-        Titre:
-        <input
+    <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "auto" }}>
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="title" />
+        <TextField
+          label="Titre"
           type="text"
           id="title"
           value={formData.title}
           onChange={handleChange}
         />
-      </label>
-      <label htmlFor="description">
-        Description:
-        <textarea
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="description" />
+        <TextField
+          label="Description"
           id="description"
           value={formData.description}
           onChange={handleChange}
+          multiline
+          rows={5}
         />
-      </label>
-      <label htmlFor="date">
-        Date:
-        <input
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="date" />
+        <TextField
+          label="Date"
           type="date"
           id="date"
           value={formData.date}
           onChange={handleChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
-      </label>
-      <label htmlFor="category">
-        <select
-          name="categorie_id"
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="categorie_id">Catégorie</InputLabel>
+        <Select
+          labelId="categorie_id"
+          id="categorie_id"
           value={formData.categorie_id}
           onChange={handleChange}
+          name="categorie_id"
         >
-          <option value="">--Sélectionnez la catégorie--</option>
+          <MenuItem value="">
+            <em>--Sélectionnez la catégorie--</em>
+          </MenuItem>
           {categorieList.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <MenuItem key={cat.id} value={cat.id}>
               {cat.cat_name}
-            </option>
+            </MenuItem>
           ))}
-        </select>
-      </label>
-      <label htmlFor="site">
-        Site:
-        <input
+        </Select>
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="site" />
+        <TextField
+          label="Site"
           type="text"
           name="site"
           placeholder="www.medieval.com"
           value={formData.site}
           onChange={handleChange}
         />
-      </label>
-      <label htmlFor="address">
-        Adresse:
-        <input
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="address" />
+        <TextField
+          label="Adresse"
           type="text"
           name="address"
           placeholder="Ville, Département"
           value={formData.address}
           onChange={handleChange}
         />
-      </label>
-      <label htmlFor="image">
-        Image:
-        <input type="file" id="image" onChange={handleFileChange} />
-      </label>
-      <button type="submit">Submit</button>
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <InputLabel htmlFor="image" />
+        <TextField
+          label="Image"
+          type="file"
+          id="image"
+          onChange={handleFileChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </FormControl>
+
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        style={{ display: "block", margin: "20px auto" }}
+      >
+        Envoyer
+      </Button>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Merci l'événement a été envoyé et sera vérifié par notre équipe pour

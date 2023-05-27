@@ -1,3 +1,6 @@
+// MATERIAL
+import { Box } from "@mui/material";
+
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
 
@@ -14,10 +17,17 @@ function Home() {
     (a, b) => new Date(a.date) - new Date(b.date)
   );
   return (
-    <div className="Home--global">
+    <div>
       <Discover />
-      <Highlight />
-      <EventList events={sortedEvents} limitEvents={3} limitedInfo />
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Highlight />
+        <EventList events={sortedEvents} limitEvents={3} limitedInfo />
+      </Box>
     </div>
   );
 }
