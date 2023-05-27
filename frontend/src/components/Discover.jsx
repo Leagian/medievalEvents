@@ -29,13 +29,21 @@ function Discover() {
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
-        mt={6}
+        mt={8}
         ml={6}
       >
-        <Typography variant="h5" fontWeight="bold">
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          style={{ marginBottom: "2rem" }}
+        >
           DÉCOUVREZ TOUS LES ÉVÈNEMENTS MÉDIÉVAUX À VENIR
         </Typography>
-        {!user && <h4>Connectez-vous pour pouvoir ajouter vos évènements !</h4>}
+        {!user && (
+          <Typography variant="body1" style={{ color: "#9f0000" }}>
+            Connectez-vous pour pouvoir ajouter vos évènements !
+          </Typography>
+        )}
       </Box>
 
       <div className="discover--cat" style={{ display: "flex" }}>

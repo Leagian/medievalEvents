@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// MATERIAL
+import { Link as MuiLink, Typography } from "@mui/material";
+
 // COMPONENT
 import EventImage from "./EventImage";
 import { useDataContext } from "../contexts/DataContext";
@@ -37,9 +40,17 @@ function Highlight() {
         <EventImage image={image} alt={title} />
       </Link>
       <p>{description}</p>
-      <Link to={`/categories/${category}`}>
-        <p>{category}</p>
-      </Link>
+      <MuiLink
+        component={Link}
+        to={`/categories/${category}`}
+        underline="hover"
+        color="inherit"
+        sx={{ "&:hover": { color: "#888" } }}
+      >
+        <Typography variant="h6" sx={{ marginTop: "1rem" }}>
+          {category}
+        </Typography>
+      </MuiLink>
       <p>{address}</p>
       <p>{date}</p>
     </div>

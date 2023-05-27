@@ -155,10 +155,9 @@ function Header() {
               )}
               <Box margin={2}>
                 <Button
-                  variant="contained"
+                  variant="elevated"
                   onClick={handleDisconnection}
-                  size="small" // pour changer la taille du bouton
-                  style={{ fontSize: "10px", backgroundColor: "#3b4d59" }} // pour changer la taille du texte
+                  size="small"
                 >
                   Déconnexion
                 </Button>
@@ -167,20 +166,12 @@ function Header() {
           ) : (
             <Box display="flex" alignItems="center">
               <Box margin={2}>
-                <Button
-                  variant="text"
-                  // style={{ fontSize: "12px", backgroundColor: "#3b4d59" }}
-                  onClick={openLoginModal}
-                >
+                <Button variant="text" onClick={openLoginModal} size="small">
                   Connexion
                 </Button>
               </Box>
               <Box margin={2}>
-                <Button
-                  variant="text"
-                  // style={{ fontSize: "12px", backgroundColor: "#3b4d59" }}
-                  onClick={openSignupModal}
-                >
+                <Button variant="text" onClick={openSignupModal} size="small">
                   Inscription
                 </Button>
               </Box>

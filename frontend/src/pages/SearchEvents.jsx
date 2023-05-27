@@ -84,8 +84,7 @@ function SearchEvents() {
           count={Math.ceil(filteredEvents.length / itemsPerPage)}
           page={currentPage}
           onChange={handlePageChange}
-          color="primary"
-          style={{ marginTop: "20px" }}
+          style={{ margin: "2rem" }}
         />
       </Grid>
     </div>

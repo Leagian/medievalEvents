@@ -51,7 +51,7 @@ function Contact() {
     },
   });
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="lg">
       <Box
         display="flex"
         flexDirection="column"
@@ -80,6 +80,9 @@ function Contact() {
           value={formik.values.lastname}
           error={formik.touched.lastname && Boolean(formik.errors.lastname)}
           helperText={formik.touched.lastname && formik.errors.lastname}
+          sx={{
+            width: "40%",
+          }}
         />
         <TextField
           id="firstname"
@@ -90,6 +93,9 @@ function Contact() {
           value={formik.values.firstname}
           error={formik.touched.firstname && Boolean(formik.errors.firstname)}
           helperText={formik.touched.firstname && formik.errors.firstname}
+          sx={{
+            width: "40%",
+          }}
         />
         <TextField
           id="email"
@@ -100,6 +106,9 @@ function Contact() {
           value={formik.values.email}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          sx={{
+            width: "40%",
+          }}
         />
         <TextField
           id="message"
@@ -107,11 +116,14 @@ function Contact() {
           label="Message"
           variant="outlined"
           multiline
-          rows={4}
+          rows={8}
           onChange={formik.handleChange}
           value={formik.values.message}
           error={formik.touched.message && Boolean(formik.errors.message)}
           helperText={formik.touched.message && formik.errors.message}
+          sx={{
+            width: "40%",
+          }}
         />
         <Button variant="contained" color="primary" type="submit">
           Envoyer

@@ -11,7 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Typography, Link as MuiLink } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // COMPONENT
@@ -168,9 +168,17 @@ function EventDetail() {
           isSaved={isSaved}
           handleBookmarkToggle={handleBookmarkToggle}
         />
-        <Link to={`/categories/${eventId.category}`}>
-          <h5>{eventId.category}</h5>
-        </Link>
+        <MuiLink
+          component={Link}
+          to={`/categories/${eventId.category}`}
+          underline="hover"
+          color="inherit"
+          sx={{ "&:hover": { color: "#888" } }}
+        >
+          <Typography variant="h5" sx={{ marginTop: "1rem" }}>
+            {eventId.category}
+          </Typography>
+        </MuiLink>
         <p>{eventId.description}</p>
         <p>{eventId.address}</p>
         <p>{eventId.date}</p>

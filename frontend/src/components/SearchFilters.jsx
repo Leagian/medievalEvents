@@ -1,6 +1,9 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
+// MATERIAL
+import { TextField, Checkbox, FormControlLabel } from "@mui/material";
+
 function SearchFilters({ onSearch, searchCat, onFilter }) {
   const [searchText, setSearchText] = useState(""); // stock le texte de recherche
 
@@ -23,22 +26,32 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
 
   return (
     <div className="SearchFilters">
-      <input
+      <TextField
+        label="Rechercher"
         type="text"
         value={searchText}
         onChange={handleSearch}
-        placeholder="Rechercher"
+        variant="standard"
+        t
+        sx={{
+          display: "block",
+          width: "80%",
+          marginBottom: "3rem",
+          marginLeft: "6rem",
+        }}
       />
       {searchCat.map((cat) => (
-        <label key={cat.id}>
-          <input
-            type="checkbox"
-            value={cat.id}
-            id={`categorie-${cat.id}`}
-            onChange={() => handleCheckboxChange(cat.id)}
-          />
-          {cat.cat_name}
-        </label>
+        <FormControlLabel
+          key={cat.id}
+          control={
+            <Checkbox
+              onChange={() => handleCheckboxChange(cat.id)}
+              color="default"
+              sx={{ marginBottom: "5px", marginLeft: "6rem" }}
+            />
+          }
+          label={cat.cat_name}
+        />
       ))}
     </div>
   );

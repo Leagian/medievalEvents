@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+// MATERIAL
+import { Link as MuiLink, Typography } from "@mui/material";
+
 // COMPONENT
 import EventImage from "./EventImage";
 
@@ -17,14 +20,22 @@ function EventCard({
   return (
     <div className="allEventsCards--global">
       <h1>{title}</h1>
-      <Link to={`/events/${id}`}>
+      <Link component={Link} to={`/events/${id}`}>
         <EventImage image={image} alt={title} />
       </Link>
       {limitedInfo && (
         <>
-          <Link to={`/categories/${category}`}>
-            <h4>{category}</h4>
-          </Link>
+          <MuiLink
+            component={Link}
+            to={`/categories/${category}`}
+            underline="hover"
+            color="inherit"
+            sx={{ "&:hover": { color: "#888" } }}
+          >
+            <Typography variant="h6" sx={{ marginTop: "1rem" }}>
+              {category}
+            </Typography>
+          </MuiLink>
           <p>{description}</p>
           <p>{address}</p>
           <p>{date}</p>
