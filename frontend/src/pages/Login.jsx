@@ -97,16 +97,25 @@ function Login({ isOpen, closeModal }) {
             label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            margin="normal"
             fullWidth
           />
           <PasswordField
             label="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            margin="normal"
             fullWidth
           />
           {errorMessage && <ErrorMessage message={errorMessage} />}
-          <Button type="submit">Connexion</Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "1rem" }}
+          >
+            Connexion
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

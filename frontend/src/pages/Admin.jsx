@@ -204,7 +204,7 @@ function Admin() {
         }
         label="Approuvé"
       />
-      <Grid container spacing={3}>
+      <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {displayedEvents.map((event) => (
           <Grid item xs={6} key={event.id}>
             <EventCard

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 // MATERIAL
-import { TextField, Button, FormControl } from "@mui/material";
+import { TextField, Button, FormControl, Typography } from "@mui/material";
 
 // SERVICE
 import profileAPI from "../services/profileAPI";
@@ -38,7 +38,9 @@ function SignupForm({ onSignUpSuccess }) {
 
   return (
     <>
-      <h5>Inscrivez-vous pour pouvoir ajouter votre évènement</h5>
+      <Typography>
+        Inscrivez-vous pour pouvoir ajouter votre évènement
+      </Typography>
       {errorMessage && <ErrorMessage message={errorMessage} />}
       <form onSubmit={handleForm}>
         <TextField

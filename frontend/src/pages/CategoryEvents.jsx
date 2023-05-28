@@ -58,7 +58,8 @@ function CategoryEvents() {
       <Typography variant="h5" fontWeight="bold" textAlign="center">
         {category.toUpperCase()}
       </Typography>
-      <Grid container spacing={3}>
+
+      <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {displayedEvents.map((event) => (
           <Grid item xs={6} key={event.id}>
             <EventCard
@@ -73,6 +74,7 @@ function CategoryEvents() {
           </Grid>
         ))}
       </Grid>
+
       <CustomPagination
         totalItems={filteredCategoryEvents.length} // Remplacez filteredData par vos propres données
         itemsPerPage={itemsPerPage}

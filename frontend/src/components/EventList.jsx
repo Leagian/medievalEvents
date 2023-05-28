@@ -23,7 +23,7 @@ function EventList({ events, limitEvents, limitedInfo, columns }) {
   const columnWidth = columns === 2 ? 6 : 12;
 
   return (
-    <Grid container spacing={3}>
+    <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
       {limitedEvents.map((event) => (
         <Grid item xs={columnWidth} key={event.id}>
           <EventCard

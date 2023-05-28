@@ -13,7 +13,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
       <Typography variant="h5" fontWeight="bold" textAlign="center" mb={4}>
         Vos évènements Favoris :
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {userEvents.map((event) => {
           if (event.id) {
             return (

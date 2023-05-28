@@ -78,7 +78,7 @@ function Header() {
   };
 
   return (
-    <nav>
+    <>
       <Box component="nav" display="flex" mb={2} mt={1}>
         <Box
           display="flex"
@@ -93,6 +93,7 @@ function Header() {
               underline="none"
               color="inherit"
               sx={{ "&:hover": { color: "#888" } }}
+              ml={10}
             >
               <Typography variant="subtitle1">
                 AJOUTER UN EVENEMENT
@@ -100,7 +101,7 @@ function Header() {
               </Typography>
             </MuiLink>
           ) : (
-            <Box style={{ width: "300px" }} />
+            <Box style={{ width: "345px" }} />
           )}
           <MuiLink
             component={Link}
@@ -113,6 +114,7 @@ function Header() {
               variant="subtitle1"
               fontWeight="bold"
               sx={{ letterSpacing: "0.2em" }}
+              ml={3}
             >
               ESCALE MEDIEVALE
             </Typography>
@@ -194,7 +196,7 @@ function Header() {
         closeModal={closeSignupModal}
         toggleLoginModal={toggleLoginModal}
       />
-    </nav>
+    </>
   );
 }
 
