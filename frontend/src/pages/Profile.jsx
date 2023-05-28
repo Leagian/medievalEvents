@@ -49,9 +49,9 @@ function Profile() {
           mt={5}
           mb={3}
         >
-          Salut, {user.name}!
+          Hello, {user.name}!
         </Typography>
-        <Typography variant="h6">Bienvenue sur votre profil</Typography>
+        <Typography variant="h6">Bienvenue sur ton profil</Typography>
         <Typography variant="h6" mb={4}>
           Tu peux changer ton avatar ici, et n'oublie pas de marquer tes
           événements préférés !

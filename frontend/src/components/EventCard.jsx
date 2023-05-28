@@ -30,6 +30,7 @@ function EventCard({
           variant="h5"
           textAlign="center"
           marginTop="2rem"
+          marginBottom="0.5rem"
           sx={{
             overflow: "hidden",
             whiteSpace: "nowrap",

@@ -31,6 +31,7 @@ function Highlight() {
 
   return (
     <Box
+      component="main"
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <MuiLink
@@ -44,37 +45,48 @@ function Highlight() {
           {title}
         </Typography>
       </MuiLink>
-      <Box sx={{ position: "relative" }}>
-        <Link to={`/events/${id}`}>
-          <EventImage image={image} alt={title} />
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 3,
-              left: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
-              color: "#fff",
-              padding: "8px",
-            }}
+      <Box display="inline-block">
+        <Box sx={{ position: "relative" }}>
+          <Link to={`/events/${id}`}>
+            <EventImage image={image} alt={title} />
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 3,
+                left: 0,
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                color: "#fff",
+                padding: "8px",
+              }}
+            >
+              <Typography variant="body1" fontWeight="bold">
+                {description}
+              </Typography>
+            </Box>
+          </Link>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: "0.5rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <MuiLink
+            component={Link}
+            to={`/categories/${category}`}
+            underline="hover"
+            color="inherit"
+            sx={{ "&:hover": { color: "#888" } }}
           >
-            <Typography variant="body1" fontWeight="bold">
-              {description}
-            </Typography>
-          </Box>
-        </Link>
+            <Typography variant="h6">{category}</Typography>
+          </MuiLink>
+          <Typography>{date}</Typography>
+        </Box>
       </Box>
-      <MuiLink
-        component={Link}
-        to={`/categories/${category}`}
-        underline="hover"
-        color="inherit"
-        sx={{ "&:hover": { color: "#888" } }}
-      >
-        <Typography variant="h6" sx={{ marginTop: "1rem" }}>
-          {category}
-        </Typography>
-      </MuiLink>
-      <Typography>{date}</Typography>
     </Box>
   );
 }

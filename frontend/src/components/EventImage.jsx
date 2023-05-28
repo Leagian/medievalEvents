@@ -11,8 +11,8 @@ const useStyles = makeStyles({
   eventImage: {
     width: "100%", // This makes the image responsive
     height: "auto", // This keeps the aspect ratio of the image
-    maxWidth: "900px", // This limits the maximum width of the image
-    maxHeight: "500px", // This limits the maximum height of the image
+    maxWidth: "750px", // This limits the maximum width of the image
+    maxHeight: "450px", // This limits the maximum height of the image
     objectFit: "cover",
   },
 });

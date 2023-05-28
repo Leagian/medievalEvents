@@ -8,11 +8,14 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 function BookmarkButton({ isSaved, handleBookmarkToggle }) {
   return isSaved ? (
     <BookmarkAddedIcon
-      sx={{ color: "#242d54" }}
+      sx={{ color: "#242d54", marginLeft: "0.5rem" }}
       onClick={handleBookmarkToggle}
     />
   ) : (
-    <BookmarkBorderIcon onClick={handleBookmarkToggle} />
+    <BookmarkBorderIcon
+      onClick={handleBookmarkToggle}
+      sx={{ color: "#242d54", marginLeft: "0.5rem" }}
+    />
   );
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 // MATERIAL
-import { IconButton, Typography, Link as MuiLink } from "@mui/material";
+import { IconButton, Typography, Link as MuiLink, Box } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // DIALOG
@@ -15,6 +15,8 @@ import BookmarkButton from "../components/BookmarkButton";
 // CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
 
+// HELPER
+import formatDate from "../helpers/DateHelper";
 // SERVICE
 import profileAPI from "../services/profileAPI";
 
@@ -32,7 +34,8 @@ function EventDetail() {
     profileAPI
       .get(`/api/events/${id}`)
       .then((res) => {
-        setEventId(res.data);
+        const event = { ...res.data, date: formatDate(res.data.date) };
+        setEventId(event);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
@@ -106,33 +109,59 @@ function EventDetail() {
   };
 
   return (
-    <div className="detailsEvent--global">
-      <IconButton onClick={handlePrevious}>
-        <ArrowBackIcon />
-        <Typography variant="body1">RETOUR</Typography>
-      </IconButton>
-      <div key={eventId.id}>
-        <EventImage image={eventId.image} alt={eventId.title} />
-        <h1>{eventId.title}</h1>
-        <BookmarkButton
-          isSaved={isSaved}
-          handleBookmarkToggle={handleBookmarkToggle}
-        />
-        <MuiLink
-          component={Link}
-          to={`/categories/${eventId.category}`}
-          underline="hover"
-          color="inherit"
-          sx={{ "&:hover": { color: "#888" } }}
+    <div className="detailsEvent">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        key={eventId.id}
+      >
+        <Box
+          mt={6}
+          mb={6}
+          display="flex"
+          justifyContent="space-evenly"
+          alignItems="center"
+          width="100%"
         >
-          <Typography variant="h5" sx={{ marginTop: "1rem" }}>
-            {eventId.category}
+          <IconButton onClick={handlePrevious}>
+            <ArrowBackIcon />
+            <Typography variant="body1">RETOUR</Typography>
+          </IconButton>
+
+          <Typography variant="h5" fontWeight="bold">
+            {eventId.title}
+            <BookmarkButton
+              isSaved={isSaved}
+              handleBookmarkToggle={handleBookmarkToggle}
+            />
           </Typography>
-        </MuiLink>
-        <p>{eventId.description}</p>
-        <p>{eventId.address}</p>
-        <p>{eventId.date}</p>
-      </div>
+
+          <MuiLink
+            component={Link}
+            to={`/categories/${eventId.category}`}
+            underline="hover"
+            color="inherit"
+            sx={{ "&:hover": { color: "#888" } }}
+          >
+            <Typography variant="h5">{eventId.category}</Typography>
+          </MuiLink>
+        </Box>
+
+        <Box display="inline-block">
+          <EventImage image={eventId.image} alt={eventId.title} />
+          <Box display="flex" justifyContent="space-between" mt={2}>
+            <Typography>{eventId.site}</Typography>
+            <Typography>{eventId.date}</Typography>
+          </Box>
+        </Box>
+
+        <Typography width="60%" mt={4} mb={4}>
+          {eventId.description}
+          <Typography>{eventId.address}</Typography>
+        </Typography>
+      </Box>
 
       <AlertFavDialog
         open={open}

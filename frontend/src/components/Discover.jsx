@@ -32,11 +32,7 @@ function Discover() {
         mt={8}
         ml={6}
       >
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          style={{ marginBottom: "2rem" }}
-        >
+        <Typography variant="h5" fontWeight="bold" mb={2}>
           DÉCOUVREZ TOUS LES ÉVÈNEMENTS MÉDIÉVAUX À VENIR
         </Typography>
         {!user && (

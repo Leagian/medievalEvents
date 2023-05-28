@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 
+// HELPER
+import formatDate from "../helpers/DateHelper";
+
 // SERVICE
 import eventAPI from "../services/eventAPI";
 import categoryAPI from "../services/categoryAPI";
@@ -16,7 +19,11 @@ export function DataContextProvider({ children }) {
 
   useEffect(() => {
     const fetchDataAPI = async () => {
-      const eventsAPI = await eventAPI();
+      let eventsAPI = await eventAPI();
+      eventsAPI = eventsAPI.map((event) => ({
+        ...event,
+        date: formatDate(event.date),
+      }));
       setDataEvents(eventsAPI);
 
       const categoriesAPI = await categoryAPI();
