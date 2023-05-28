@@ -1,12 +1,16 @@
 import PropTypes from "prop-types";
 
 // MATERIAL
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+// import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 function BookmarkButton({ isSaved, handleBookmarkToggle }) {
   return isSaved ? (
-    <BookmarkIcon onClick={handleBookmarkToggle} />
+    <BookmarkAddedIcon
+      sx={{ color: "#242d54" }}
+      onClick={handleBookmarkToggle}
+    />
   ) : (
     <BookmarkBorderIcon onClick={handleBookmarkToggle} />
   );

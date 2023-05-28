@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import { Outlet, useParams } from "react-router-dom";
 
+// MATERIAL
+import { Box, Button, Typography } from "@mui/material";
+
 // DIALOG
 import DeleteEventDialog from "../dialogs/DeleteEventDialog";
 
@@ -31,27 +34,50 @@ function Profile() {
   };
 
   return (
-    <div>
-      <h1>Hello, {user.name}!</h1>
-      <p>Bienvenue sur votre page de profil!</p>
-      <p>
-        Ici vous pouvez modifier votre avatar et ajouter vos évènements favoris
-      </p>
-      <CustomAvatar
-        photoUrl={user.avatar}
-        handleAvatarUpload={handleAvatarUpload}
-        style={{ width: "50px", height: "50px" }}
-      />
-      <button type="submit" onClick={handleFileSelect}>
-        Modifier
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        ref={fileInputRef}
-        onChange={handleAvatarUpload}
-      />
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        mb={3}
+      >
+        <Typography
+          variant="h4"
+          style={{ color: "#42555e" }}
+          fontWeight="bold"
+          mt={5}
+          mb={3}
+        >
+          Salut, {user.name}!
+        </Typography>
+        <Typography variant="h6">Bienvenue sur votre profil</Typography>
+        <Typography variant="h6" mb={4}>
+          Tu peux changer ton avatar ici, et n'oublie pas de marquer tes
+          événements préférés !
+        </Typography>
+        <CustomAvatar
+          photoUrl={user.avatar}
+          handleAvatarUpload={handleAvatarUpload}
+          style={{ width: "10rem", height: "auto" }}
+        />
+        <Button
+          variant="text"
+          color="secondary"
+          size="small"
+          onClick={handleFileSelect}
+          sx={{ marginTop: "1rem" }}
+        >
+          Modifier
+        </Button>
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          ref={fileInputRef}
+          onChange={handleAvatarUpload}
+        />
+      </Box>
       <FavoriteEvents
         userEvents={userEvents}
         handleOpenDialog={handleOpenDialog}
@@ -63,7 +89,7 @@ function Profile() {
         handleRemoveFromFavorites={handleRemoveFromFavorites}
         eventDelete={eventDelete}
       />
-    </div>
+    </>
   );
 }
 

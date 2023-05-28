@@ -1,66 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 // MATERIAL
-import { Button, Box, Link as MuiLink, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // COMPONENT
-import EventImage from "./EventImage";
+import EventCard from "./EventCard";
+import CustomPagination from "./CustomPagination";
 
 function FavoriteEvents({ userEvents, handleOpenDialog }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  // PAGINATION
+  useEffect(() => {
+    setCurrentPage(1);
+  }, []);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedEvents = userEvents.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div>
-      <h2>Evénements Favoris :</h2>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {userEvents.map((event) => {
+      <Typography variant="h5" fontWeight="bold" textAlign="center" mb={4}>
+        Vos évènements Favoris :
+      </Typography>
+      <Grid container spacing={3}>
+        {displayedEvents.map((event) => {
           if (event.id) {
             return (
-              <div key={event.id}>
-                <Link to={`/events/${event.id}`}>
-                  <EventImage image={event.image} alt={event.title} />
-                </Link>
-                <MuiLink
-                  component={Link}
-                  to={`/categories/${event.category}`}
-                  underline="hover"
-                  color="inherit"
-                  sx={{ "&:hover": { color: "#888" } }}
-                >
-                  <Typography variant="h6" sx={{ marginTop: "1rem" }}>
-                    {event.category}
-                  </Typography>
-                </MuiLink>
-                <h3>{event.title}</h3>
-                <p>{event.description}</p>
-                <p>{event.address}</p>
+              <Grid item xs={6} key={event.id}>
+                <EventCard
+                  key={event.id}
+                  id={event.id}
+                  image={event.image}
+                  title={event.title}
+                  category={event.category}
+                  address={event.address}
+                  description={event.description}
+                  date={event.date}
+                  limitedInfo
+                  columns={2}
+                />
                 <Button
                   variant="outlined"
-                  color="primary"
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "#f44336", // changer à votre couleur désirée
-                    },
-                  }}
+                  color="error"
+                  size="small"
                   startIcon={<DeleteIcon />}
                   onClick={() => handleOpenDialog(event)}
                 >
                   Retirer
                 </Button>
-              </div>
+              </Grid>
             );
           }
           return null;
         })}
-      </Box>
+      </Grid>
+      <CustomPagination
+        totalItems={userEvents.length} // Remplacez filteredData par vos propres données
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

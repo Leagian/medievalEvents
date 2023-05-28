@@ -8,6 +8,7 @@ function Footer() {
       component="footer"
       display="flex"
       justifyContent="space-between"
+      mt={3}
       sx={{
         backgroundColor: "#f4f0ea",
         padding: "0.5rem",

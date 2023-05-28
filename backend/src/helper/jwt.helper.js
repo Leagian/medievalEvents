@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const encodeJWT = (payload) => {
-  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "2h" });
+  return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "6h" });
 };
 
 const decodeJWT = (token) => {

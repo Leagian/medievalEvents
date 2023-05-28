@@ -148,7 +148,7 @@ function Form() {
       </FormControl>
 
       <FormControl fullWidth margin="normal">
-        <InputLabel id="categorie_id">Catégorie</InputLabel>
+        <InputLabel id="categorie_id">Catégorie*</InputLabel>
         <Select
           labelId="categorie_id"
           id="categorie_id"

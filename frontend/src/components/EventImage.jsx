@@ -9,10 +9,10 @@ import defaultImage from "../assets/defaultImage.png";
 
 const useStyles = makeStyles({
   eventImage: {
-    // maxWidth: "600px",
-    // maxHeight: "350px",
-    width: "650px",
-    height: "360px",
+    width: "100%", // This makes the image responsive
+    height: "auto", // This keeps the aspect ratio of the image
+    maxWidth: "650px", // This limits the maximum width of the image
+    maxHeight: "400px", // This limits the maximum height of the image
     objectFit: "cover",
   },
 });

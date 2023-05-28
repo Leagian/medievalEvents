@@ -34,6 +34,7 @@ function SearchEvents() {
     fetchDataAPI();
   }, []);
 
+  // PAGINATION
   useEffect(() => {
     setCurrentPage(1);
   }, [searchText, selectedCategories]);

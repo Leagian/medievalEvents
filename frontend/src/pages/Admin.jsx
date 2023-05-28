@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 // MATERIAL
+import { Typography, Grid } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+
+// COMPONENT
+import EventCard from "../components/EventCard";
+import CustomPagination from "../components/CustomPagination";
 
 // DIALOG
 import DeleteAdminDialog from "../dialogs/DeleteAdminDialog";
@@ -19,6 +23,8 @@ import eventManagerAPI from "../services/eventManagrAPI";
 
 function Admin() {
   const { filterApprovedEvents, filterNonApprovedEvents } = useDataContext();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const [events, setEvents] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false); // event ajouté
   const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
@@ -166,10 +172,23 @@ function Admin() {
     setShowConfirmation(false);
   };
 
+  // PAGINATION
+  useEffect(() => {
+    setCurrentPage(1);
+  }, []);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedEvents = filteredEvents.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div>
-      <h1>Page d'administration</h1>
-      <h2>Liste des événements</h2>
+      <Typography>Page d'administration</Typography>
+      <Typography>Liste des événements</Typography>
       <input
         type="text"
         value={searchText}
@@ -185,21 +204,30 @@ function Admin() {
         }
         label="Approuvé"
       />
-      {filteredEvents.map((event) => (
-        <div key={event.id}>
-          <Link to={`/events/${event.id}`}>
-            <h3>{event.title}</h3>
-          </Link>
-          <p>{event.description}</p>
-          <p>{event.category}</p>
-          <button type="submit" onClick={() => handleClickOpenDelete(event.id)}>
-            Supprimer
-          </button>
-          <button type="submit" onClick={() => handleClickOpenEdit(event)}>
-            Modifier
-          </button>
-        </div>
-      ))}
+      <Grid container spacing={3}>
+        {displayedEvents.map((event) => (
+          <Grid item xs={6} key={event.id}>
+            <EventCard
+              key={event.id}
+              id={event.id}
+              image={event.image}
+              title={event.title}
+              category={event.category}
+              description={event.description}
+              limitedInfo
+            />
+            <button
+              type="submit"
+              onClick={() => handleClickOpenDelete(event.id)}
+            >
+              Supprimer
+            </button>
+            <button type="submit" onClick={() => handleClickOpenEdit(event)}>
+              Modifier
+            </button>
+          </Grid>
+        ))}
+      </Grid>
       <DeleteAdminDialog
         open={openDelete}
         handleClose={handleCloseDelete}
@@ -218,6 +246,12 @@ function Admin() {
       <ConfirmationAdminDialog
         open={showConfirmation}
         handleClose={handleCloseConfirmation}
+      />
+      <CustomPagination
+        totalItems={filteredEvents.length} // Remplacez filteredData par vos propres données
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
     </div>
   );

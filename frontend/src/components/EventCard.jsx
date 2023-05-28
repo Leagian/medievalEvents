@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // MATERIAL
-import { Box, Link as MuiLink, Typography } from "@mui/material";
+import { Link as MuiLink, Typography } from "@mui/material";
 
 // COMPONENT
 import EventImage from "./EventImage";
@@ -18,9 +18,7 @@ function EventCard({
   limitedInfo = false,
 }) {
   return (
-    <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
+    <>
       <MuiLink
         component={Link}
         to={`/events/${id}`}
@@ -53,7 +51,7 @@ function EventCard({
           <p>{date}</p>
         </>
       )}
-    </Box>
+    </>
   );
 }
 

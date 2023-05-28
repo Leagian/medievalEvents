@@ -136,6 +136,7 @@ function Header() {
                     <CustomAvatar
                       photoUrl={user.avatar}
                       handleAvatarUpload={handleAvatarUpload}
+                      style={{ width: "2.5rem", height: "auto" }}
                     />
                   </Link>
                 </Box>

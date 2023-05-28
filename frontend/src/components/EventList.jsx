@@ -36,6 +36,7 @@ function EventList({ events, limitEvents, limitedInfo, columns }) {
             description={event.description}
             date={event.date}
             limitedInfo={limitedInfo}
+            columns={columns}
           />
         </Grid>
       ))}
