@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // MATERIAL
@@ -7,32 +6,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // COMPONENT
 import EventCard from "./EventCard";
-import CustomPagination from "./CustomPagination";
 
 function FavoriteEvents({ userEvents, handleOpenDialog }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-
-  // PAGINATION
-  useEffect(() => {
-    setCurrentPage(1);
-  }, []);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedEvents = userEvents.slice(startIndex, endIndex);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
   return (
     <div>
       <Typography variant="h5" fontWeight="bold" textAlign="center" mb={4}>
         Vos évènements Favoris :
       </Typography>
       <Grid container spacing={3}>
-        {displayedEvents.map((event) => {
+        {userEvents.map((event) => {
           if (event.id) {
             return (
               <Grid item xs={6} key={event.id}>
@@ -63,12 +45,6 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
           return null;
         })}
       </Grid>
-      <CustomPagination
-        totalItems={userEvents.length} // Remplacez filteredData par vos propres données
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
     </div>
   );
 }
