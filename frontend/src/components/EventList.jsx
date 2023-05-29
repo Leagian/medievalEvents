@@ -9,7 +9,15 @@ import { useDataContext } from "../contexts/DataContext";
 // COMPONENT
 import EventCard from "./EventCard";
 
-function EventList({ events, limitEvents, limitedInfo, columns }) {
+function EventList({
+  events,
+  limitEvents,
+  columns,
+  showCat,
+  showDesc,
+  showAddress,
+  showDate,
+}) {
   const { dataEvents, filterApprovedEvents } = useDataContext();
 
   // Utilise les événements passés par les props si disponibles, sinon utilise le contexte
@@ -27,15 +35,17 @@ function EventList({ events, limitEvents, limitedInfo, columns }) {
       {limitedEvents.map((event) => (
         <Grid item xs={columnWidth} key={event.id}>
           <EventCard
-            key={event.id}
             id={event.id}
-            image={event.image}
             title={event.title}
-            category={event.category}
-            address={event.address}
+            image={event.image}
             description={event.description}
+            category={event.category}
             date={event.date}
-            limitedInfo={limitedInfo}
+            address={event.address}
+            showCat={showCat}
+            showDesc={showDesc}
+            showAddress={showAddress}
+            showDate={showDate}
             columns={columns}
           />
         </Grid>
@@ -54,7 +64,10 @@ EventList.propTypes = {
   ),
   columns: PropTypes.number,
   limitEvents: PropTypes.number,
-  limitedInfo: PropTypes.bool,
+  showCat: PropTypes.bool,
+  showDesc: PropTypes.bool,
+  showAddress: PropTypes.bool,
+  showDate: PropTypes.bool,
 };
 
 export default EventList;

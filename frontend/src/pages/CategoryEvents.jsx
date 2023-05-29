@@ -2,34 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 // MATERIAL
-import { IconButton, Typography, Grid } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // COMPONENT
-import EventCard from "../components/EventCard";
+import EventList from "../components/EventList";
 import CustomPagination from "../components/CustomPagination";
 
 // CONTEXT
 import { useDataContext } from "../contexts/DataContext";
 
 function CategoryEvents() {
-  const [categoryEvents, setCategoryEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
   const { id: category } = useParams();
   const navigate = useNavigate(); // HandlePrevious retour à la page précédente
 
-  const { dataEvents, filterApprovedEvents } = useDataContext();
-  const filteredCategoryEvents = filterApprovedEvents(categoryEvents);
+  const { dataEvents } = useDataContext();
 
-  useEffect(() => {
-    const filteredEvents = dataEvents.filter(
-      (event) => event.category === category
-    );
-
-    setCategoryEvents(filteredEvents);
-  }, [dataEvents, category]);
+  const filteredCategoryEvents = dataEvents.filter(
+    (event) => event.category === category && event.isApproved === 1
+  );
 
   const handlePrevious = () => {
     navigate(-1);
@@ -59,24 +53,10 @@ function CategoryEvents() {
         {category.toUpperCase()}
       </Typography>
 
-      <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        {displayedEvents.map((event) => (
-          <Grid item xs={6} key={event.id}>
-            <EventCard
-              key={event.id}
-              id={event.id}
-              image={event.image}
-              title={event.title}
-              description={event.description}
-              limitedInfo
-              columns={2}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <EventList events={displayedEvents} columns={2} />
 
       <CustomPagination
-        totalItems={filteredCategoryEvents.length} // Remplacez filteredData par vos propres données
+        totalItems={filteredCategoryEvents.length}
         itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         onPageChange={handlePageChange}

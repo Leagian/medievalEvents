@@ -20,7 +20,8 @@ function Home() {
       <EventList
         events={sortedEvents}
         limitEvents={4}
-        limitedInfo
+        showDesc
+        showCat
         columns={2}
       />
     </div>

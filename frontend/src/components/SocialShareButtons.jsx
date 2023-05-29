@@ -5,7 +5,9 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 function SocialShareButtons() {
   const url = encodeURIComponent(window.location.href);
-  const text = encodeURIComponent("Regardez ce site génial que j'ai trouvé!");
+  const text = encodeURIComponent(
+    "Super site qui recense tous les évènements médievaux de France! Ajoutez le vôtre!"
+  );
 
   const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
@@ -19,7 +21,7 @@ function SocialShareButtons() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FacebookIcon color="primary" />
+        <FacebookIcon />
       </IconButton>
 
       <IconButton
@@ -28,7 +30,7 @@ function SocialShareButtons() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <TwitterIcon color="primary" />
+        <TwitterIcon />
       </IconButton>
       <IconButton
         component="a"
@@ -36,7 +38,7 @@ function SocialShareButtons() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <LinkedInIcon color="primary" />
+        <LinkedInIcon />
       </IconButton>
     </div>
   );

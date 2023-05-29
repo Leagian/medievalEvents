@@ -3,7 +3,7 @@ const db = require("./db");
 const findAllEvents = async () => {
   try {
     const [events] =
-      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category, isApproved
+      await db.query(`SELECT events.id, title, image, address, site, DATE_FORMAT(date, '%Y-%m-%d') as date, description, cat.id as category_id, cat.cat_name as category, isApproved 
     FROM events AS events
     INNER JOIN categorie AS cat ON cat.id=events.categorie_id`);
 

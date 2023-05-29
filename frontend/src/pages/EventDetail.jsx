@@ -14,9 +14,11 @@ import BookmarkButton from "../components/BookmarkButton";
 
 // CONTEXT
 import { useAuthContext } from "../contexts/AuthContext";
+import { useDataContext } from "../contexts/DataContext";
 
 // HELPER
 import formatDate from "../helpers/DateHelper";
+
 // SERVICE
 import profileAPI from "../services/profileAPI";
 
@@ -29,6 +31,7 @@ function EventDetail() {
 
   const { id } = useParams();
   const { user } = useAuthContext();
+  const { filterApprovedEvents } = useDataContext();
 
   useEffect(() => {
     profileAPI
@@ -58,7 +61,7 @@ function EventDetail() {
           );
         });
     }
-  }, [id, user]);
+  }, [id, user, filterApprovedEvents]);
 
   const handleFavoriteEvent = (apiMethod, url, successOpen, failOpen) => {
     apiMethod(url)
@@ -108,74 +111,90 @@ function EventDetail() {
     navigate(-1);
   };
 
+  let siteUrl = "";
+  if (eventId.site) {
+    siteUrl =
+      eventId.site.startsWith("http://") || eventId.site.startsWith("https://")
+        ? eventId.site
+        : `http://${eventId.site}`;
+  }
+
   return (
-    <div className="detailsEvent">
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        key={eventId.id}
-      >
-        <Box
-          mt={6}
-          mb={6}
-          display="flex"
-          justifyContent="space-evenly"
-          alignItems="center"
-          width="100%"
-        >
-          <IconButton onClick={handlePrevious}>
-            <ArrowBackIcon />
-            <Typography variant="body1">RETOUR</Typography>
-          </IconButton>
-
-          <Typography variant="h5" fontWeight="bold">
-            {eventId.title}
-            <BookmarkButton
-              isSaved={isSaved}
-              handleBookmarkToggle={handleBookmarkToggle}
-            />
-          </Typography>
-
-          <MuiLink
-            component={Link}
-            to={`/categories/${eventId.category}`}
-            underline="hover"
-            color="inherit"
-            sx={{ "&:hover": { color: "#888" } }}
+    <div>
+      {eventId && eventId.isApproved === 1 && (
+        <div className="detailsEvent">
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            key={eventId.id}
           >
-            <Typography variant="h5">{eventId.category}</Typography>
-          </MuiLink>
-        </Box>
+            <Box
+              mt={6}
+              mb={6}
+              display="flex"
+              justifyContent="space-evenly"
+              alignItems="center"
+              width="100%"
+            >
+              <IconButton onClick={handlePrevious}>
+                <ArrowBackIcon />
+                <Typography variant="body1">RETOUR</Typography>
+              </IconButton>
 
-        <Box display="inline-block">
-          <EventImage image={eventId.image} alt={eventId.title} />
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Typography>{eventId.site}</Typography>
-            <Typography>{eventId.date}</Typography>
+              <Typography variant="h5" fontWeight="bold">
+                {eventId.title}
+                <BookmarkButton
+                  isSaved={isSaved}
+                  handleBookmarkToggle={handleBookmarkToggle}
+                />
+              </Typography>
+
+              <MuiLink
+                component={Link}
+                to={`/categories/${eventId.category}`}
+                underline="hover"
+                color="inherit"
+                sx={{ "&:hover": { color: "#888" } }}
+              >
+                <Typography variant="h5">{eventId.category}</Typography>
+              </MuiLink>
+            </Box>
+
+            <Box display="inline-block">
+              <EventImage image={eventId.image} alt={eventId.title} />
+            </Box>
+
+            <Typography variant="body1" width="60%" mt={4} mb={4}>
+              {eventId.description}
+            </Typography>
+            <Typography variant="body1" mt={2} mb={1}>
+              {eventId.address}
+            </Typography>
+            <MuiLink href={siteUrl} target="_blank" color="inherit">
+              {eventId.site}
+            </MuiLink>
+            <Typography variant="body1" mt={1}>
+              {eventId.date}
+            </Typography>
           </Box>
-        </Box>
 
-        <Typography width="60%" mt={4} mb={4}>
-          {eventId.description}
-          <Typography>{eventId.address}</Typography>
-        </Typography>
-      </Box>
+          <AlertFavDialog
+            open={open}
+            setOpen={setOpen}
+            title="Sauvegarde d'événement"
+            description="L'événement a été ajouté à vos favoris."
+          />
 
-      <AlertFavDialog
-        open={open}
-        setOpen={setOpen}
-        title="Sauvegarde d'événement"
-        description="L'événement a été ajouté à vos favoris."
-      />
-
-      <AlertFavDialog
-        open={openLogin}
-        setOpen={setOpenLogin}
-        title="Connexion requise"
-        description="Vous devez être connecté pour ajouter un événement."
-      />
+          <AlertFavDialog
+            open={openLogin}
+            setOpen={setOpenLogin}
+            title="Connexion requise"
+            description="Vous devez être connecté pour ajouter un événement."
+          />
+        </div>
+      )}
     </div>
   );
 }

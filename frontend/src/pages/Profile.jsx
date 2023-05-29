@@ -61,12 +61,13 @@ function Profile() {
           handleAvatarUpload={handleAvatarUpload}
           style={{ width: "10rem", height: "auto" }}
         />
+
         <Button
           variant="text"
           color="secondary"
           size="small"
           onClick={handleFileSelect}
-          sx={{ marginTop: "1rem" }}
+          sx={{ marginTop: "1rem", marginBottom: "2rem" }}
         >
           Modifier
         </Button>
@@ -83,6 +84,7 @@ function Profile() {
         handleOpenDialog={handleOpenDialog}
       />
       <Outlet />
+
       <DeleteEventDialog
         open={open}
         handleClose={handleClose}

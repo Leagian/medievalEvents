@@ -10,7 +10,7 @@ import EventCard from "./EventCard";
 function FavoriteEvents({ userEvents, handleOpenDialog }) {
   return (
     <div>
-      <Typography variant="h5" fontWeight="bold" textAlign="center" mb={4}>
+      <Typography variant="h5" fontWeight="bold" textAlign="center" mb={1}>
         Vos évènements Favoris :
       </Typography>
       <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -19,16 +19,11 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
             return (
               <Grid item xs={6} key={event.id}>
                 <EventCard
-                  key={event.id}
                   id={event.id}
                   image={event.image}
                   title={event.title}
-                  category={event.category}
-                  address={event.address}
                   description={event.description}
-                  date={event.date}
-                  limitedInfo
-                  columns={2}
+                  showDesc
                 />
                 <Button
                   variant="outlined"
@@ -36,6 +31,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
                   size="small"
                   startIcon={<DeleteIcon />}
                   onClick={() => handleOpenDialog(event)}
+                  sx={{ marginLeft: "1.3rem" }}
                 >
                   Retirer
                 </Button>

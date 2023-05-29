@@ -14,7 +14,7 @@ import SearchFilters from "../components/SearchFilters";
 import SearchResults from "../components/SearchResults";
 
 function SearchEvents() {
-  const { dataEvents } = useDataContext();
+  const { dataEvents, filterApprovedEvents } = useDataContext();
   const [searchText, setSearchText] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchCat, setSearchCat] = useState([]);
@@ -43,7 +43,7 @@ function SearchEvents() {
     setSelectedCategories(newSelectedCategories);
   };
 
-  const filteredEvents = dataEvents.filter((event) => {
+  const filteredEvents = filterApprovedEvents(dataEvents).filter((event) => {
     const isInSelectedCategories =
       selectedCategories.length > 0
         ? selectedCategories.includes(event.category_id)

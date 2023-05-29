@@ -12,10 +12,13 @@ function EventCard({
   image,
   title,
   category,
-  description,
   date,
   address,
-  limitedInfo = false,
+  description,
+  showCat = false,
+  showDesc = false,
+  showAddress = false,
+  showDate = false,
 }) {
   return (
     <Box p={3}>
@@ -43,26 +46,36 @@ function EventCard({
       <Link to={`/events/${id}`}>
         <EventImage image={image} alt={title} />
       </Link>
-      {limitedInfo && (
-        <>
-          <MuiLink
-            component={Link}
-            to={`/categories/${category}`}
-            underline="hover"
-            color="inherit"
-            sx={{ "&:hover": { color: "#888" } }}
-          >
-            <Typography variant="h6" sx={{ marginTop: "1rem" }}>
-              {category}
-            </Typography>
-          </MuiLink>
-          <Box style={{ maxWidth: "80%" }}>
-            <p>{description}</p>
-          </Box>
-          <p>{address}</p>
-          <p>{date}</p>
-        </>
+      {showCat && (
+        <MuiLink
+          component={Link}
+          to={`/categories/${category}`}
+          underline="hover"
+          color="inherit"
+          sx={{ "&:hover": { color: "#888" } }}
+        >
+          <Typography variant="h6" mt={1}>
+            {category}
+          </Typography>
+        </MuiLink>
       )}
+      <Box style={{ maxWidth: "90%" }}>
+        {showDesc && (
+          <Typography variant="body1" mt={1}>
+            {description}
+          </Typography>
+        )}
+        {showAddress && (
+          <Typography variant="body1" mt={1}>
+            {address}
+          </Typography>
+        )}
+        {showDate && (
+          <Typography variant="body1" mt={1}>
+            {date}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 }
@@ -71,11 +84,14 @@ EventCard.propTypes = {
   id: PropTypes.number.isRequired,
   image: PropTypes.string,
   title: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
+  category: PropTypes.string,
   description: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  limitedInfo: PropTypes.bool,
+  date: PropTypes.string,
+  address: PropTypes.string,
+  showCat: PropTypes.bool,
+  showDesc: PropTypes.bool,
+  showAddress: PropTypes.bool,
+  showDate: PropTypes.bool,
 };
 
 export default EventCard;

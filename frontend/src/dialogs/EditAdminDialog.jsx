@@ -39,86 +39,103 @@ function EditAdminDialog({
       <DialogContent>
         {editingEvent && (
           <>
-            <TextField
-              inputProps={{
-                style: {
-                  width: "400px",
-                  height: "50px",
-                  paddingTop: "5px",
-                  paddingBottom: "5px",
-                },
-              }}
-              label="Titre"
-              value={editingEvent.title}
-              onChange={(e) =>
-                setEditingEvent({ ...editingEvent, title: e.target.value })
-              }
-            />
-            <TextField
-              inputProps={{
-                style: {
-                  width: "400px",
-                  height: "200px",
-                },
-              }}
-              multiline
-              rows={4}
-              label="Description"
-              value={editingEvent.description}
-              onChange={(e) =>
-                setEditingEvent({
-                  ...editingEvent,
-                  description: e.target.value,
-                })
-              }
-            />
-            <TextField
-              type="file"
-              onChange={(e) => handleImageChange(e.target.files[0])}
-            />
+            <FormControl fullWidth margin="normal">
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Titre"
+                value={editingEvent.title}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, title: e.target.value })
+                }
+              />
+            </FormControl>
 
-            <TextField
-              inputProps={{
-                style: {
-                  width: "400px",
-                  height: "50px",
-                  paddingTop: "5px",
-                  paddingBottom: "5px",
-                },
-              }}
-              label="Adresse"
-              value={editingEvent.address}
-              onChange={(e) =>
-                setEditingEvent({ ...editingEvent, address: e.target.value })
-              }
-            />
-            <TextField
-              inputProps={{
-                style: {
-                  width: "400px",
-                  height: "50px",
-                  paddingTop: "5px",
-                  paddingBottom: "5px",
-                },
-              }}
-              label="Site"
-              value={editingEvent.site}
-              onChange={(e) =>
-                setEditingEvent({ ...editingEvent, site: e.target.value })
-              }
-            />
-            <TextField
-              label="Date"
-              type="date"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={editingEvent.date}
-              onChange={(e) =>
-                setEditingEvent({ ...editingEvent, date: e.target.value })
-              }
-            />
-            <FormControl style={{ minWidth: 120 }}>
+            <FormControl fullWidth margin="normal">
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "200px",
+                  },
+                }}
+                multiline
+                rows={4}
+                label="Description"
+                value={editingEvent.description}
+                onChange={(e) =>
+                  setEditingEvent({
+                    ...editingEvent,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <TextField
+                type="file"
+                onChange={(e) => handleImageChange(e.target.files[0])}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Adresse"
+                value={editingEvent.address}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, address: e.target.value })
+                }
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <TextField
+                inputProps={{
+                  style: {
+                    width: "400px",
+                    height: "50px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  },
+                }}
+                label="Site"
+                value={editingEvent.site}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, site: e.target.value })
+                }
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <TextField
+                label="Date"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={editingEvent.date}
+                onChange={(e) =>
+                  setEditingEvent({ ...editingEvent, date: e.target.value })
+                }
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="normal" style={{ minWidth: 120 }}>
               <InputLabel id="categorie-label">Catégorie</InputLabel>
               <Select
                 value={
@@ -135,17 +152,17 @@ function EditAdminDialog({
                 ))}
               </Select>
             </FormControl>
-            <FormControl style={{ minWidth: 200 }}>
+
+            <FormControl fullWidth margin="normal" style={{ minWidth: 200 }}>
               <InputLabel id="isApproved-label">Pending</InputLabel>
               <Select
                 value={editingEvent.isApproved}
-                onChange={(e) =>
-                  setEditingEvent({
-                    ...editingEvent,
+                onChange={(e) => {
+                  setEditingEvent((prevEvent) => ({
+                    ...prevEvent,
                     isApproved: Number(e.target.value),
-                  })
-                }
-                style={{ width: 150 }} // Agrandissement du SELECT
+                  }));
+                }}
               >
                 <MenuItem value={0}>Non approuvé</MenuItem>
                 <MenuItem value={1}>Approuvé</MenuItem>

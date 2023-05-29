@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // MATERIAL
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, TextField, Box, Button } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
@@ -19,7 +19,10 @@ import ConfirmationAdminDialog from "../dialogs/ConfirmationAdminDialog";
 import { useDataContext } from "../contexts/DataContext";
 
 // SERVICE
-import eventManagerAPI from "../services/eventManagrAPI";
+import eventManagerAPI from "../services/eventManagerAPI";
+
+// HELPER
+import formatDate from "../helpers/DateHelper";
 
 function Admin() {
   const { filterApprovedEvents, filterNonApprovedEvents } = useDataContext();
@@ -49,8 +52,12 @@ function Admin() {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/`)
       .then((response) => {
-        setEvents(response.data);
-        setFilteredEvents(response.data);
+        const formattedEvents = response.data.map((event) => ({
+          ...event,
+          date: formatDate(event.date),
+        }));
+        setEvents(formattedEvents);
+        setFilteredEvents(formattedEvents);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -76,19 +83,27 @@ function Admin() {
   };
 
   const handleClickOpenEdit = (event) => {
-    // Rendre la date au format format 'yyyy-mm-dd'
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(event.date)) {
-      // The date is not in the correct format
+    // Récupérer la date initiale de l'événement
+    const initialDate = event.date; // Modifier ici selon votre besoin
+
+    // Extraire les composants de la date initiale (mois, jour, année)
+    const [month, day, year] = initialDate.split("/");
+
+    // Construire la date au format 'yyyy-mm-dd' pour l'affichage
+    const formattedDate = `${year}-${month}-${day}`;
+
+    if (!formattedDate) {
+      // La date n'est pas valide
       console.error("Invalid date:", event.date);
     } else {
       // La date est correcte
       setEditingEvent({
         ...event,
-        date: event.date,
+        date: formattedDate,
         categorie_id: event.categorie_id,
+        isApproved: event.isApproved,
       });
-
+      console.log("Editing Event:", event);
       setOpenEdit(true);
     }
   };
@@ -107,6 +122,7 @@ function Admin() {
   };
 
   const handleUpdate = () => {
+    console.log("Editing Event:", editingEvent);
     const formData = new FormData();
     Object.entries(editingEvent).forEach(([key, value]) => {
       formData.append(key, value);
@@ -115,25 +131,21 @@ function Admin() {
     if (imageFile) {
       formData.append("image", imageFile);
     }
-
+    console.log("Form Data:", formData);
     eventManagerAPI
       .update(editingEvent.id, formData)
-      .then(() => {
+      .then((response) => {
+        const updatedEvent = response.data; // La réponse de l'API doit contenir l'événement mis à jour
         setEvents(
           events.map((event) =>
-            event.id === editingEvent.id ? editingEvent : event
+            event.id === editingEvent.id ? updatedEvent : event
           )
         );
+        console.log("Response:", response);
         setShowConfirmation(true); // Afficher le message de confirmation
         handleCloseEdit(); // Fermer la boîte de dialogue
       })
       .catch((error) => console.error(error));
-  };
-
-  const handleImageChange = (file) => {
-    if (file) {
-      setImageFile(file);
-    }
   };
 
   const handleChange = (event) => {
@@ -145,7 +157,9 @@ function Admin() {
 
   const onSearch = (text, newShowApprovedOnly) => {
     let filtered = events.filter((event) =>
-      event.title.toLowerCase().includes(text.toLowerCase())
+      event.title
+        ? event.title.toLowerCase().includes(text.toLowerCase())
+        : false
     );
 
     if (newShowApprovedOnly) {
@@ -172,6 +186,10 @@ function Admin() {
     setShowConfirmation(false);
   };
 
+  const handleImageChange = (file) => {
+    setImageFile(file);
+  };
+
   // PAGINATION
   useEffect(() => {
     setCurrentPage(1);
@@ -187,23 +205,46 @@ function Admin() {
 
   return (
     <div>
-      <Typography>Page d'administration</Typography>
-      <Typography>Liste des événements</Typography>
-      <input
-        type="text"
-        value={searchText}
-        onChange={handleSearch}
-        placeholder="Rechercher"
-      />
-      <FormControlLabel
-        control={
-          <Switch
-            checked={showApprovedOnly}
-            onChange={handleShowApprovedChange}
-          />
-        }
-        label="Approuvé"
-      />
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        textAlign="center"
+        mb={4}
+        mt={5}
+      >
+        Page Admin
+      </Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <TextField
+          label="Rechercher"
+          type="text"
+          value={searchText}
+          onChange={handleSearch}
+          variant="standard"
+          fullWidth
+          sx={{
+            maxWidth: "20%",
+            marginBottom: "3rem",
+          }}
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              color="warning"
+              checked={showApprovedOnly}
+              onChange={handleShowApprovedChange}
+            />
+          }
+          label="Filtrer par approbation"
+          labelPlacement="start"
+        />
+      </Box>
+
       <Grid container style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {displayedEvents.map((event) => (
           <Grid item xs={6} key={event.id}>
@@ -214,17 +255,26 @@ function Admin() {
               title={event.title}
               category={event.category}
               description={event.description}
+              address={event.address}
+              date={event.date}
               limitedInfo
             />
-            <button
-              type="submit"
-              onClick={() => handleClickOpenDelete(event.id)}
-            >
-              Supprimer
-            </button>
-            <button type="submit" onClick={() => handleClickOpenEdit(event)}>
-              Modifier
-            </button>
+            <Box display="flex" ml={3}>
+              <Button
+                sx={{ marginRight: "1rem" }}
+                variant="outlined"
+                onClick={() => handleClickOpenEdit(event)}
+              >
+                Modifier
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => handleClickOpenDelete(event.id)}
+              >
+                Supprimer
+              </Button>
+            </Box>
           </Grid>
         ))}
       </Grid>
