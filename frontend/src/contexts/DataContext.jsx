@@ -19,15 +19,19 @@ export function DataContextProvider({ children }) {
 
   useEffect(() => {
     const fetchDataAPI = async () => {
-      let eventsAPI = await eventAPI();
-      eventsAPI = eventsAPI.map((event) => ({
-        ...event,
-        date: formatDate(event.date),
-      }));
-      setDataEvents(eventsAPI);
+      try {
+        let eventsAPI = await eventAPI.getAll();
+        eventsAPI = eventsAPI.map((event) => ({
+          ...event,
+          date: formatDate(event.date),
+        }));
+        setDataEvents(eventsAPI);
 
-      const categoriesAPI = await categoryAPI();
-      setCategories(categoriesAPI);
+        const categoriesAPI = await categoryAPI.getAll();
+        setCategories(categoriesAPI);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
     };
 
     fetchDataAPI();

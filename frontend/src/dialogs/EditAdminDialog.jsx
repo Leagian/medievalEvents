@@ -158,10 +158,10 @@ function EditAdminDialog({
               <Select
                 value={editingEvent.isApproved}
                 onChange={(e) => {
-                  setEditingEvent((prevEvent) => ({
-                    ...prevEvent,
+                  setEditingEvent({
+                    ...editingEvent,
                     isApproved: Number(e.target.value),
-                  }));
+                  });
                 }}
               >
                 <MenuItem value={0}>Non approuvé</MenuItem>

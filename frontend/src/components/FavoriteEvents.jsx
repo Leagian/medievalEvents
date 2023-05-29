@@ -19,6 +19,7 @@ function FavoriteEvents({ userEvents, handleOpenDialog }) {
             return (
               <Grid item xs={6} key={event.id}>
                 <EventCard
+                  key={event.id}
                   id={event.id}
                   image={event.image}
                   title={event.title}

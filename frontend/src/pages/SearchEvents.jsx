@@ -23,7 +23,7 @@ function SearchEvents() {
 
   useEffect(() => {
     const fetchDataAPI = async () => {
-      const categoriesAPI = await categoryAPI();
+      const categoriesAPI = await categoryAPI.getAll();
       const categoriesFilterKey = categoriesAPI.map((cat) => ({
         ...cat,
         filterKey: cat.cat_name,

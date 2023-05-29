@@ -89,9 +89,6 @@ const editEvent = async (req, res) => {
       eventData.image = `/uploads/resized_image/${image.filename}`;
     }
 
-    // Mettez à jour la propriété isApproved à 1 (approuvé)
-    eventData.isApproved = 1;
-
     const result = await editOneEvent(eventId, eventData);
 
     if (!result) throw new Error();

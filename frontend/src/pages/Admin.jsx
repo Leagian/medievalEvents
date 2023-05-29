@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 // MATERIAL
 import { Typography, Grid, TextField, Box, Button } from "@mui/material";
@@ -19,7 +18,8 @@ import ConfirmationAdminDialog from "../dialogs/ConfirmationAdminDialog";
 import { useDataContext } from "../contexts/DataContext";
 
 // SERVICE
-import eventManagerAPI from "../services/eventManagerAPI";
+import eventAPI from "../services/eventAPI";
+import categoryAPI from "../services/categoryAPI";
 
 // HELPER
 import formatDate from "../helpers/DateHelper";
@@ -49,10 +49,10 @@ function Admin() {
   });
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/events/`)
+    eventAPI
+      .getAll()
       .then((response) => {
-        const formattedEvents = response.data.map((event) => ({
+        const formattedEvents = response.map((event) => ({
           ...event,
           date: formatDate(event.date),
         }));
@@ -63,9 +63,11 @@ function Admin() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/categories/`)
-      .then((response) => setCategorieList(response.data))
+    categoryAPI
+      .getAll()
+      .then((response) => {
+        setCategorieList(response);
+      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -83,33 +85,42 @@ function Admin() {
   };
 
   const handleClickOpenEdit = (event) => {
-    // Récupérer la date initiale de l'événement
-    const initialDate = event.date; // Modifier ici selon votre besoin
+    eventAPI
+      .getOne(event.id)
+      .then((response) => {
+        const fetchedEvent = response.data;
+        // Récupérer la date initiale de l'événement
+        const initialDate = fetchedEvent.date;
 
-    // Extraire les composants de la date initiale (mois, jour, année)
-    const [month, day, year] = initialDate.split("/");
+        if (!initialDate) {
+          // La date est vide ou invalide
+          console.error("Invalid date:", initialDate);
+        } else {
+          let formattedDate = initialDate;
 
-    // Construire la date au format 'yyyy-mm-dd' pour l'affichage
-    const formattedDate = `${year}-${month}-${day}`;
+          if (initialDate.includes("/")) {
+            // Extraire les composants de la date initiale (jour, mois, année)
+            const [day, month, year] = initialDate.split("/");
 
-    if (!formattedDate) {
-      // La date n'est pas valide
-      console.error("Invalid date:", event.date);
-    } else {
-      // La date est correcte
-      setEditingEvent({
-        ...event,
-        date: formattedDate,
-        categorie_id: event.categorie_id,
-        isApproved: event.isApproved,
-      });
-      console.log("Editing Event:", event);
-      setOpenEdit(true);
-    }
+            // Construire la date au format 'yyyy-mm-dd' pour l'affichage
+            formattedDate = `${year}-${month}-${day}`;
+          }
+
+          setEditingEvent({
+            ...fetchedEvent,
+            date: formattedDate,
+            categorie_id: fetchedEvent.categorie_id,
+            isApproved: fetchedEvent.isApproved,
+          });
+        }
+      })
+      .catch((error) => console.error(error));
+
+    setOpenEdit(true);
   };
 
   const handleDelete = () => {
-    eventManagerAPI
+    eventAPI
       .delete(deletingEventId)
       .then(() => {
         setEvents(events.filter((event) => event.id !== deletingEventId));
@@ -122,7 +133,6 @@ function Admin() {
   };
 
   const handleUpdate = () => {
-    console.log("Editing Event:", editingEvent);
     const formData = new FormData();
     Object.entries(editingEvent).forEach(([key, value]) => {
       formData.append(key, value);
@@ -131,19 +141,20 @@ function Admin() {
     if (imageFile) {
       formData.append("image", imageFile);
     }
-    console.log("Form Data:", formData);
-    eventManagerAPI
+    eventAPI
       .update(editingEvent.id, formData)
+      .then(() => {
+        return eventAPI.getOne(editingEvent.id);
+      })
       .then((response) => {
-        const updatedEvent = response.data; // La réponse de l'API doit contenir l'événement mis à jour
+        const updatedEvent = response.data;
         setEvents(
           events.map((event) =>
             event.id === editingEvent.id ? updatedEvent : event
           )
         );
-        console.log("Response:", response);
-        setShowConfirmation(true); // Afficher le message de confirmation
-        handleCloseEdit(); // Fermer la boîte de dialogue
+        setShowConfirmation(true);
+        handleCloseEdit();
       })
       .catch((error) => console.error(error));
   };
@@ -257,7 +268,10 @@ function Admin() {
               description={event.description}
               address={event.address}
               date={event.date}
-              limitedInfo
+              showCat
+              showDate
+              showDesc
+              showAddress
             />
             <Box display="flex" ml={3}>
               <Button
@@ -289,9 +303,9 @@ function Admin() {
         handleUpdate={handleUpdate}
         handleImageChange={handleImageChange}
         handleChange={handleChange}
+        categorieList={categorieList}
         editingEvent={editingEvent}
         setEditingEvent={setEditingEvent}
-        categorieList={categorieList}
       />
       <ConfirmationAdminDialog
         open={showConfirmation}
