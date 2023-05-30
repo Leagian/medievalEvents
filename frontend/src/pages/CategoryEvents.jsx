@@ -44,17 +44,17 @@ function CategoryEvents() {
 
   return (
     <div>
-      <IconButton onClick={handlePrevious}>
+      <IconButton
+        sx={{ marginLeft: "8rem", marginTop: "1rem" }}
+        onClick={handlePrevious}
+      >
         <ArrowBackIcon />
         <Typography variant="body1">RETOUR</Typography>
       </IconButton>
-
       <Typography variant="h5" fontWeight="bold" textAlign="center">
         {category.toUpperCase()}
       </Typography>
-
       <EventList events={displayedEvents} columns={2} />
-
       <CustomPagination
         totalItems={filteredCategoryEvents.length}
         itemsPerPage={itemsPerPage}

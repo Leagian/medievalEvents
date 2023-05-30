@@ -22,6 +22,7 @@ function Home() {
         limitEvents={4}
         showDesc
         showCat
+        showDate
         columns={2}
       />
     </div>
