@@ -166,7 +166,7 @@ function EventDetail() {
               <EventImage image={eventId.image} alt={eventId.title} />
             </Box>
 
-            <Typography variant="body1" width="60%" mt={4} mb={4}>
+            <Typography variant="body1" width="60%" mt={4} mb={2}>
               {eventId.description}
             </Typography>
             <Typography variant="body1" mt={2} mb={1}>
