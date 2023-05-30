@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 // MATERIAL
 import { Box, Typography, Link as MuiLink } from "@mui/material";
 
 // COMPONENT
 import SocialShareButtons from "./SocialShareButtons";
+import DarkModeToggle from "./DarkModeToggle";
 
-function Footer() {
+function Footer({ darkMode, setDarkMode }) {
   return (
     <Box
+      component="footer"
       display="flex"
       justifyContent="space-between"
       alignItems="center"
@@ -20,23 +23,23 @@ function Footer() {
         width: "100%",
       }}
     >
-      <Box component="footer">
+      <Box>
         <SocialShareButtons />
       </Box>
-      <Typography variant="body1" color="#333432" sx={{ marginLeft: "2rem" }}>
+      <Typography variant="body1" color="#333432">
         &copy; ESCALE MEDIEVALE 2023
       </Typography>
-      <MuiLink
-        component={Link}
-        to="/contact"
-        color="#464646"
-        underline="hover"
-        sx={{ marginRight: "2rem" }}
-      >
+      <MuiLink component={Link} to="/contact" color="#464646" underline="hover">
         CONTACT
       </MuiLink>
+      <DarkModeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
     </Box>
   );
 }
+
+Footer.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  setDarkMode: PropTypes.func.isRequired,
+};
 
 export default Footer;

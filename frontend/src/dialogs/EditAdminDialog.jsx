@@ -18,9 +18,9 @@ import {
 function EditAdminDialog({
   open,
   handleClose,
-  handleUpdate,
   handleImageChange,
   handleChange,
+  handleUpdate,
   editingEvent,
   categorieList,
   setEditingEvent,

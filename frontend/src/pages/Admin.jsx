@@ -25,13 +25,14 @@ import categoryAPI from "../services/categoryAPI";
 import formatDate from "../helpers/DateHelper";
 
 function Admin() {
-  const { filterApprovedEvents, filterNonApprovedEvents } = useDataContext();
+  const { filterApprovedEvents, filterNonApprovedEvents, handleApproveChange } =
+    useDataContext();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const [events, setEvents] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false); // event ajouté
   const [searchText, setSearchText] = useState(""); // Stocke le texte de recherche
-  const [showApprovedOnly, setShowApprovedOnly] = useState(true); // checkbox filtre approved
+  const [showApprovedOnly, setShowApprovedOnly] = useState(false); // checkbox filtre approved
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -63,6 +64,10 @@ function Admin() {
   }, []);
 
   useEffect(() => {
+    onSearch(searchText, showApprovedOnly);
+  }, [searchText, showApprovedOnly, events]);
+
+  useEffect(() => {
     categoryAPI
       .getAll()
       .then((response) => {
@@ -71,17 +76,31 @@ function Admin() {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-  };
+  const handleUpdate = () => {
+    const formData = new FormData();
+    Object.entries(editingEvent).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
-  const handleClickOpenDelete = (eventId) => {
-    setDeletingEventId(eventId);
-    setOpenDelete(true);
-  };
-
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    eventAPI
+      .update(editingEvent.id, formData)
+      .then(() => {
+        return eventAPI.getOne(editingEvent.id);
+      })
+      .then((response) => {
+        const updatedEvent = response.data;
+        setEvents(
+          events.map((event) =>
+            event.id === editingEvent.id ? updatedEvent : event
+          )
+        );
+        setShowConfirmation(true);
+        handleCloseEdit();
+      })
+      .catch((error) => console.error(error));
   };
 
   const handleClickOpenEdit = (event) => {
@@ -132,40 +151,6 @@ function Admin() {
     handleCloseDelete();
   };
 
-  const handleUpdate = () => {
-    const formData = new FormData();
-    Object.entries(editingEvent).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-    eventAPI
-      .update(editingEvent.id, formData)
-      .then(() => {
-        return eventAPI.getOne(editingEvent.id);
-      })
-      .then((response) => {
-        const updatedEvent = response.data;
-        setEvents(
-          events.map((event) =>
-            event.id === editingEvent.id ? updatedEvent : event
-          )
-        );
-        setShowConfirmation(true);
-        handleCloseEdit();
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const handleChange = (event) => {
-    setEditingEvent({
-      ...editingEvent,
-      categorie_id: Number(event.target.value),
-    });
-  };
-
   const onSearch = (text, newShowApprovedOnly) => {
     let filtered = events.filter((event) =>
       event.title
@@ -179,6 +164,7 @@ function Admin() {
       filtered = filterNonApprovedEvents(filtered);
     }
 
+    console.log(filtered); // Ajout de la ligne pour inspecter filteredEvents
     setFilteredEvents(filtered);
   };
 
@@ -186,6 +172,13 @@ function Admin() {
     const newShowApprovedOnly = event.target.checked;
     setShowApprovedOnly(newShowApprovedOnly);
     onSearch(searchText, newShowApprovedOnly);
+  };
+
+  const handleChange = (event) => {
+    setEditingEvent({
+      ...editingEvent,
+      categorie_id: Number(event.target.value),
+    });
   };
 
   const handleSearch = ({ target }) => {
@@ -199,6 +192,19 @@ function Admin() {
 
   const handleImageChange = (file) => {
     setImageFile(file);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+
+  const handleClickOpenDelete = (eventId) => {
+    setDeletingEventId(eventId);
+    setOpenDelete(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
 
   // PAGINATION
@@ -251,7 +257,7 @@ function Admin() {
               onChange={handleShowApprovedChange}
             />
           }
-          label="Filtrer par approbation"
+          label={showApprovedOnly ? "Approved" : "Not approved"}
           labelPlacement="start"
         />
       </Box>

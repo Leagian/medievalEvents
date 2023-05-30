@@ -47,6 +47,37 @@ export function DataContextProvider({ children }) {
     return eventList.filter((event) => event.isApproved === 0);
   };
 
+  const handleApproveChange = (eventId, newApprovalState) => {
+    // Find the event in the state
+    const eventToUpdate = dataEvents.find((event) => event.id === eventId);
+    if (!eventToUpdate) {
+      console.error("Event not found:", eventId);
+      return;
+    }
+
+    // Update the event with the new approval state
+    const updatedEvent = { ...eventToUpdate, isApproved: newApprovalState };
+
+    // Construct FormData
+    const formData = new FormData();
+    Object.entries(updatedEvent).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    // Update the event in the database
+    eventAPI
+      .update(eventId, formData)
+      .then(() => {
+        // If successful, update the state of the events
+        setDataEvents(
+          dataEvents.map((event) =>
+            event.id === eventId ? updatedEvent : event
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  };
+
   const value = useMemo(
     () => ({
       dataEvents,
@@ -55,6 +86,7 @@ export function DataContextProvider({ children }) {
       filterNonApprovedEvents,
       events,
       setEvents,
+      handleApproveChange,
     }),
     [dataEvents, categories, events]
   );

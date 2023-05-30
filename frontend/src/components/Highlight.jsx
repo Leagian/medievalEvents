@@ -52,7 +52,7 @@ function Highlight() {
             <Box
               sx={{
                 position: "absolute",
-                bottom: 3,
+                bottom: 8,
                 left: 0,
                 backgroundColor: "rgba(0, 0, 0, 0.6)",
                 color: "#fff",

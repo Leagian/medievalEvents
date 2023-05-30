@@ -52,6 +52,10 @@ function Form() {
       if (key === "title") {
         value = value.toUpperCase();
       }
+      // Check if value is an empty string and, if so, replace it with null
+      if (value === "") {
+        value = null;
+      }
       data.append(key, value);
     });
     if (file) {
