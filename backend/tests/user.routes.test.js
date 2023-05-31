@@ -1,16 +1,12 @@
 /* eslint-env jest */
 
 const request = require("supertest");
-const express = require("express");
-const userRoutes = require("../../src/router/user.routes");
-
-const app = express();
-
-app.use(express.json());
-app.use("/users", userRoutes);
+const app = require("../src/app");
+const db = require("../src/models/db");
+const userRoutes = require("../src/router/user.routes");
 
 // Importation de votre contrôleur
-const userController = require("../../src/controllers/user.controller");
+const userController = require("../src/controllers/user.controller");
 
 // Mock du contrôleur
 jest.mock("../../src/controllers/user.controller");
@@ -22,10 +18,10 @@ beforeEach(() => {
 
 describe("User Routes", () => {
   it("should create a new user", async () => {
-    const res = await request(app).post("/users").send({
-      name: "Test User",
-      email: "test@example.com",
-      password: "testpassword",
+    const res = await request(app).post("/api/users").send({
+      name: "anne",
+      email: "admin@example.com",
+      password: "admin",
     });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toHaveProperty("id");
@@ -64,5 +60,8 @@ describe("User Routes", () => {
     expect(res.statusCode).toEqual(200);
   });
 
-  // ... et ainsi de suite pour chaque route
+  afterAll(async () => {
+    // Fermer toutes les connexions à la base de données après tous les tests.
+    await db.end();
+  });
 });

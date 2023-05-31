@@ -10,7 +10,7 @@ const login = async (req, res) => {
     if (errors)
       return res.status(401).send({ message: "Validation failed", errors });
 
-    const [user] = await findByEmail(req.body.email);
+    const user = await findByEmail(req.body.email);
 
     if (!user) return res.status(401).send({ message: "Invalid email" });
 

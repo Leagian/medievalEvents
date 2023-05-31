@@ -15,11 +15,14 @@ const findOneUser = async (userId) => {
 
 const findByEmail = async (email) => {
   try {
-    const [user] = await db.query("SELECT * FROM `users` WHERE email = ?", [
+    const users = await db.query("SELECT * FROM `users` WHERE email = ?", [
       email,
     ]);
 
-    return user;
+    if (users.length > 0) {
+      return users[0];
+    }
+    return null;
   } catch (error) {
     console.error(error);
     return null;

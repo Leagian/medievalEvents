@@ -2,7 +2,15 @@ const { decodeJWT } = require("../helper/jwt.helper");
 
 const authorization = async (req, res, next) => {
   try {
-    const token = req.cookies.auth_token;
+    const authHeader = req.headers.authorization;
+    let token;
+
+    if (authHeader) {
+      const [, extractedToken] = authHeader.split(" "); // Extraire le jeton de l'en-tête Authorization
+      token = extractedToken;
+    } else {
+      token = req.cookies.auth_token;
+    }
 
     if (!token) throw new Error("Token not found");
 
