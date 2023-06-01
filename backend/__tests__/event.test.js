@@ -3,7 +3,7 @@ process.env.TOKEN_SECRET = "test-secret-key";
 
 const request = require("supertest");
 const app = require("../src/app");
-const db = require("../src/models/db");
+// const db = require("../src/models/db");
 const eventController = require("../src/controllers/event.controller");
 const { encodeJWT } = require("../src/helper/jwt.helper");
 
@@ -85,7 +85,7 @@ describe("Event Routes", () => {
     expect(res.body).toHaveLength(2);
   });
 
-  afterAll(async () => {
-    await db.end();
-  });
+  // afterAll(async () => {
+  //   await db.end();
+  // });
 });
