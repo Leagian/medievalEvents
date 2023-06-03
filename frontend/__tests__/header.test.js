@@ -1,10 +1,11 @@
+require("dotenv").config({ path: ".env.test" });
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import Header from "./Header";
-import profileAPI from "../services/profileAPI";
+import { AuthContext } from "../src/contexts/AuthContext";
+import Header from "../src/components/Header";
+import profileAPI from "../src/services/profileAPI.js";
 
-jest.mock("../services/profileAPI");
+jest.mock("../src/services/profileAPI.js");
 
 describe("Header", () => {
   it("displays the correct links when not logged in", () => {
@@ -61,7 +62,7 @@ describe("Header", () => {
     // Verify that the logout API is called when the logout button is clicked
     await waitFor(() =>
       expect(profileAPI.get).toHaveBeenCalledWith(
-        `${import.meta.env.VITE_BACKEND_URL}/api/logout`
+        `${process.env.VITE_BACKEND_URL}/api/logout`
       )
     );
 
