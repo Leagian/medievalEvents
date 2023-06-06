@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 // MATERIAL
 import { Box, Button, Link as MuiLink, Typography } from "@mui/material";
 import MapsUgcIcon from "@mui/icons-material/MapsUgc";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 // COMPONENT
 import Login from "../pages/Login";
@@ -36,6 +38,9 @@ function getUserFromCookie() {
 }
 
 function Header() {
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
+
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [signupModalOpen, setSignupModalOpen] = useState(false);
   const { id } = useParams();
@@ -82,9 +87,11 @@ function Header() {
       <Box component="nav" display="flex" mb={2} mt={1}>
         <Box
           display="flex"
-          justifyContent="space-evenly"
+          flexDirection={isTablet ? "column" : "row"}
+          justifyContent={isTablet ? "center" : "space-evenly"}
           alignItems="center"
           flex={1}
+          ml={isTablet ? 15 : 0}
         >
           {user ? (
             <MuiLink
@@ -93,7 +100,7 @@ function Header() {
               underline="none"
               color="inherit"
               sx={{ "&:hover": { color: "#888" } }}
-              ml={10}
+              ml={isTablet ? 1 : 10}
             >
               <Typography variant="subtitle1">
                 AJOUTER UN EVENEMENT
@@ -114,7 +121,7 @@ function Header() {
               variant="subtitle1"
               fontWeight="bold"
               sx={{ letterSpacing: "0.2em" }}
-              ml={3}
+              ml={isTablet ? 0 : 3}
             >
               ESCALE MEDIEVALE
             </Typography>
@@ -129,9 +136,17 @@ function Header() {
             <Typography variant="subtitle1">EVENEMENTS</Typography>
           </MuiLink>
         </Box>
-        <Box display="flex" justifyContent="flex-end">
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          flexDirection={isTablet ? "column" : "row"}
+        >
           {user ? (
-            <Box display="flex" alignItems="center">
+            <Box
+              display="flex"
+              alignItems="center"
+              flexDirection={isTablet ? "column" : "row"}
+            >
               {user.role !== "admin" && (
                 <Box>
                   <Link to={`/profile/${user.id}`}>
@@ -155,7 +170,7 @@ function Header() {
                   </Link>
                 </Box>
               )}
-              <Box margin={2}>
+              <Box margin={isTablet ? 0 : 2}>
                 <Button
                   variant="elevated"
                   onClick={handleDisconnection}
@@ -166,13 +181,17 @@ function Header() {
               </Box>
             </Box>
           ) : (
-            <Box display="flex" alignItems="center">
-              <Box margin={2}>
+            <Box
+              display="flex"
+              alignItems="center"
+              flexDirection={isTablet ? "column" : "row"}
+            >
+              <Box margin={isTablet ? 0 : 2}>
                 <Button variant="text" onClick={openLoginModal} size="small">
                   Connexion
                 </Button>
               </Box>
-              <Box margin={2}>
+              <Box margin={isTablet ? 0 : 2}>
                 <Button variant="text" onClick={openSignupModal} size="small">
                   Inscription
                 </Button>

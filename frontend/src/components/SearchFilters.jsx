@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 // MATERIAL
-import { TextField, Checkbox, FormControlLabel } from "@mui/material";
+import { TextField, Checkbox, FormControlLabel, Grid } from "@mui/material";
 
 function SearchFilters({ onSearch, searchCat, onFilter }) {
   const [searchText, setSearchText] = useState(""); // stock le texte de recherche
@@ -40,19 +40,23 @@ function SearchFilters({ onSearch, searchCat, onFilter }) {
           marginLeft: "6rem",
         }}
       />
-      {searchCat.map((cat) => (
-        <FormControlLabel
-          key={cat.id}
-          control={
-            <Checkbox
-              onChange={() => handleCheckboxChange(cat.id)}
-              color="default"
-              sx={{ marginBottom: "5px", marginLeft: "6rem" }}
+      <Grid container spacing={2} direction="row" sx={{ flexWrap: "wrap" }}>
+        {searchCat.map((cat) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={cat.id}>
+            <FormControlLabel
+              key={cat.id}
+              control={
+                <Checkbox
+                  onChange={() => handleCheckboxChange(cat.id)}
+                  color="default"
+                  sx={{ marginBottom: "5px", marginLeft: "6rem" }}
+                />
+              }
+              label={cat.cat_name}
             />
-          }
-          label={cat.cat_name}
-        />
-      ))}
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }

@@ -41,6 +41,7 @@ function Profile() {
         alignItems="center"
         justifyContent="center"
         mb={3}
+        textAlign="center"
       >
         <Typography
           variant="h4"
@@ -51,8 +52,10 @@ function Profile() {
         >
           Hello, {user.name}!
         </Typography>
-        <Typography variant="h6">Bienvenue sur ton profil</Typography>
-        <Typography variant="h6" mb={4}>
+        <Typography variant="h6" mb={3}>
+          Bienvenue sur ton profil
+        </Typography>
+        <Typography variant="h6" mb={4} maxWidth="50%">
           Tu peux changer ton avatar ici, et n'oublie pas de marquer tes
           événements préférés !
         </Typography>
