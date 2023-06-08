@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 
-// MATERIAL-UI
+// MATERIAL
 import { Link as MuiLink, Typography, Box } from "@mui/material";
 
 // COMPONENTS
@@ -12,16 +12,20 @@ function Highlight() {
   const [highlightedEvent, setHighlightedEvent] = useState(null);
   const { dataEvents, filterApprovedEvents } = useDataContext();
 
+  // filtre les évènements approuvés
+  const approvedEvents = useMemo(
+    () => filterApprovedEvents(dataEvents),
+    [dataEvents, filterApprovedEvents]
+  );
+
   useEffect(() => {
-    // Filtrer les événements approuvés
-    const approvedEvents = filterApprovedEvents(dataEvents);
-    // Choisissez un événement approuvé aléatoire
+    // évènement approuvé aléatoire
     if (approvedEvents.length > 0) {
       const randomIndex = Math.floor(Math.random() * approvedEvents.length);
       const event = approvedEvents[randomIndex];
       setHighlightedEvent(event);
     }
-  }, [dataEvents, filterApprovedEvents]);
+  }, [approvedEvents]);
 
   if (!highlightedEvent) {
     return <div>Loading...</div>;

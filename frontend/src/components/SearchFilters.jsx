@@ -7,13 +7,13 @@ import { TextField, Checkbox, FormControlLabel, Grid } from "@mui/material";
 function SearchFilters({ onSearch, searchCat, onFilter }) {
   const [searchText, setSearchText] = useState(""); // stock le texte de recherche
 
-  // Gère les changements de texte de recherche
+  // changements de texte de recherche
   const handleSearch = ({ target }) => {
     setSearchText(target.value);
     onSearch(target.value);
   };
 
-  // Gère les changements d'état des cases à cocher
+  // changements d'état des cases à cocher
   const handleCheckboxChange = (categoryId) => {
     onFilter((prevSelectedCategories) => {
       const newSelectedCategories = prevSelectedCategories.includes(categoryId)

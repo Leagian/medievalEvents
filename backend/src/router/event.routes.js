@@ -22,7 +22,6 @@ const router = express.Router();
 // GET
 router.get("/", getAllEvents); // affiche tous les events
 router.get("/:id", getOneEvent); // event details
-// router.get("/filter", getByCategory); // filter page
 
 // POST
 router.post(
@@ -31,7 +30,7 @@ router.post(
   uploadEvent.single("image"),
   resizeImage,
   createOneEvent
-);
+); // ajout event par user ou admin
 
 // UPDATE
 router.put(

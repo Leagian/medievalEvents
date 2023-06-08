@@ -17,7 +17,7 @@ const { resizeAvatar } = require("../middleware/resize");
 const router = express.Router();
 
 // GET
-router.get("/:id", getOneUser); // recup l'id d'un user
+router.get("/:id", getOneUser); // get l'id d'un user
 router.get("/:id/favorites", authorization, getUserFavorites);
 
 // POST
@@ -32,6 +32,6 @@ router.post(
 );
 
 // DELETE
-router.delete("/:id/favorites", authorization, removeFavorite); // enlever des favoris
+router.delete("/:id/favorites", authorization, removeFavorite); // delete des favoris
 
 module.exports = router;
